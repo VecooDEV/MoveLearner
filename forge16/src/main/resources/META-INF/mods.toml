@@ -1,0 +1,45 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "movelearner"
+version = "1.0.0"
+displayName = "MoveLearner"
+authors = "Vecoo"
+description = "Sidemod for Pixelmon add movelearn system."
+
+[[dependencies.movelearner]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.movelearner]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.movelearner]]
+modId = "pixelmon"
+mandatory = true
+versionRange = "[9.1,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.movelearner]]
+modId = "extralib"
+mandatory = true
+versionRange = "[1.5,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.movelearner]]
+modId = "atlantis"
+mandatory = true
+versionRange = "[6,)"
+ordering = "NONE"
+side = "BOTH"
