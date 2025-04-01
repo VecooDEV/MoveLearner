@@ -6,6 +6,7 @@ license = "All Rights Reserved"
 modId = "movelearner"
 version = "1.0.0"
 displayName = "MoveLearner"
+logoFile ="logo.png"
 authors = "Vecoo"
 description = "Sidemod for Pixelmon. Add move learn system."
 
