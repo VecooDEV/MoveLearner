@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ButtonLore {
-    public static List<ITextComponent> move(Pokemon pokemon, ServerPlayerEntity player) {
+    public static List<ITextComponent> pokemonMoves(Pokemon pokemon, ServerPlayerEntity player) {
         List<ITextComponent> lore = new ArrayList<>();
 
         lore.add(TextUtils.asComponent(MoveLearner.getInstance().getGui().getMovesLore()));
@@ -39,7 +39,7 @@ public class ButtonLore {
         return lore;
     }
 
-    public static ITextComponent movePrice(Pokemon pokemon, ImmutableAttack attack) {
+    public static ITextComponent movePrice(Pokemon pokemon, ImmutableAttack attack) { //TODO: Power/PP attack.
         int amount = Utils.movePrice(pokemon, attack);
 
         if (amount <= 0) {

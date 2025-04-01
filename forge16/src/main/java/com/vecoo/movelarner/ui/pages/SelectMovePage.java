@@ -41,7 +41,7 @@ public class SelectMovePage implements Page {
     public void addButtons(PlayerReference player, ButtonCollector buttons) {
         Moves moves = pokemon.getForm().getMoves();
 
-        List<ImmutableAttack> availableAttacks = listAttack(moves, filter);
+        List<ImmutableAttack> availableAttacks = listAttack(moves, filter); //TODO: Search attack.
 
         int page = 0;
         for (int i = 0; i < availableAttacks.size(); i++) {

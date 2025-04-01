@@ -54,8 +54,8 @@ public class AcceptPage implements Page {
 
                 case 12: {
                     buttons.collect(Button.builder()
-                            .directName(pokemon.getTranslatedName())
-                            .directLore(ButtonLore.move(pokemon, player.entityDirect()))
+                            .directName(ButtonName.pokemonName(pokemon))
+                            .directLore(ButtonLore.pokemonMoves(pokemon, player.entityDirect()))
                             .item(SpriteItemHelper.getPhoto(pokemon))
                             .index(i)
                             .build());

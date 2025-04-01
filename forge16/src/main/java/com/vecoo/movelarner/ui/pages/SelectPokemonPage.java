@@ -7,12 +7,12 @@ import com.vecoo.movelarner.MoveLearner;
 import com.vecoo.movelarner.config.GuiConfig;
 import com.vecoo.movelarner.config.ServerConfig;
 import com.vecoo.movelarner.ui.ButtonLore;
+import com.vecoo.movelarner.ui.ButtonName;
 import com.vecoo.movelarner.ui.settings.PageFilter;
 import com.vecoo.movelarner.util.Utils;
 import de.waterdu.atlantis.ui.api.*;
 import de.waterdu.atlantis.util.entity.PlayerReference;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.Style;
 
 public class SelectPokemonPage implements Page {
     @Override
@@ -52,8 +52,8 @@ public class SelectPokemonPage implements Page {
                 buttons.collect(createButton(guiConfig.getEmptyPokemonName(), null, guiConfig.getEmptyPokemonItem(), i++));
             } else {
                 buttons.collect(Button.builder()
-                        .directName(pokemon.getFormattedDisplayName().copy().withStyle(Style.EMPTY.withItalic(false)))
-                        .directLore(ButtonLore.move(pokemon, player.entityDirect()))
+                        .directName(ButtonName.pokemonName(pokemon))
+                        .directLore(ButtonLore.pokemonMoves(pokemon, player.entityDirect()))
                         .item(SpriteItemHelper.getPhoto(pokemon))
                         .index(i++)
                         .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, PageFilter.ALL)))
