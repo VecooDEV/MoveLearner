@@ -4,6 +4,8 @@ import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.battles.attacks.Attack;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.movelarner.MoveLearner;
+import com.vecoo.movelarner.config.ServerConfig;
+import com.vecoo.movelarner.ui.settings.PageFilter;
 import com.vecoo.movelarner.util.Utils;
 import de.waterdu.atlantis.util.text.TextUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ButtonLore {
-    public static List<ITextComponent> pokemon(Pokemon pokemon, ServerPlayerEntity player) {
+    public static List<ITextComponent> move(Pokemon pokemon, ServerPlayerEntity player) {
         List<ITextComponent> lore = new ArrayList<>();
 
         lore.add(TextUtils.asComponent(MoveLearner.getInstance().getGui().getMovesLore()));
@@ -24,10 +26,11 @@ public class ButtonLore {
         boolean showLocalizedNames = MoveLearner.getInstance().getConfig().isLocalizedNameMoves() && !player.getLanguage().equals("en_us");
 
         for (Attack move : pokemon.getMoveset()) {
-            IFormattableTextComponent formattedText = TextUtils.asComponent(MoveLearner.getInstance().getGui().getMoveSymbol()).append(move.getMove().getTranslatedName().withStyle(Style.EMPTY.withColor(TextFormatting.GRAY)));
+            IFormattableTextComponent formattedText = TextUtils.asComponent(MoveLearner.getInstance().getGui().getMoveSymbol()).withStyle(Style.EMPTY.withItalic(false)).append(move.getMove().getTranslatedName()).withStyle(TextFormatting.WHITE);
 
             if (showLocalizedNames) {
-                formattedText.append(" (").append(move.getMove().getLocalizedName()).append(")").withStyle(Style.EMPTY.withColor(TextFormatting.GRAY));
+                formattedText.append(TextUtils.asComponent(MoveLearner.getInstance().getGui().getLocalizedMoveLore()
+                        .replace("%move%", move.getMove().getLocalizedName())));
             }
 
             lore.add(formattedText);
@@ -36,7 +39,7 @@ public class ButtonLore {
         return lore;
     }
 
-    public static IFormattableTextComponent movePrice(Pokemon pokemon, ImmutableAttack attack) {
+    public static ITextComponent movePrice(Pokemon pokemon, ImmutableAttack attack) {
         int amount = Utils.movePrice(pokemon, attack);
 
         if (amount <= 0) {
@@ -45,5 +48,43 @@ public class ButtonLore {
 
         return TextUtils.asComponent(MoveLearner.getInstance().getGui().getPriceLore()
                 .replace("%amount%", String.valueOf(Utils.movePrice(pokemon, attack))));
+    }
+
+    public static List<ITextComponent> filter(String filter) {
+        List<ITextComponent> lore = new ArrayList<>();
+
+        ServerConfig config = MoveLearner.getInstance().getConfig();
+
+        lore.add(createFilterLine("All", filter.equals(PageFilter.ALL)));
+
+        if (config.isLevelMove()) {
+            lore.add(createFilterLine("Level", filter.equals(PageFilter.LEVEL)));
+        }
+
+        if (config.isTmTrMove()) {
+            lore.add(createFilterLine("TM/TR", filter.equals(PageFilter.TMTR)));
+        }
+
+        if (config.isHmMove()) {
+            lore.add(createFilterLine("HM", filter.equals(PageFilter.HM)));
+        }
+
+        if (config.isTutorMove()) {
+            lore.add(createFilterLine("Tutor", filter.equals(PageFilter.TUTOR)));
+        }
+
+        if (config.isTransferMove()) {
+            lore.add(createFilterLine("Transfer", filter.equals(PageFilter.TRANSFER)));
+        }
+
+        if (config.isEggMove()) {
+            lore.add(createFilterLine("Egg", filter.equals(PageFilter.EGG)));
+        }
+
+        return lore;
+    }
+
+    private static ITextComponent createFilterLine(String text, boolean isActive) {
+        return TextUtils.asComponent(MoveLearner.getInstance().getGui().getFilterSymbol() + (isActive ? "&f" : "&7") + text);
     }
 }

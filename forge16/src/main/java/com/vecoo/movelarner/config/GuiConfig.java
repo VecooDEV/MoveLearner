@@ -13,26 +13,30 @@ public class GuiConfig extends AbstractYamlConfig {
     private String nextPageItem = "minecraft:arrow:0";
     private String backItem = "minecraft:red_stained_glass_pane:0";
     private String acceptItem = "minecraft:lime_stained_glass_pane:0";
-    private String priceItem = "minecraft:paper:0";
+    private String comingItem = "minecraft:paper:0";
     private String cancelItem = "minecraft:red_stained_glass_pane:0";
     private String informationItem = "minecraft:paper:0";
+    private String filterItem = "minecraft:hopper:0";
 
     private String selectPokemonTitle = "Select pokemon";
     private String selectMoveTitle = "Select move";
     private String acceptTitle = "Are you sure?";
     private String emptyPokemonName = "&cEmpty Pokemon";
-    private String movesLore = "&9Moves: ";
+    private String movesLore = "&7Moves: ";
     private String moveSymbol = "&7» ";
+    private String localizedMoveName = " &7(%move%)";
+    private String localizedMoveLore = " &7(%move%)";
     private String previousPageName = "&fPrevious page";
     private String nextPageName = "&fNext page";
     private String backName = "&cBack";
     private String acceptName = "&aAccept";
     private String cancelName = "&cCancel";
-    private String priceName = "&fPrice move";
     private String priceLore = "&fPrice: %amount% rare candy";
     private String priceFreeLore = "&fPrice: free";
     private String informationName = "&fInformation:";
     private String informationLore = "&fIn this menu you can select a Pokemon that will be equipped with any attack available to it of your choice.";
+    private String filterName = "&fFilter";
+    private String filterSymbol = "&7» ";
 
     public String getFillerItem() {
         return this.fillerItem;
@@ -58,8 +62,8 @@ public class GuiConfig extends AbstractYamlConfig {
         return this.acceptItem;
     }
 
-    public String getPriceItem() {
-        return this.priceItem;
+    public String getComingItem() {
+        return this.comingItem;
     }
 
     public String getCancelItem() {
@@ -68,6 +72,10 @@ public class GuiConfig extends AbstractYamlConfig {
 
     public String getInformationItem() {
         return this.informationItem;
+    }
+
+    public String getFilterItem() {
+        return this.filterItem;
     }
 
     public String getSelectPokemonTitle() {
@@ -94,6 +102,14 @@ public class GuiConfig extends AbstractYamlConfig {
         return this.moveSymbol;
     }
 
+    public String getLocalizedMoveName() {
+        return this.localizedMoveName;
+    }
+
+    public String getLocalizedMoveLore() {
+        return this.localizedMoveLore;
+    }
+
     public String getPreviousPageName() {
         return this.previousPageName;
     }
@@ -115,10 +131,6 @@ public class GuiConfig extends AbstractYamlConfig {
         return this.cancelName;
     }
 
-    public String getPriceName() {
-        return this.priceName;
-    }
-
     public String getPriceLore() {
         return this.priceLore;
     }
@@ -133,5 +145,13 @@ public class GuiConfig extends AbstractYamlConfig {
 
     public String getInformationLore() {
         return this.informationLore;
+    }
+
+    public String getFilterName() {
+        return this.filterName;
+    }
+
+    public String getFilterSymbol() {
+        return this.filterSymbol;
     }
 }

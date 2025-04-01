@@ -2,10 +2,12 @@ package com.vecoo.movelarner.api.factory;
 
 import com.pixelmonmod.pixelmon.api.pokemon.LearnMoveController;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.stats.Moveset;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.battles.attacks.Attack;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.movelarner.MoveLearner;
+import com.vecoo.movelarner.config.LocaleConfig;
 import com.vecoo.movelarner.ui.pages.SelectMovePage;
 import com.vecoo.movelarner.util.Utils;
 import de.waterdu.atlantis.ui.api.AtlantisUI;
@@ -15,15 +17,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Util;
 
 public class MoveLearnerFactoryUI {
-    public static void learnMove(ServerPlayerEntity player, Pokemon pokemon, ImmutableAttack attack) {
+    public static void learnMove(ServerPlayerEntity player, Pokemon pokemon, ImmutableAttack attack, String filter) {
+        LocaleConfig localeConfig = MoveLearner.getInstance().getLocale();
+
         if (StorageProxy.getParty(player.getUUID()).get(pokemon.getUUID()) == null) {
-            player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getError()), Util.NIL_UUID);
+            player.sendMessage(TextUtils.asComponent(localeConfig.getError()), Util.NIL_UUID);
             AtlantisUI.close(player);
             return;
         }
 
-        if (pokemon.getMoveset().hasAttack(attack)) {
-            player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getError()), Util.NIL_UUID);
+        Moveset moveset = pokemon.getMoveset();
+
+        if (moveset.hasAttack(attack)) {
+            player.sendMessage(TextUtils.asComponent(localeConfig.getError()), Util.NIL_UUID);
             AtlantisUI.close(player);
             return;
         }
@@ -31,47 +37,41 @@ public class MoveLearnerFactoryUI {
         ItemStack itemStack = Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getConfig().getItemPriceMove());
 
         if (itemStack.isEmpty()) {
-            player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getError()), Util.NIL_UUID);
+            player.sendMessage(TextUtils.asComponent(localeConfig.getError()), Util.NIL_UUID);
             AtlantisUI.close(player);
             return;
         }
 
         int amountPrice = Utils.movePrice(pokemon, attack);
 
-        if (Utils.countItemStack(player, itemStack) < amountPrice) {
-            player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getNotItems()
+        if (Utils.countItem(player, itemStack) < amountPrice) {
+            player.sendMessage(TextUtils.asComponent(localeConfig.getNotItems()
                     .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
             AtlantisUI.close(player);
             return;
         }
 
-        int totalRemoved = 0;
-        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-            ItemStack stack = player.inventory.getItem(i);
-            if (stack.getItem().equals(itemStack.getItem())) {
-                if (itemStack.getTag() == null || (stack.getTag() != null && stack.getTag().equals(itemStack.getTag()))) {
-                    int toRemove = Math.min(stack.getCount(), amountPrice - totalRemoved);
-                    stack.shrink(toRemove);
-                    totalRemoved += toRemove;
-
-                    if (totalRemoved >= amountPrice) {
-                        break;
-                    }
-                }
-            }
+        if (amountPrice > 0) {
+            Utils.removeItems(player, itemStack, amountPrice);
         }
 
-        if (pokemon.getMoveset().size() >= 4) {
+        if (moveset.size() >= 4) {
             LearnMoveController.sendLearnMove(player, pokemon.getUUID(), attack);
-            AtlantisUI.open(player, new SelectMovePage(pokemon), true);
+            AtlantisUI.open(player, new SelectMovePage(pokemon, filter), true);
         } else {
-            pokemon.getMoveset().add(new Attack(attack));
-            AtlantisUI.update(player, new SelectMovePage(pokemon));
+            moveset.add(new Attack(attack));
+            AtlantisUI.open(player, new SelectMovePage(pokemon, filter));
         }
 
-        player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getBuyAttack()
-                .replace("%attack%", attack.getAttackName())
-                .replace("%pokemon%", pokemon.getFormattedDisplayName().getString())
-                .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
+        if (amountPrice > 0) {
+            player.sendMessage(TextUtils.asComponent(localeConfig.getBuyAttack()
+                    .replace("%attack%", attack.getAttackName())
+                    .replace("%pokemon%", pokemon.getFormattedDisplayName().getString())
+                    .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
+        } else {
+            player.sendMessage(TextUtils.asComponent(localeConfig.getBuyAttackFree()
+                    .replace("%attack%", attack.getAttackName())
+                    .replace("%pokemon%", pokemon.getFormattedDisplayName().getString())), Util.NIL_UUID);
+        }
     }
 }

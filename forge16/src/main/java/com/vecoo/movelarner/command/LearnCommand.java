@@ -20,7 +20,7 @@ public class LearnCommand {
                 .then(Commands.literal("open")
                         .requires(p -> PermissionUtils.hasPermission(p, "minecraft.command.learn.open"))
                         .then(Commands.argument("player", EntityArgument.player())
-                                .executes(e -> executeOpenLearn(e.getSource(), EntityArgument.getPlayer(e, "player")))))
+                                .executes(e -> executeLearn(e.getSource(), EntityArgument.getPlayer(e, "player")))))
 
                 .then(Commands.literal("reload")
                         .requires(p -> PermissionUtils.hasPermission(p, "minecraft.command.learn.reload"))
@@ -32,7 +32,7 @@ public class LearnCommand {
         return 1;
     }
 
-    private static int executeOpenLearn(CommandSource source, ServerPlayerEntity player) {
+    private static int executeLearn(CommandSource source, ServerPlayerEntity player) {
         source.sendSuccess(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getOpenLearn()
                 .replace("%player%", player.getName().getString())), false);
         AtlantisUI.open(player, new SelectPokemonPage());

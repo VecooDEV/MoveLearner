@@ -7,7 +7,7 @@ modId = "movelearner"
 version = "1.0.0"
 displayName = "MoveLearner"
 authors = "Vecoo"
-description = "Sidemod for Pixelmon add movelearn system."
+description = "Sidemod for Pixelmon. Add move learn system."
 
 [[dependencies.movelearner]]
 modId = "forge"
@@ -31,15 +31,8 @@ ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.movelearner]]
-modId = "extralib"
-mandatory = true
-versionRange = "[1.5,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.movelearner]]
 modId = "atlantis"
 mandatory = true
 versionRange = "[6,)"
 ordering = "NONE"
-side = "BOTH"
+side = "SERVER"

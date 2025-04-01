@@ -5,25 +5,25 @@ import com.pixelmonmod.pixelmon.api.util.helpers.SpriteItemHelper;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.movelarner.MoveLearner;
 import com.vecoo.movelarner.api.factory.MoveLearnerFactoryUI;
+import com.vecoo.movelarner.config.GuiConfig;
 import com.vecoo.movelarner.ui.ButtonLore;
 import com.vecoo.movelarner.ui.ButtonName;
 import com.vecoo.movelarner.util.Utils;
 import de.waterdu.atlantis.ui.api.*;
 import de.waterdu.atlantis.util.entity.PlayerReference;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.IFormattableTextComponent;
 
 public class AcceptPage implements Page {
     private final Pokemon pokemon;
     private final ImmutableAttack attack;
     private final ItemStack itemStackTM;
-    private final IFormattableTextComponent movePriceLore;
+    private final String filter;
 
-    public AcceptPage(Pokemon pokemon, ImmutableAttack attack, ItemStack itemStackTM, IFormattableTextComponent movePriceLore) {
+    public AcceptPage(Pokemon pokemon, ImmutableAttack attack, ItemStack itemStackTM, String filter) {
         this.pokemon = pokemon;
         this.attack = attack;
         this.itemStackTM = itemStackTM;
-        this.movePriceLore = movePriceLore;
+        this.filter = filter;
     }
 
     @Override
@@ -36,16 +36,18 @@ public class AcceptPage implements Page {
 
     @Override
     public void addButtons(PlayerReference player, ButtonCollector buttons) {
-        ItemStack fillerItem = Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getGui().getFillerItem());
+        GuiConfig guiConfig = MoveLearner.getInstance().getGui();
+
+        ItemStack fillerItem = Utils.parsedItemStackCustomModel(guiConfig.getFillerItem());
 
         for (int i = 0; i < 27; i++) {
             switch (i) {
                 case 10: {
                     buttons.collect(Button.builder()
-                            .name(MoveLearner.getInstance().getGui().getCancelName())
-                            .item(Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getGui().getCancelItem()))
+                            .name(guiConfig.getCancelName())
+                            .item(Utils.parsedItemStackCustomModel(guiConfig.getCancelItem()))
                             .index(i)
-                            .clickAction(clickData -> AtlantisUI.open(player, new SelectMovePage(pokemon)))
+                            .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, filter)))
                             .build());
                     break;
                 }
@@ -53,7 +55,7 @@ public class AcceptPage implements Page {
                 case 12: {
                     buttons.collect(Button.builder()
                             .directName(pokemon.getTranslatedName())
-                            .directLore(ButtonLore.pokemon(pokemon, player.entityDirect()))
+                            .directLore(ButtonLore.move(pokemon, player.entityDirect()))
                             .item(SpriteItemHelper.getPhoto(pokemon))
                             .index(i)
                             .build());
@@ -62,9 +64,7 @@ public class AcceptPage implements Page {
 
                 case 13: {
                     buttons.collect(Button.builder()
-                            .name(MoveLearner.getInstance().getGui().getPriceName())
-                            .lore(movePriceLore)
-                            .item(Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getGui().getPriceItem()))
+                            .item(Utils.parsedItemStackCustomModel(guiConfig.getComingItem()))
                             .index(i)
                             .build());
                     break;
@@ -81,10 +81,10 @@ public class AcceptPage implements Page {
 
                 case 16: {
                     buttons.collect(Button.builder()
-                            .name(MoveLearner.getInstance().getGui().getAcceptName())
-                            .item(Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getGui().getAcceptItem()))
+                            .name(guiConfig.getAcceptName())
+                            .item(Utils.parsedItemStackCustomModel(guiConfig.getAcceptItem()))
                             .index(i)
-                            .clickAction(clickData -> MoveLearnerFactoryUI.learnMove(clickData.entity(), pokemon, attack))
+                            .clickAction(clickData -> MoveLearnerFactoryUI.learnMove(clickData.entity(), pokemon, attack, filter))
                             .build());
                     break;
                 }

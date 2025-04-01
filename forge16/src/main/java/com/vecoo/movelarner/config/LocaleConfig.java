@@ -11,6 +11,7 @@ public class LocaleConfig extends AbstractYamlConfig {
 
     private String openLearn = "&e(!) Learn menu opened %player%.";
     private String buyAttack = "&e(!) You buy %attack% to %pokemon% for x%amount% rare candy.";
+    private String buyAttackFree = "&e(!) You buy %attack% to %pokemon% for free.";
 
     private String notItems = "&c(!) You need x%amount% candy to attack.";
     private String error = "&c(!) Error. Try again.";
@@ -25,6 +26,10 @@ public class LocaleConfig extends AbstractYamlConfig {
 
     public String getBuyAttack() {
         return this.buyAttack;
+    }
+
+    public String getBuyAttackFree() {
+        return this.buyAttackFree;
     }
 
     public String getNotItems() {

@@ -1,6 +1,5 @@
 plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
@@ -19,15 +18,9 @@ repositories {}
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.42'
 
-    implementation fg.deobf('pixelmon:Pixelmon-1.16.5-9.1.13-server:9.1.13')
-    implementation fg.deobf("curse.maven:atlantis-api-316395:6121989")
+    compileOnly fg.deobf('pixelmon:Pixelmon-1.16.5-9.1.13-server:9.1.13')
+    compileOnly fg.deobf("curse.maven:atlantis-api-316395:6121989")
 }
 
-shadowJar {
-    configurations = [project.configurations.shadow]
-    setArchiveBaseName("${rootProject.name}-forge")
-}
-
-jar.finalizedBy('shadowJar')
-shadowJar.finalizedBy('reobfJar')
+jar.finalizedBy('reobfJar')
 build.finalizedBy('versionedRelease')

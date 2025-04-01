@@ -4,11 +4,15 @@ import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.api.util.helpers.SpriteItemHelper;
 import com.vecoo.movelarner.MoveLearner;
+import com.vecoo.movelarner.config.GuiConfig;
+import com.vecoo.movelarner.config.ServerConfig;
 import com.vecoo.movelarner.ui.ButtonLore;
+import com.vecoo.movelarner.ui.settings.PageFilter;
 import com.vecoo.movelarner.util.Utils;
 import de.waterdu.atlantis.ui.api.*;
 import de.waterdu.atlantis.util.entity.PlayerReference;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.Style;
 
 public class SelectPokemonPage implements Page {
     @Override
@@ -21,47 +25,49 @@ public class SelectPokemonPage implements Page {
 
     @Override
     public void addButtons(PlayerReference player, ButtonCollector buttons) {
-        if (MoveLearner.getInstance().getConfig().isFillerUI()) {
-            ItemStack fillerItem = Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getGui().getFillerItem());
+        MoveLearner instance = MoveLearner.getInstance();
+        ServerConfig config = instance.getConfig();
+        GuiConfig guiConfig = instance.getGui();
+
+        if (config.isFillerUI()) {
+            ItemStack fillerItem = Utils.parsedItemStackCustomModel(guiConfig.getFillerItem());
 
             for (int i = 0; i < 27; i++) {
                 buttons.collect(new Decoration(fillerItem, i));
             }
         }
 
-        int i = 10;
-        ItemStack emptyPokemonItem = Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getGui().getEmptyPokemonItem());
+        Pokemon[] party = StorageProxy.getParty(player.uuid()).getAll();
 
-        for (Pokemon pokemon : StorageProxy.getParty(player.uuid()).getAll()) {
-            if (i == 13) {
-                if (MoveLearner.getInstance().getConfig().isInformationUI()) {
-                    buttons.collect(Button.builder()
-                            .name(MoveLearner.getInstance().getGui().getInformationName())
-                            .lore(MoveLearner.getInstance().getGui().getInformationLore())
-                            .item(Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getGui().getInformationItem()))
-                            .index(i++)
-                            .build());
-                } else {
-                    i++;
-                }
+        for (int i = 10, pokemonIndex = 0; pokemonIndex < party.length; pokemonIndex++) {
+            if (i == 13 && config.isInformationUI()) {
+                buttons.collect(createButton(guiConfig.getInformationName(), guiConfig.getInformationLore(), guiConfig.getInformationItem(), i++));
+                pokemonIndex--;
+                continue;
             }
+
+            Pokemon pokemon = party[pokemonIndex];
 
             if (pokemon == null || pokemon.isEgg()) {
-                buttons.collect(Button.builder()
-                        .name(MoveLearner.getInstance().getGui().getEmptyPokemonName())
-                        .item(emptyPokemonItem)
-                        .index(i++)
-                        .build());
+                buttons.collect(createButton(guiConfig.getEmptyPokemonName(), null, guiConfig.getEmptyPokemonItem(), i++));
             } else {
                 buttons.collect(Button.builder()
-                        .directName(pokemon.getTranslatedName())
-                        .directLore(ButtonLore.pokemon(pokemon, player.entityDirect()))
+                        .directName(pokemon.getFormattedDisplayName().copy().withStyle(Style.EMPTY.withItalic(false)))
+                        .directLore(ButtonLore.move(pokemon, player.entityDirect()))
                         .item(SpriteItemHelper.getPhoto(pokemon))
                         .index(i++)
-                        .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon)))
-                        .build()
-                );
+                        .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, PageFilter.ALL)))
+                        .build());
             }
         }
+    }
+
+    private Button createButton(String name, String lore, String itemModel, int index) {
+        return Button.builder()
+                .name(name)
+                .lore(lore)
+                .item(Utils.parsedItemStackCustomModel(itemModel))
+                .index(index)
+                .build();
     }
 }

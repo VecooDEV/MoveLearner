@@ -9,10 +9,13 @@ import com.pixelmonmod.pixelmon.enums.technicalmoves.ITechnicalMove;
 import com.pixelmonmod.pixelmon.items.TechnicalMoveItem;
 import com.vecoo.movelarner.MoveLearner;
 import de.waterdu.atlantis.util.item.ParsedItemStack;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Utils {
     public static ItemStack parsedItemStackCustomModel(String id) {
@@ -139,12 +142,8 @@ public class Utils {
             return MoveLearner.getInstance().getConfig().getLevelMovePrice();
         }
 
-        if (moves.getTMMoves().contains(attack)) {
-            return MoveLearner.getInstance().getConfig().getTmMovePrice();
-        }
-
-        if (moves.getTRMoves().stream().map(ITechnicalMove::getAttack).collect(Collectors.toList()).contains(attack)) {
-            return MoveLearner.getInstance().getConfig().getTrMovePrice();
+        if (moves.getTMMoves().contains(attack) || moves.getTRMoves().stream().map(ITechnicalMove::getAttack).collect(Collectors.toList()).contains(attack)) {
+            return MoveLearner.getInstance().getConfig().getTmTrMovePrice();
         }
 
         if (moves.getHMMoves().contains(attack)) {
@@ -166,18 +165,39 @@ public class Utils {
         return 0;
     }
 
-    public static int countItemStack(ServerPlayerEntity player, ItemStack itemStack) {
-        int count = 0;
+    public static int countItem(ServerPlayerEntity player, ItemStack itemStack) {
+        PlayerInventory inventory = player.inventory;
+        CompoundNBT nbt = itemStack.getTag();
 
-        for (int i = 0; i < player.inventory.getContainerSize(); ++i) {
-            ItemStack stack = player.inventory.getItem(i);
-            if (stack.getItem().equals(itemStack.getItem())) {
-                if (itemStack.getTag() == null || (stack.getTag() != null && stack.getTag().equals(itemStack.getTag()))) {
-                    count += stack.getCount();
+        return IntStream.range(0, inventory.getContainerSize())
+                .mapToObj(inventory::getItem)
+                .filter(stack -> stack.getItem() == itemStack.getItem())
+                .filter(stack -> nbt == null || nbt.equals(stack.getTag()))
+                .mapToInt(ItemStack::getCount)
+                .sum();
+    }
+
+    public static void removeItems(ServerPlayerEntity player, ItemStack itemStack, int amount) {
+        int totalRemoved = 0;
+        PlayerInventory inventory = player.inventory;
+        CompoundNBT targetTag = itemStack.getTag();
+
+        for (int i = inventory.getContainerSize() - 1; i >= 0 && totalRemoved < amount; i--) {
+            ItemStack stack = inventory.getItem(i);
+
+            if (stack.getItem() == itemStack.getItem()) {
+                if (targetTag == null || (stack.getTag() != null && stack.getTag().equals(targetTag))) {
+                    int toRemove = Math.min(stack.getCount(), amount - totalRemoved);
+
+                    stack.shrink(toRemove);
+                    totalRemoved += toRemove;
+
+                    if (stack.isEmpty()) {
+                        inventory.setItem(i, ItemStack.EMPTY);
+                    }
                 }
             }
         }
-
-        return count;
+        inventory.setChanged();
     }
 }
