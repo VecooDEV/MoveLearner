@@ -32,7 +32,7 @@ public class SelectMovePage implements Page {
     @Override
     public PageOptions getPageOptions(PlayerReference player) {
         return PageOptions.builder()
-                .title(MoveLearner.getInstance().getGui().getSelectMoveTitle() + filter)
+                .title(MoveLearner.getInstance().getGui().getSelectMoveTitle())
                 .rows(6)
                 .build();
     }
