@@ -8,11 +8,7 @@ import info.pixelmon.repack.org.spongepowered.objectmapping.ConfigSerializable;
 @ConfigSerializable
 public class ServerConfig extends AbstractYamlConfig {
     private String itemPriceMove = "pixelmon:rare_candy";
-    private boolean levelMove = true;
-    private boolean tmTrMove = true;
     private boolean hmMove = true;
-    private boolean tutorMove = true;
-    private boolean transferMove = true;
     private boolean eggMove = true;
     private int levelMovePrice = 16;
     private int tmTrMovePrice = 16;
@@ -28,24 +24,8 @@ public class ServerConfig extends AbstractYamlConfig {
         return this.itemPriceMove;
     }
 
-    public boolean isLevelMove() {
-        return this.levelMove;
-    }
-
-    public boolean isTmTrMove() {
-        return this.tmTrMove;
-    }
-
     public boolean isHmMove() {
         return this.hmMove;
-    }
-
-    public boolean isTutorMove() {
-        return this.tutorMove;
-    }
-
-    public boolean isTransferMove() {
-        return this.transferMove;
     }
 
     public boolean isEggMove() {

@@ -32,7 +32,7 @@ public class SelectMovePage implements Page {
     @Override
     public PageOptions getPageOptions(PlayerReference player) {
         return PageOptions.builder()
-                .title(MoveLearner.getInstance().getGui().getSelectMoveTitle())
+                .title(MoveLearner.getInstance().getGui().getSelectMoveTitle() + filter)
                 .rows(6)
                 .build();
     }
@@ -106,54 +106,44 @@ public class SelectMovePage implements Page {
             case "all": {
                 return moves.getAllMoves().stream()
                         .filter(attack -> !pokemon.getMoveset().hasAttack(attack))
-                        .filter(attack -> config.isLevelMove() || !moves.getAllLevelUpMoves().contains(attack))
-                        .filter(attack -> config.isTmTrMove() || !moves.getTMMoves().contains(attack) && !moves.getTRMoves().stream().map(ITechnicalMove::getAttack).collect(Collectors.toList()).contains(attack))
                         .filter(attack -> config.isHmMove() || !moves.getHMMoves().contains(attack))
-                        .filter(attack -> config.isTutorMove() || !moves.getTutorMoves().contains(attack))
-                        .filter(attack -> config.isTransferMove() || !moves.getTransferMoves().contains(attack))
                         .filter(attack -> config.isEggMove() || !moves.getEggMoves().contains(attack))
                         .collect(Collectors.toList());
             }
 
             case "level": {
                 return moves.getAllMoves().stream()
-                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack))
-                        .filter(attack -> moves.getAllLevelUpMoves().contains(attack))
+                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack) && moves.getAllLevelUpMoves().contains(attack))
                         .collect(Collectors.toList());
             }
 
             case "tmtr": {
                 return moves.getAllMoves().stream()
-                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack))
-                        .filter(attack -> moves.getTMMoves().contains(attack) && moves.getTRMoves().stream().map(ITechnicalMove::getAttack).collect(Collectors.toList()).contains(attack))
+                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack) && moves.getTMMoves().contains(attack) || moves.getTRMoves().stream().map(ITechnicalMove::getAttack).collect(Collectors.toList()).contains(attack))
                         .collect(Collectors.toList());
             }
 
             case "hm": {
                 return moves.getAllMoves().stream()
-                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack))
-                        .filter(attack -> moves.getHMMoves().contains(attack))
+                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack) && moves.getHMMoves().contains(attack))
                         .collect(Collectors.toList());
             }
 
             case "tutor": {
                 return moves.getAllMoves().stream()
-                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack))
-                        .filter(attack -> moves.getTutorMoves().contains(attack))
+                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack) && moves.getTutorMoves().contains(attack))
                         .collect(Collectors.toList());
             }
 
             case "transfer": {
                 return moves.getAllMoves().stream()
-                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack))
-                        .filter(attack -> moves.getTransferMoves().contains(attack))
+                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack) && moves.getTransferMoves().contains(attack))
                         .collect(Collectors.toList());
             }
 
             case "egg": {
                 return moves.getAllMoves().stream()
-                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack))
-                        .filter(attack -> moves.getEggMoves().contains(attack))
+                        .filter(attack -> !pokemon.getMoveset().hasAttack(attack) && moves.getEggMoves().contains(attack))
                         .collect(Collectors.toList());
             }
 

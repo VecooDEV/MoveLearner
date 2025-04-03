@@ -57,25 +57,17 @@ public class ButtonLore {
 
         lore.add(createFilterLine("All", filter.equals(PageFilter.ALL)));
 
-        if (config.isLevelMove()) {
-            lore.add(createFilterLine("Level", filter.equals(PageFilter.LEVEL)));
-        }
+        lore.add(createFilterLine("Level", filter.equals(PageFilter.LEVEL)));
 
-        if (config.isTmTrMove()) {
-            lore.add(createFilterLine("TM/TR", filter.equals(PageFilter.TMTR)));
-        }
+        lore.add(createFilterLine("TM/TR", filter.equals(PageFilter.TMTR)));
 
         if (config.isHmMove()) {
             lore.add(createFilterLine("HM", filter.equals(PageFilter.HM)));
         }
 
-        if (config.isTutorMove()) {
-            lore.add(createFilterLine("Tutor", filter.equals(PageFilter.TUTOR)));
-        }
+        lore.add(createFilterLine("Tutor", filter.equals(PageFilter.TUTOR)));
 
-        if (config.isTransferMove()) {
-            lore.add(createFilterLine("Transfer", filter.equals(PageFilter.TRANSFER)));
-        }
+        lore.add(createFilterLine("Transfer", filter.equals(PageFilter.TRANSFER)));
 
         if (config.isEggMove()) {
             lore.add(createFilterLine("Egg", filter.equals(PageFilter.EGG)));

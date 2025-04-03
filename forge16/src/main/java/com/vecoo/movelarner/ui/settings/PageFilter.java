@@ -1,6 +1,7 @@
 package com.vecoo.movelarner.ui.settings;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.vecoo.movelarner.MoveLearner;
 import com.vecoo.movelarner.ui.pages.SelectMovePage;
 import de.waterdu.atlantis.ui.api.AtlantisUI;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -27,7 +28,7 @@ public class PageFilter {
             }
 
             case "tmtr": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, HM));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isHmMove() ? HM : TUTOR));
                 break;
             }
 
@@ -42,7 +43,7 @@ public class PageFilter {
             }
 
             case "transfer": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, EGG));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isEggMove() ? EGG : ALL));
                 break;
             }
 
@@ -57,7 +58,7 @@ public class PageFilter {
     public static void changeFilterRight(ServerPlayerEntity player, String filter, Pokemon pokemon) {
         switch (filter) {
             case "all": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, EGG));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isEggMove() ? EGG : TRANSFER));
                 break;
             }
 
@@ -77,7 +78,7 @@ public class PageFilter {
             }
 
             case "tutor": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, HM));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isHmMove() ? HM : TMTR));
                 break;
             }
 

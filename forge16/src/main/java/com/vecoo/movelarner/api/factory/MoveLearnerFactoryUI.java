@@ -51,7 +51,7 @@ public class MoveLearnerFactoryUI {
             return;
         }
 
-        if (amountPrice > 0) {
+        if (amountPrice > 0 && !player.isCreative() && !player.hasPermissions(4)) {
             Utils.removeItems(player, itemStack, amountPrice);
         }
 
