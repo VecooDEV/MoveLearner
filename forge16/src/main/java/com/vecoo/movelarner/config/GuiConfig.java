@@ -22,7 +22,8 @@ public class GuiConfig extends AbstractYamlConfig {
     private String comingItem = "minecraft:paper:0";
     private String cancelItem = "minecraft:red_stained_glass_pane:0";
     private String informationItem = "minecraft:paper:0";
-    private String filterItem = "minecraft:hopper:0";
+    private String filterItem = "minecraft:hopper";
+    private String searchItem = "minecraft:compass";
 
     private String selectPokemonTitle = "Select pokemon";
     private String selectMoveTitle = "Select move";
@@ -43,6 +44,9 @@ public class GuiConfig extends AbstractYamlConfig {
     private String informationLore = "&fIn this menu you can select a Pokemon that will be equipped with any attack available to it of your choice.";
     private String filterName = "&fFilter";
     private String filterSymbol = "&7» ";
+    private String searchName = "&fSearch";
+    private String searchLore = "&fLeft click - search \nRight click - reset";
+    private String searchLoreDialogue = "Enter the first letters or the name of the attack to search. Search does not support translatable names.";
 
     public boolean isLocalizedNameMoves() {
         return this.localizedNameMoves;
@@ -102,6 +106,10 @@ public class GuiConfig extends AbstractYamlConfig {
 
     public String getFilterItem() {
         return this.filterItem;
+    }
+
+    public String getSearchItem() {
+        return this.searchItem;
     }
 
     public String getSelectPokemonTitle() {
@@ -179,5 +187,17 @@ public class GuiConfig extends AbstractYamlConfig {
 
     public String getFilterSymbol() {
         return this.filterSymbol;
+    }
+
+    public String getSearchName() {
+        return this.searchName;
+    }
+
+    public String getSearchLore() {
+        return this.searchLore;
+    }
+
+    public String getSearchLoreDialogue() {
+        return this.searchLoreDialogue;
     }
 }

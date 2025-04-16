@@ -18,37 +18,37 @@ public class PageFilter {
     public static void changeFilterLeft(ServerPlayerEntity player, String filter, Pokemon pokemon) {
         switch (filter) {
             case "all": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, LEVEL));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, LEVEL, ""));
                 break;
             }
 
             case "level": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, TMTR));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, TMTR, ""));
                 break;
             }
 
             case "tmtr": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isHmMove() ? HM : TUTOR));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isHmMove() ? HM : TUTOR, ""));
                 break;
             }
 
             case "hm": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, TUTOR));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, TUTOR, ""));
                 break;
             }
 
             case "tutor": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, TRANSFER));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, TRANSFER, ""));
                 break;
             }
 
             case "transfer": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isEggMove() ? EGG : ALL));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isEggMove() ? EGG : ALL, ""));
                 break;
             }
 
             case "egg": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, ALL));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, ALL, ""));
                 break;
             }
         }
@@ -58,37 +58,37 @@ public class PageFilter {
     public static void changeFilterRight(ServerPlayerEntity player, String filter, Pokemon pokemon) {
         switch (filter) {
             case "all": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isEggMove() ? EGG : TRANSFER));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isEggMove() ? EGG : TRANSFER, ""));
                 break;
             }
 
             case "level": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, ALL));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, ALL, ""));
                 break;
             }
 
             case "tmtr": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, LEVEL));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, LEVEL, ""));
                 break;
             }
 
             case "hm": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, TMTR));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, TMTR, ""));
                 break;
             }
 
             case "tutor": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isHmMove() ? HM : TMTR));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, MoveLearner.getInstance().getConfig().isHmMove() ? HM : TMTR, ""));
                 break;
             }
 
             case "transfer": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, TUTOR));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, TUTOR, ""));
                 break;
             }
 
             case "egg": {
-                AtlantisUI.open(player, new SelectMovePage(pokemon, TRANSFER));
+                AtlantisUI.open(player, new SelectMovePage(pokemon, TRANSFER, ""));
                 break;
             }
         }

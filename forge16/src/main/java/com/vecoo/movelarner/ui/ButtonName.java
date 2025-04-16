@@ -15,7 +15,7 @@ public class ButtonName {
 
         if (MoveLearner.getInstance().getGui().isLocalizedNameMoves() && !player.getLanguage().equals("en_us")) {
             name.append(TextUtils.asComponent(MoveLearner.getInstance().getGui().getLocalizedMoveName()
-                    .replace("%move%", attack.getLocalizedName())));
+                    .replace("%move%", attack.getAttackName())));
         }
 
         return name;

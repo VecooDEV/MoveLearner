@@ -1,10 +1,12 @@
 package com.vecoo.movelarner;
 
+import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.config.api.yaml.YamlConfigFactory;
 import com.vecoo.movelarner.command.LearnCommand;
 import com.vecoo.movelarner.config.GuiConfig;
 import com.vecoo.movelarner.config.LocaleConfig;
 import com.vecoo.movelarner.config.ServerConfig;
+import com.vecoo.movelarner.util.DialogueInputRegistry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -37,6 +39,7 @@ public class MoveLearner {
         this.loadConfig();
 
         MinecraftForge.EVENT_BUS.register(this);
+        Pixelmon.EVENT_BUS.register(DialogueInputRegistry.class);
     }
 
     @SubscribeEvent

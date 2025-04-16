@@ -47,7 +47,7 @@ public class AcceptPage implements Page {
                             .name(guiConfig.getCancelName())
                             .item(Utils.parsedItemStackCustomModel(guiConfig.getCancelItem()))
                             .index(i)
-                            .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, filter)))
+                            .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, filter, "")))
                             .build());
                     break;
                 }

@@ -57,10 +57,10 @@ public class MoveLearnerFactoryUI {
 
         if (moveset.size() >= 4) {
             LearnMoveController.sendLearnMove(player, pokemon.getUUID(), attack);
-            AtlantisUI.open(player, new SelectMovePage(pokemon, filter), true);
+            AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""), true);
         } else {
             moveset.add(new Attack(attack));
-            AtlantisUI.open(player, new SelectMovePage(pokemon, filter));
+            AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""));
         }
 
         if (amountPrice > 0) {

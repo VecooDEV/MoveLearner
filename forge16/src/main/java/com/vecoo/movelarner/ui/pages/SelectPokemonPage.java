@@ -54,7 +54,7 @@ public class SelectPokemonPage implements Page {
                         .directLore(ButtonLore.pokemonMoves(pokemon, player.entityDirect()))
                         .item(SpriteItemHelper.getPhoto(pokemon))
                         .index(i++)
-                        .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, PageFilter.ALL)))
+                        .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, PageFilter.ALL, "")))
                         .build());
             }
         }
