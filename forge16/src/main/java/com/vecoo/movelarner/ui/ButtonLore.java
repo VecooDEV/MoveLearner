@@ -4,6 +4,7 @@ import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.battles.attacks.Attack;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.movelarner.MoveLearner;
+import com.vecoo.movelarner.config.GuiConfig;
 import com.vecoo.movelarner.config.ServerConfig;
 import com.vecoo.movelarner.ui.settings.PageFilter;
 import com.vecoo.movelarner.util.Utils;
@@ -20,16 +21,17 @@ import java.util.List;
 public class ButtonLore {
     public static List<ITextComponent> pokemonMoves(Pokemon pokemon, ServerPlayerEntity player) {
         List<ITextComponent> lore = new ArrayList<>();
+        GuiConfig guiConfig = MoveLearner.getInstance().getGui();
 
-        lore.add(TextUtils.asComponent(MoveLearner.getInstance().getGui().getMovesLore()));
+        lore.add(TextUtils.asComponent(guiConfig.getMovesLore()));
 
-        boolean showLocalizedNames = MoveLearner.getInstance().getConfig().isLocalizedNameMoves() && !player.getLanguage().equals("en_us");
+        boolean showLocalizedNames = guiConfig.isLocalizedNameMoves() && !player.getLanguage().equals("en_us");
 
         for (Attack move : pokemon.getMoveset()) {
-            IFormattableTextComponent formattedText = TextUtils.asComponent(MoveLearner.getInstance().getGui().getMoveSymbol()).withStyle(Style.EMPTY.withItalic(false)).append(move.getMove().getTranslatedName()).withStyle(TextFormatting.WHITE);
+            IFormattableTextComponent formattedText = TextUtils.asComponent(guiConfig.getMoveSymbol()).withStyle(Style.EMPTY.withItalic(false)).append(move.getMove().getTranslatedName()).withStyle(TextFormatting.WHITE);
 
             if (showLocalizedNames) {
-                formattedText.append(TextUtils.asComponent(MoveLearner.getInstance().getGui().getLocalizedMoveLore()
+                formattedText.append(TextUtils.asComponent(guiConfig.getLocalizedMoveLore()
                         .replace("%move%", move.getMove().getLocalizedName())));
             }
 

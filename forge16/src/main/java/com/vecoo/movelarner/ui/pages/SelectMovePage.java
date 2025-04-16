@@ -87,9 +87,11 @@ public class SelectMovePage implements Page {
                 .nextPage()
                 .build());
 
-        IntStream.rangeClosed(45, 53)
-                .filter(slot -> slot != 45 && slot != 46 && slot != 49 && slot != 53)
-                .forEach(slot -> buttons.collect(new Decoration(fillerItem, slot)));
+        if (guiConfig.isFillerChoiceMovesUI()) {
+            IntStream.rangeClosed(45, 53)
+                    .filter(slot -> slot != 45 && slot != 46 && slot != 49 && slot != 53)
+                    .forEach(slot -> buttons.collect(new Decoration(fillerItem, slot)));
+        }
     }
 
     private Button.Builder createButton(int index, String name, String item) {

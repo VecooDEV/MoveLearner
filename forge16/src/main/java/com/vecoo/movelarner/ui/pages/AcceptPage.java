@@ -54,9 +54,8 @@ public class AcceptPage implements Page {
 
                 case 12: {
                     buttons.collect(Button.builder()
-                            .directName(ButtonName.pokemonName(pokemon))
-                            .directLore(ButtonLore.pokemonMoves(pokemon, player.entityDirect()))
-                            .item(SpriteItemHelper.getPhoto(pokemon))
+                            .directName(ButtonName.translatedTM(attack, player.entityDirect()))
+                            .item(itemStackTM)
                             .index(i)
                             .build());
                     break;
@@ -72,8 +71,9 @@ public class AcceptPage implements Page {
 
                 case 14: {
                     buttons.collect(Button.builder()
-                            .directName(ButtonName.translatedTM(attack, player.entityDirect()))
-                            .item(itemStackTM)
+                            .directName(ButtonName.pokemonName(pokemon))
+                            .directLore(ButtonLore.pokemonMoves(pokemon, player.entityDirect()))
+                            .item(SpriteItemHelper.getPhoto(pokemon))
                             .index(i)
                             .build());
                     break;
@@ -90,7 +90,9 @@ public class AcceptPage implements Page {
                 }
 
                 default: {
-                    buttons.collect(new Decoration(fillerItem, i));
+                    if (guiConfig.isFillerSureUI()) {
+                        buttons.collect(new Decoration(fillerItem, i));
+                    }
                     break;
                 }
             }

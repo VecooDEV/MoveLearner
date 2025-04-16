@@ -13,7 +13,7 @@ public class ButtonName {
     public static IFormattableTextComponent translatedTM(ImmutableAttack attack, ServerPlayerEntity player) {
         IFormattableTextComponent name = attack.getTranslatedName().withStyle(Style.EMPTY.withItalic(false));
 
-        if (MoveLearner.getInstance().getConfig().isLocalizedNameMoves() && !player.getLanguage().equals("en_us")) {
+        if (MoveLearner.getInstance().getGui().isLocalizedNameMoves() && !player.getLanguage().equals("en_us")) {
             name.append(TextUtils.asComponent(MoveLearner.getInstance().getGui().getLocalizedMoveName()
                     .replace("%move%", attack.getLocalizedName())));
         }
@@ -22,6 +22,12 @@ public class ButtonName {
     }
 
     public static ITextComponent pokemonName(Pokemon pokemon) {
-        return pokemon.getFormattedDisplayName().copy().withStyle(Style.EMPTY.withItalic(false)).append("(" + pokemon.getLocalizedName() + ")");
+        IFormattableTextComponent pokemonName = pokemon.getTranslatedName().withStyle(Style.EMPTY.withItalic(false));
+
+        if (!pokemon.isDefaultForm()) {
+            pokemonName.append("-").append(pokemon.getForm().getTranslatedName());
+        }
+
+        return pokemonName;
     }
 }

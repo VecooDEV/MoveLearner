@@ -7,6 +7,12 @@ import info.pixelmon.repack.org.spongepowered.objectmapping.ConfigSerializable;
 @ConfigPath("config/MoveLearner/gui.yml")
 @ConfigSerializable
 public class GuiConfig extends AbstractYamlConfig {
+    private boolean localizedNameMoves = true;
+    private boolean fillerChoicePokemonUI = true;
+    private boolean fillerChoiceMovesUI = true;
+    private boolean fillerSureUI = true;
+    private boolean informationUI = true;
+
     private String fillerItem = "minecraft:white_stained_glass_pane:0";
     private String emptyPokemonItem = "pixelmon:poke_ball";
     private String previousPageItem = "minecraft:arrow:0";
@@ -37,6 +43,26 @@ public class GuiConfig extends AbstractYamlConfig {
     private String informationLore = "&fIn this menu you can select a Pokemon that will be equipped with any attack available to it of your choice.";
     private String filterName = "&fFilter";
     private String filterSymbol = "&7» ";
+
+    public boolean isLocalizedNameMoves() {
+        return this.localizedNameMoves;
+    }
+
+    public boolean isFillerChoicePokemonUI() {
+        return this.fillerChoicePokemonUI;
+    }
+
+    public boolean isFillerChoiceMovesUI() {
+        return this.fillerChoiceMovesUI;
+    }
+
+    public boolean isFillerSureUI() {
+        return this.fillerSureUI;
+    }
+
+    public boolean isInformationUI() {
+        return this.informationUI;
+    }
 
     public String getFillerItem() {
         return this.fillerItem;

@@ -16,9 +16,6 @@ public class ServerConfig extends AbstractYamlConfig {
     private int tutorMovePrice = 16;
     private int transferMovePrice = 16;
     private int eggMovePrice = 32;
-    private boolean localizedNameMoves = true;
-    private boolean fillerUI = true;
-    private boolean informationUI = true;
 
     public String getItemPriceMove() {
         return this.itemPriceMove;
@@ -54,17 +51,5 @@ public class ServerConfig extends AbstractYamlConfig {
 
     public int getEggMovePrice() {
         return this.eggMovePrice;
-    }
-
-    public boolean isLocalizedNameMoves() {
-        return this.localizedNameMoves;
-    }
-
-    public boolean isFillerUI() {
-        return this.fillerUI;
-    }
-
-    public boolean isInformationUI() {
-        return this.informationUI;
     }
 }
