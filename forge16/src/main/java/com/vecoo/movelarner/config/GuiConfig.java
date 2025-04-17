@@ -45,7 +45,7 @@ public class GuiConfig extends AbstractYamlConfig {
     private String filterName = "&fFilter";
     private String filterSymbol = "&7» ";
     private String searchName = "&fSearch";
-    private String searchLore = "&fLeft click - search \nRight click - reset";
+    private String searchLore = "&fLeft click - search \n&fRight click - reset";
     private String searchLoreDialogue = "Enter the first letters or the name of the attack to search. Search does not support translatable names.";
 
     public boolean isLocalizedNameMoves() {

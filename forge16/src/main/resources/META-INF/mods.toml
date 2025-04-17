@@ -4,7 +4,7 @@ license = "All Rights Reserved"
 
 [[mods]]
 modId = "movelearner"
-version = "1.1.2"
+version = "1.1.3"
 displayName = "MoveLearner"
 logoFile ="logo.png"
 authors = "Vecoo"

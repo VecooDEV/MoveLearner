@@ -51,7 +51,7 @@ public class MoveLearnerFactoryUI {
             return;
         }
 
-        if (amountPrice > 0 && !player.isCreative() && !player.hasPermissions(4)) {
+        if (amountPrice > 0) {
             Utils.removeItems(player, itemStack, amountPrice);
         }
 
@@ -66,12 +66,12 @@ public class MoveLearnerFactoryUI {
         if (amountPrice > 0) {
             player.sendMessage(TextUtils.asComponent(localeConfig.getBuyAttack()
                     .replace("%attack%", attack.getAttackName())
-                    .replace("%pokemon%", pokemon.getFormattedDisplayName().getString())
+                    .replace("%pokemon%", pokemon.getLocalizedName())
                     .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
         } else {
             player.sendMessage(TextUtils.asComponent(localeConfig.getBuyAttackFree()
                     .replace("%attack%", attack.getAttackName())
-                    .replace("%pokemon%", pokemon.getFormattedDisplayName().getString())), Util.NIL_UUID);
+                    .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
         }
     }
 }
