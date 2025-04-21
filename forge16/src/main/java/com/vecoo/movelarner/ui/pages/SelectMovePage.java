@@ -93,13 +93,15 @@ public class SelectMovePage implements Page {
                 .lore(TextUtils.asComponent(MoveLearner.getInstance().getGui().getSearchLore()))
                 .clickAction(clickData -> {
                     if (clickData.clickState().button() == ClickState.MouseButton.RIGHT) {
-                        AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, filter, ""));
+                        if (!filter.isEmpty()) {
+                            AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, filter, ""));
+                        }
                     } else {
                         DialogueInputRegistry.builder()
                                 .title(TextUtils.asComponent(guiConfig.getSearchName()))
                                 .text(TextUtils.asComponent(guiConfig.getSearchLoreDialogue()))
                                 .closeHandler(closedScreen -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, filter, "")))
-                                .submitHandler(submitted -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, filter, submitted.getInput().toLowerCase())))
+                                .submitHandler(submitted -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, PageFilter.ALL, submitted.getInput().toLowerCase())))
                                 .open(clickData.entity());
                     }
                 })

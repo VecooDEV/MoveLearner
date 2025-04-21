@@ -22,12 +22,6 @@ public class ButtonName {
     }
 
     public static ITextComponent pokemonName(Pokemon pokemon) {
-        IFormattableTextComponent pokemonName = pokemon.getTranslatedName().withStyle(Style.EMPTY.withItalic(false));
-
-        if (!pokemon.isDefaultForm()) {
-            pokemonName.append("-").append(pokemon.getForm().getTranslatedName());
-        }
-
-        return pokemonName;
+        return pokemon.getTranslatedName().withStyle(Style.EMPTY.withItalic(false));
     }
 }

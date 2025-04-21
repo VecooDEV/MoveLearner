@@ -61,7 +61,7 @@ public class MoveLearner {
             this.locale = YamlConfigFactory.getInstance(LocaleConfig.class);
             this.gui = YamlConfigFactory.getInstance(GuiConfig.class);
         } catch (IOException e) {
-            LOGGER.error("[MoveLearner] Error load config.");
+            LOGGER.error("[MoveLearner] Error load config.", e);
         }
     }
 
