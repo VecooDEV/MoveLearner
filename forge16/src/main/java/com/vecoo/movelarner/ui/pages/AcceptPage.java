@@ -84,7 +84,13 @@ public class AcceptPage implements Page {
                             .name(guiConfig.getAcceptName())
                             .item(Utils.parsedItemStackCustomModel(guiConfig.getAcceptItem()))
                             .index(i)
-                            .clickAction(clickData -> MoveLearnerFactoryUI.learnMove(clickData.entity(), pokemon, attack, filter))
+                            .clickAction(clickData -> {
+                                if (MoveLearner.getInstance().getConfig().isUseCurrency()) {
+                                    MoveLearnerFactoryUI.learnMoveCurrency(clickData.entity(), pokemon, attack, filter);
+                                } else {
+                                    MoveLearnerFactoryUI.learnMoveItem(clickData.entity(), pokemon, attack, filter);
+                                }
+                            })
                             .build());
                     break;
                 }

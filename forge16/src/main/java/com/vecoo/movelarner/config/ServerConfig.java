@@ -7,6 +7,7 @@ import info.pixelmon.repack.org.spongepowered.objectmapping.ConfigSerializable;
 @ConfigPath("config/MoveLearner/config.yml")
 @ConfigSerializable
 public class ServerConfig extends AbstractYamlConfig {
+    private boolean useCurrency = false;
     private String itemPriceMove = "pixelmon:rare_candy";
     private boolean hmMove = true;
     private boolean eggMove = true;
@@ -16,6 +17,10 @@ public class ServerConfig extends AbstractYamlConfig {
     private int tutorMovePrice = 16;
     private int transferMovePrice = 16;
     private int eggMovePrice = 32;
+
+    public boolean isUseCurrency() {
+        return this.useCurrency;
+    }
 
     public String getItemPriceMove() {
         return this.itemPriceMove;

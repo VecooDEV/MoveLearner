@@ -5,6 +5,7 @@ import com.pixelmonmod.pixelmon.api.pokemon.species.moves.Moves;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.pixelmonmod.pixelmon.enums.technicalmoves.ITechnicalMove;
 import com.vecoo.movelarner.MoveLearner;
+import com.vecoo.movelarner.api.factory.MoveLearnerFactoryUI;
 import com.vecoo.movelarner.config.GuiConfig;
 import com.vecoo.movelarner.config.ServerConfig;
 import com.vecoo.movelarner.ui.ButtonLore;
@@ -67,7 +68,7 @@ public class SelectMovePage implements Page {
                     .lore(movePriceLore)
                     .index(i % 45)
                     .page(page)
-                    .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new AcceptPage(pokemon, attack, itemStackTM, filter)))
+                    .clickAction(clickData -> MoveLearnerFactoryUI.openPageAndCheck(clickData.entity(), pokemon, new AcceptPage(pokemon, attack, itemStackTM, filter)))
                     .build());
         }
 

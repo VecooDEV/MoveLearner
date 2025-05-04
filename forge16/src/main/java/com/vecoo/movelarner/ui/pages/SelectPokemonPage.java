@@ -4,6 +4,7 @@ import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.api.util.helpers.SpriteItemHelper;
 import com.vecoo.movelarner.MoveLearner;
+import com.vecoo.movelarner.api.factory.MoveLearnerFactoryUI;
 import com.vecoo.movelarner.config.GuiConfig;
 import com.vecoo.movelarner.ui.ButtonLore;
 import com.vecoo.movelarner.ui.ButtonName;
@@ -37,7 +38,9 @@ public class SelectPokemonPage implements Page {
 
         Pokemon[] party = StorageProxy.getParty(player.uuid()).getAll();
 
-        for (int i = 10, pokemonIndex = 0; pokemonIndex < party.length; pokemonIndex++) {
+        int i = 10;
+
+        for (int pokemonIndex = 0; pokemonIndex < party.length; pokemonIndex++) {
             if (i == 13 && guiConfig.isInformationUI()) {
                 buttons.collect(createButton(guiConfig.getInformationName(), guiConfig.getInformationLore(), guiConfig.getInformationItem(), i++));
                 pokemonIndex--;
@@ -54,7 +57,7 @@ public class SelectPokemonPage implements Page {
                         .directLore(ButtonLore.pokemonMoves(pokemon, player.entityDirect()))
                         .item(SpriteItemHelper.getPhoto(pokemon))
                         .index(i++)
-                        .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, PageFilter.ALL, "")))
+                        .clickAction(clickData -> MoveLearnerFactoryUI.openPageAndCheck(clickData.entity(), pokemon, new SelectMovePage(pokemon, PageFilter.ALL, "")))
                         .build());
             }
         }

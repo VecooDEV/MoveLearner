@@ -42,14 +42,16 @@ public class ButtonLore {
     }
 
     public static ITextComponent movePrice(Pokemon pokemon, ImmutableAttack attack) { //TODO: Power/PP attack.
-        int amount = Utils.movePrice(pokemon, attack);
+        int price = Utils.movePrice(pokemon, attack);
+        GuiConfig guiConfig = MoveLearner.getInstance().getGui();
 
-        if (amount <= 0) {
-            return TextUtils.asComponent(MoveLearner.getInstance().getGui().getPriceFreeLore());
+        if (price <= 0) {
+            return TextUtils.asComponent(guiConfig.getPriceFreeLore());
         }
 
-        return TextUtils.asComponent(MoveLearner.getInstance().getGui().getPriceLore()
-                .replace("%amount%", String.valueOf(Utils.movePrice(pokemon, attack))));
+        String lore = MoveLearner.getInstance().getConfig().isUseCurrency() ? guiConfig.getPriceCurrencyLore() : guiConfig.getPriceItemLore();
+
+        return TextUtils.asComponent(lore.replace("%amount%", String.valueOf(Utils.movePrice(pokemon, attack))));
     }
 
     public static List<ITextComponent> filter(String filter) {

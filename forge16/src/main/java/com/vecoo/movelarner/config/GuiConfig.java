@@ -38,7 +38,8 @@ public class GuiConfig extends AbstractYamlConfig {
     private String backName = "&cBack";
     private String acceptName = "&aAccept";
     private String cancelName = "&cCancel";
-    private String priceLore = "&fPrice: %amount% rare candy";
+    private String priceItemLore = "&fPrice: %amount% rare candy";
+    private String priceCurrencyLore = "&fPrice: %amount% currency";
     private String priceFreeLore = "&fPrice: free";
     private String informationName = "&fInformation:";
     private String informationLore = "&fIn this menu you can select a Pokemon that will be equipped with any attack available to it of your choice.";
@@ -160,13 +161,16 @@ public class GuiConfig extends AbstractYamlConfig {
         return this.acceptName;
     }
 
-
     public String getCancelName() {
         return this.cancelName;
     }
 
-    public String getPriceLore() {
-        return this.priceLore;
+    public String getPriceItemLore() {
+        return this.priceItemLore;
+    }
+
+    public String getPriceCurrencyLore() {
+        return this.priceCurrencyLore;
     }
 
     public String getPriceFreeLore() {
