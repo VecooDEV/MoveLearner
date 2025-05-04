@@ -11,11 +11,11 @@ public class LocaleConfig extends AbstractYamlConfig {
 
     private String openLearn = "&e(!) Learn menu opened %player%.";
     private String buyAttackItem = "&e(!) You buy %attack% to %pokemon% for x%amount% rare candy.";
-    private String buyAttackCurrency = "&e(!) You buy %attack% to %pokemon% for %amount% currency.";
+    private String buyAttackCurrency = "&e(!) You buy %attack% to %pokemon% for %amount% pokedollars.";
     private String buyAttackFree = "&e(!) You buy %attack% to %pokemon% for free.";
 
     private String notItems = "&c(!) You need x%amount% candy to attack.";
-    private String notCurrency = "&c(!) You need %amount% currency to attack.";
+    private String notCurrency = "&c(!) You need %amount% pokedollars to attack.";
     private String notPokemon = "&c(!) The pokemon %pokemon% you selected is not on your team.";
     private String alreadyAttack = "&c(!) The pokemon %pokemon% already %attack% attack.";
     private String notValidItem = "&c(!) The item specified in the configuration is incorrect or does not exist, please inform the administration about it.";
