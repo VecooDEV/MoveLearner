@@ -10,6 +10,7 @@ import com.vecoo.movelarner.config.GuiConfig;
 import com.vecoo.movelarner.config.ServerConfig;
 import com.vecoo.movelarner.ui.ButtonLore;
 import com.vecoo.movelarner.ui.ButtonName;
+import com.vecoo.movelarner.ui.Buttons;
 import com.vecoo.movelarner.ui.settings.PageFilter;
 import com.vecoo.movelarner.util.DialogueInputRegistry;
 import com.vecoo.movelarner.util.Utils;
@@ -56,7 +57,9 @@ public class SelectMovePage implements Page {
 
         int page = 0;
         for (int i = 0; i < availableAttacks.size(); i++) {
-            if (i > 0 && i % 45 == 0) page++;
+            if (i > 0 && i % 45 == 0) {
+                page++;
+            }
 
             ImmutableAttack attack = availableAttacks.get(i);
             ItemStack itemStackTM = Utils.getTM(attack);
@@ -72,14 +75,15 @@ public class SelectMovePage implements Page {
                     .build());
         }
 
-        ItemStack fillerItem = Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getGui().getFillerItem());
+        ItemStack fillerItem = Utils.parseItemCustomModel(MoveLearner.getInstance().getGui().getFillerItem());
+
         GuiConfig guiConfig = MoveLearner.getInstance().getGui();
 
-        buttons.collect(createButton(45, guiConfig.getPreviousPageName(), guiConfig.getPreviousPageItem())
+        buttons.collect(Buttons.createButton(45, guiConfig.getPreviousPageName(), guiConfig.getPreviousPageItem())
                 .prevPage()
                 .build());
 
-        buttons.collect(createButton(46, guiConfig.getFilterName(), guiConfig.getFilterItem())
+        buttons.collect(Buttons.createButton(46, guiConfig.getFilterName(), guiConfig.getFilterItem())
                 .lore(ButtonLore.filter(filter))
                 .clickAction(clickData -> {
                     if (clickData.clickState().button() == ClickState.MouseButton.RIGHT) {
@@ -90,7 +94,7 @@ public class SelectMovePage implements Page {
                 })
                 .build());
 
-        buttons.collect(createButton(47, guiConfig.getSearchName(), guiConfig.getSearchItem())
+        buttons.collect(Buttons.createButton(47, guiConfig.getSearchName(), guiConfig.getSearchItem())
                 .lore(TextUtils.asComponent(MoveLearner.getInstance().getGui().getSearchLore()))
                 .clickAction(clickData -> {
                     if (clickData.clickState().button() == ClickState.MouseButton.RIGHT) {
@@ -108,11 +112,11 @@ public class SelectMovePage implements Page {
                 })
                 .build());
 
-        buttons.collect(createButton(49, guiConfig.getBackName(), guiConfig.getBackItem())
+        buttons.collect(Buttons.createButton(49, guiConfig.getBackName(), guiConfig.getBackItem())
                 .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectPokemonPage()))
                 .build());
 
-        buttons.collect(createButton(53, guiConfig.getNextPageName(), guiConfig.getNextPageItem())
+        buttons.collect(Buttons.createButton(53, guiConfig.getNextPageName(), guiConfig.getNextPageItem())
                 .nextPage()
                 .build());
 
@@ -121,13 +125,6 @@ public class SelectMovePage implements Page {
                     .filter(slot -> slot != 49 && slot != 53)
                     .forEach(slot -> buttons.collect(new Decoration(fillerItem, slot)));
         }
-    }
-
-    private Button.Builder createButton(int index, String name, String item) {
-        return Button.builder()
-                .name(name)
-                .item(Utils.parsedItemStackCustomModel(item))
-                .index(index);
     }
 
     private List<ImmutableAttack> listAttack(Moves moves, String filter) {

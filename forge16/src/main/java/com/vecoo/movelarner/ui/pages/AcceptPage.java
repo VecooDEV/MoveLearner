@@ -38,70 +38,50 @@ public class AcceptPage implements Page {
     public void addButtons(PlayerReference player, ButtonCollector buttons) {
         GuiConfig guiConfig = MoveLearner.getInstance().getGui();
 
-        ItemStack fillerItem = Utils.parsedItemStackCustomModel(guiConfig.getFillerItem());
+        ItemStack fillerItem = Utils.parseItemCustomModel(guiConfig.getFillerItem());
 
-        for (int i = 0; i < 27; i++) {
-            switch (i) {
-                case 10: {
-                    buttons.collect(Button.builder()
-                            .name(guiConfig.getCancelName())
-                            .item(Utils.parsedItemStackCustomModel(guiConfig.getCancelItem()))
-                            .index(i)
-                            .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, filter, "")))
-                            .build());
-                    break;
-                }
-
-                case 12: {
-                    buttons.collect(Button.builder()
-                            .directName(ButtonName.translatedTM(attack, player.entityDirect()))
-                            .item(itemStackTM)
-                            .index(i)
-                            .build());
-                    break;
-                }
-
-                case 13: {
-                    buttons.collect(Button.builder()
-                            .item(Utils.parsedItemStackCustomModel(guiConfig.getComingItem()))
-                            .index(i)
-                            .build());
-                    break;
-                }
-
-                case 14: {
-                    buttons.collect(Button.builder()
-                            .directName(ButtonName.pokemonName(pokemon))
-                            .directLore(ButtonLore.pokemonMoves(pokemon, player.entityDirect()))
-                            .item(SpriteItemHelper.getPhoto(pokemon))
-                            .index(i)
-                            .build());
-                    break;
-                }
-
-                case 16: {
-                    buttons.collect(Button.builder()
-                            .name(guiConfig.getAcceptName())
-                            .item(Utils.parsedItemStackCustomModel(guiConfig.getAcceptItem()))
-                            .index(i)
-                            .clickAction(clickData -> {
-                                if (MoveLearner.getInstance().getConfig().isUseCurrency()) {
-                                    MoveLearnerFactoryUI.learnMoveCurrency(clickData.entity(), pokemon, attack, filter);
-                                } else {
-                                    MoveLearnerFactoryUI.learnMoveItem(clickData.entity(), pokemon, attack, filter);
-                                }
-                            })
-                            .build());
-                    break;
-                }
-
-                default: {
-                    if (guiConfig.isFillerSureUI()) {
-                        buttons.collect(new Decoration(fillerItem, i));
-                    }
-                    break;
-                }
+        if (guiConfig.isFillerSureUI()) {
+            for (int i = 0; i < 27; i++) {
+                buttons.collect(new Decoration(fillerItem, i));
             }
         }
+
+        buttons.collect(Button.builder()
+                .name(guiConfig.getCancelName())
+                .item(Utils.parseItemCustomModel(guiConfig.getCancelItem()))
+                .index(10)
+                .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectMovePage(pokemon, filter, "")))
+                .build());
+
+        buttons.collect(Button.builder()
+                .directName(ButtonName.translatedTM(attack, player.entityDirect()))
+                .item(itemStackTM)
+                .index(12)
+                .build());
+
+        buttons.collect(Button.builder()
+                .item(Utils.parseItemCustomModel(guiConfig.getComingItem()))
+                .index(13)
+                .build());
+
+        buttons.collect(Button.builder()
+                .directName(ButtonName.pokemonName(pokemon))
+                .directLore(ButtonLore.pokemonMoves(pokemon, player.entityDirect()))
+                .item(SpriteItemHelper.getPhoto(pokemon))
+                .index(14)
+                .build());
+
+        buttons.collect(Button.builder()
+                .name(guiConfig.getAcceptName())
+                .item(Utils.parseItemCustomModel(guiConfig.getAcceptItem()))
+                .index(16)
+                .clickAction(clickData -> {
+                    if (MoveLearner.getInstance().getConfig().isUseCurrency()) {
+                        MoveLearnerFactoryUI.learnMoveCurrency(clickData.entity(), pokemon, attack, filter);
+                    } else {
+                        MoveLearnerFactoryUI.learnMoveItem(clickData.entity(), pokemon, attack, filter);
+                    }
+                })
+                .build());
     }
 }

@@ -4,8 +4,8 @@ license = "All Rights Reserved"
 
 [[mods]]
 modId = "movelearner"
-version = "1.2.0"
-displayName = "MoveLearner"
+version = "${project_version}"
+displayName = "${project_name}"
 logoFile ="logo.png"
 authors = "Vecoo"
 description = "Sidemod for Pixelmon. Add move learn system."
@@ -35,5 +35,5 @@ side = "BOTH"
 modId = "atlantis"
 mandatory = true
 versionRange = "[6,)"
-ordering = "NONE"
+ordering = "AFTER"
 side = "SERVER"

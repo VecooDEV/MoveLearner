@@ -16,7 +16,7 @@ public class DialogueInputRegistry {
     private static final Map<UUID, Builder> REGISTERED_DIALOGUES = new ConcurrentHashMap<>();
 
     private DialogueInputRegistry() {
-        throw new UnsupportedOperationException("[MoveLearner] Invalid usage - this is a static registry");
+        throw new UnsupportedOperationException("[MoveLearner] Invalid usage this is a static registry");
     }
 
     private static void addDialogue(ServerPlayerEntity player, Builder builder) {

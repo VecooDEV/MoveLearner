@@ -21,6 +21,7 @@ import java.util.List;
 public class ButtonLore {
     public static List<ITextComponent> pokemonMoves(Pokemon pokemon, ServerPlayerEntity player) {
         List<ITextComponent> lore = new ArrayList<>();
+
         GuiConfig guiConfig = MoveLearner.getInstance().getGui();
 
         lore.add(TextUtils.asComponent(guiConfig.getMovesLore()));

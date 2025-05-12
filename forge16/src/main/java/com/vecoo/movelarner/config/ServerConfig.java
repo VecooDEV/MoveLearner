@@ -9,6 +9,7 @@ import info.pixelmon.repack.org.spongepowered.objectmapping.ConfigSerializable;
 public class ServerConfig extends AbstractYamlConfig {
     private boolean useCurrency = false;
     private String itemPriceMove = "pixelmon:rare_candy";
+    private boolean itemStrongTags = true;
     private boolean hmMove = true;
     private boolean eggMove = true;
     private int levelMovePrice = 16;
@@ -24,6 +25,10 @@ public class ServerConfig extends AbstractYamlConfig {
 
     public String getItemPriceMove() {
         return this.itemPriceMove;
+    }
+
+    public boolean isItemStrongTags() {
+        return this.    itemStrongTags;
     }
 
     public boolean isHmMove() {

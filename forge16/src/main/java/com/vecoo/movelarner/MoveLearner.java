@@ -50,6 +50,7 @@ public class MoveLearner {
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         this.server = event.getServer();
+
         PermissionAPI.registerNode("minecraft.command.learn", DefaultPermissionLevel.OP, "/learn");
         PermissionAPI.registerNode("minecraft.command.learn.open", DefaultPermissionLevel.OP, "/learn open <player>");
         PermissionAPI.registerNode("minecraft.command.learn.reload", DefaultPermissionLevel.OP, "/learn reload");

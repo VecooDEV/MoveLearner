@@ -24,6 +24,7 @@ public class MoveLearnerFactoryUI {
         if (StorageProxy.getParty(player.getUUID()).get(pokemon.getUUID()) == null) {
             player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getNotPokemon()
                     .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
+
             AtlantisUI.close(player);
             return;
         }
@@ -37,6 +38,7 @@ public class MoveLearnerFactoryUI {
         if (StorageProxy.getParty(player.getUUID()).get(pokemon.getUUID()) == null) {
             player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getNotPokemon()
                     .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
+
             AtlantisUI.close(player);
             return;
         }
@@ -47,11 +49,12 @@ public class MoveLearnerFactoryUI {
             player.sendMessage(TextUtils.asComponent(localeConfig.getAlreadyAttack()
                     .replace("%pokemon%", pokemon.getLocalizedName())
                     .replace("%attack%", attack.getAttackName())), Util.NIL_UUID);
+
             AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""));
             return;
         }
 
-        ItemStack itemStack = Utils.parsedItemStackCustomModel(MoveLearner.getInstance().getConfig().getItemPriceMove());
+        ItemStack itemStack = Utils.parseItemCustomModel(MoveLearner.getInstance().getConfig().getItemPriceMove());
 
         if (itemStack.isEmpty()) {
             player.sendMessage(TextUtils.asComponent(localeConfig.getNotValidItem()), Util.NIL_UUID);
@@ -61,15 +64,30 @@ public class MoveLearnerFactoryUI {
 
         int amountPrice = Utils.movePrice(pokemon, attack);
 
-        if (Utils.countItem(player, itemStack) < amountPrice) {
-            player.sendMessage(TextUtils.asComponent(localeConfig.getNotItems()
-                    .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
-            AtlantisUI.close(player);
-            return;
-        }
+        if (MoveLearner.getInstance().getConfig().isItemStrongTags()) {
+            if (Utils.countItemStack(player, itemStack) < amountPrice) {
+                player.sendMessage(TextUtils.asComponent(localeConfig.getNotItems()
+                        .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
 
-        if (amountPrice > 0) {
-            Utils.removeItems(player, itemStack, amountPrice);
+                AtlantisUI.close(player);
+                return;
+            }
+
+            if (amountPrice > 0) {
+                Utils.removeItemStack(player, itemStack, amountPrice);
+            }
+        } else {
+            if (Utils.countItemStackTag(player, itemStack, "CustomModelData") < amountPrice) {
+                player.sendMessage(TextUtils.asComponent(localeConfig.getNotItems()
+                        .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
+
+                AtlantisUI.close(player);
+                return;
+            }
+
+            if (amountPrice > 0) {
+                Utils.removeItemStackTag(player, itemStack, "CustomModelData", amountPrice);
+            }
         }
 
         if (moveset.size() >= 4) {

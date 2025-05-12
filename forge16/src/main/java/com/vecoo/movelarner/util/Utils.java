@@ -9,17 +9,16 @@ import com.pixelmonmod.pixelmon.enums.technicalmoves.ITechnicalMove;
 import com.pixelmonmod.pixelmon.items.TechnicalMoveItem;
 import com.vecoo.movelarner.MoveLearner;
 import de.waterdu.atlantis.util.item.ParsedItemStack;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Utils {
-    public static ItemStack parsedItemStackCustomModel(String id) {
-        String[] parts = id.split(":");
+    public static ItemStack parseItemCustomModel(String itemId) {
+        String[] parts = itemId.split(":");
 
         ItemStack itemStack = ParsedItemStack.of(parts[0] + ":" + parts[1]).stack();
 
@@ -31,7 +30,7 @@ public class Utils {
             try {
                 itemStack.getOrCreateTag().putInt("CustomModelData", Integer.parseInt(parts[2]));
             } catch (NumberFormatException e) {
-                MoveLearner.getLogger().error("[MoveLearner] Invalid CustomModelData value in item \"{}\".", id);
+                MoveLearner.getLogger().error("[MoveLearner] Invalid CustomModelData value in item: " + itemId);
             }
         }
 
@@ -165,39 +164,104 @@ public class Utils {
         return 0;
     }
 
-    public static int countItem(ServerPlayerEntity player, ItemStack itemStack) {
-        PlayerInventory inventory = player.inventory;
-        CompoundNBT nbt = itemStack.getTag();
+    public static int countItemStack(ServerPlayerEntity player, ItemStack searchItemStack) {
+        int count = 0;
 
-        return IntStream.range(0, inventory.getContainerSize())
-                .mapToObj(inventory::getItem)
-                .filter(stack -> stack.getItem() == itemStack.getItem())
-                .filter(stack -> nbt == null || nbt.equals(stack.getTag()))
-                .mapToInt(ItemStack::getCount)
-                .sum();
+        for (ItemStack itemStack : player.inventoryMenu.getItems()) {
+            if (itemStack.isEmpty() || itemStack.getItem() != searchItemStack.getItem() || !ItemStack.tagMatches(itemStack, searchItemStack)) {
+                continue;
+            }
+
+            count += itemStack.getCount();
+        }
+
+        return count;
     }
 
-    public static void removeItems(ServerPlayerEntity player, ItemStack itemStack, int amount) {
-        int totalRemoved = 0;
-        PlayerInventory inventory = player.inventory;
-        CompoundNBT targetTag = itemStack.getTag();
+    public static int countItemStackTag(ServerPlayerEntity player, ItemStack searchItemStack, String tag) {
+        int count = 0;
 
-        for (int i = inventory.getContainerSize() - 1; i >= 0 && totalRemoved < amount; i--) {
-            ItemStack stack = inventory.getItem(i);
-
-            if (stack.getItem() == itemStack.getItem()) {
-                if (targetTag == null || (stack.getTag() != null && stack.getTag().equals(targetTag))) {
-                    int toRemove = Math.min(stack.getCount(), amount - totalRemoved);
-
-                    stack.shrink(toRemove);
-                    totalRemoved += toRemove;
-
-                    if (stack.isEmpty()) {
-                        inventory.setItem(i, ItemStack.EMPTY);
-                    }
-                }
+        for (ItemStack itemStack : player.inventoryMenu.getItems()) {
+            if (itemStack.isEmpty() || itemStack.getItem() != searchItemStack.getItem()) {
+                continue;
             }
+
+            if (itemStack.getTag() == null && searchItemStack.getTag() == null) {
+                count += itemStack.getCount();
+                continue;
+            }
+
+            if (itemStack.getTag() == null || searchItemStack.getTag() == null) {
+                continue;
+            }
+
+            if (!Objects.equals(itemStack.getTag().get(tag), searchItemStack.getTag().get(tag))) {
+                continue;
+            }
+
+            count += itemStack.getCount();
         }
-        inventory.setChanged();
+
+        return count;
+    }
+
+    public static void removeItemStack(ServerPlayerEntity player, ItemStack removeItemStack, int amount) {
+        int totalRemoved = 0;
+
+        PlayerContainer playerContainer = player.inventoryMenu;
+
+        for (ItemStack itemStack : playerContainer.getItems()) {
+            if (totalRemoved >= amount) {
+                break;
+            }
+
+            if (itemStack.isEmpty() || itemStack.getItem() != removeItemStack.getItem() || !ItemStack.tagMatches(itemStack, removeItemStack)) {
+                continue;
+            }
+
+            int toRemove = Math.min(itemStack.getCount(), amount - totalRemoved);
+
+            itemStack.shrink(toRemove);
+            totalRemoved += toRemove;
+        }
+
+        playerContainer.broadcastChanges();
+    }
+
+    public static void removeItemStackTag(ServerPlayerEntity player, ItemStack removeItemStack, String tag, int amount) {
+        int totalRemoved = 0;
+
+        PlayerContainer playerContainer = player.inventoryMenu;
+
+        for (ItemStack itemStack : playerContainer.getItems()) {
+            if (totalRemoved >= amount) {
+                break;
+            }
+
+            if (itemStack.isEmpty() || itemStack.getItem() != removeItemStack.getItem()) {
+                continue;
+            }
+
+            int toRemove = Math.min(itemStack.getCount(), amount - totalRemoved);
+
+            if (itemStack.getTag() == null && removeItemStack.getTag() == null) {
+                itemStack.shrink(toRemove);
+                totalRemoved += toRemove;
+                continue;
+            }
+
+            if (itemStack.getTag() == null || removeItemStack.getTag() == null) {
+                continue;
+            }
+
+            if (!Objects.equals(itemStack.getTag().get(tag), removeItemStack.getTag().get(tag))) {
+                continue;
+            }
+
+            itemStack.shrink(toRemove);
+            totalRemoved += toRemove;
+        }
+
+        playerContainer.broadcastChanges();
     }
 }

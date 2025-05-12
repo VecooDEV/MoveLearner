@@ -8,6 +8,7 @@ import com.vecoo.movelarner.api.factory.MoveLearnerFactoryUI;
 import com.vecoo.movelarner.config.GuiConfig;
 import com.vecoo.movelarner.ui.ButtonLore;
 import com.vecoo.movelarner.ui.ButtonName;
+import com.vecoo.movelarner.ui.Buttons;
 import com.vecoo.movelarner.ui.settings.PageFilter;
 import com.vecoo.movelarner.util.Utils;
 import de.waterdu.atlantis.ui.api.*;
@@ -25,11 +26,10 @@ public class SelectPokemonPage implements Page {
 
     @Override
     public void addButtons(PlayerReference player, ButtonCollector buttons) {
-        MoveLearner instance = MoveLearner.getInstance();
-        GuiConfig guiConfig = instance.getGui();
+        GuiConfig guiConfig = MoveLearner.getInstance().getGui();
 
         if (guiConfig.isFillerChoicePokemonUI()) {
-            ItemStack fillerItem = Utils.parsedItemStackCustomModel(guiConfig.getFillerItem());
+            ItemStack fillerItem = Utils.parseItemCustomModel(guiConfig.getFillerItem());
 
             for (int i = 0; i < 27; i++) {
                 buttons.collect(new Decoration(fillerItem, i));
@@ -42,7 +42,11 @@ public class SelectPokemonPage implements Page {
 
         for (int pokemonIndex = 0; pokemonIndex < party.length; pokemonIndex++) {
             if (i == 13 && guiConfig.isInformationUI()) {
-                buttons.collect(createButton(guiConfig.getInformationName(), guiConfig.getInformationLore(), guiConfig.getInformationItem(), i++));
+                buttons.collect(Button.builder()
+                        .name(guiConfig.getInformationName())
+                        .lore(guiConfig.getInformationLore())
+                        .item(Utils.parseItemCustomModel(guiConfig.getInformationItem()))
+                        .index(i++));
                 pokemonIndex--;
                 continue;
             }
@@ -50,7 +54,7 @@ public class SelectPokemonPage implements Page {
             Pokemon pokemon = party[pokemonIndex];
 
             if (pokemon == null || pokemon.isEgg()) {
-                buttons.collect(createButton(guiConfig.getEmptyPokemonName(), null, guiConfig.getEmptyPokemonItem(), i++));
+                buttons.collect(Buttons.createButton(i++, guiConfig.getEmptyPokemonName(), guiConfig.getEmptyPokemonItem()));
             } else {
                 buttons.collect(Button.builder()
                         .directName(ButtonName.pokemonName(pokemon))
@@ -61,14 +65,5 @@ public class SelectPokemonPage implements Page {
                         .build());
             }
         }
-    }
-
-    private Button createButton(String name, String lore, String itemModel, int index) {
-        return Button.builder()
-                .name(name)
-                .lore(lore)
-                .item(Utils.parsedItemStackCustomModel(itemModel))
-                .index(index)
-                .build();
     }
 }

@@ -35,6 +35,7 @@ public class LearnCommand {
     private static int executeLearn(CommandSource source, ServerPlayerEntity player) {
         source.sendSuccess(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getOpenLearn()
                 .replace("%player%", player.getName().getString())), false);
+
         AtlantisUI.open(player, new SelectPokemonPage());
         return 1;
     }
