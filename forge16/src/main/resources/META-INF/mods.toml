@@ -35,5 +35,5 @@ side = "BOTH"
 modId = "atlantis"
 mandatory = true
 versionRange = "[6,)"
-ordering = "AFTER"
+ordering = "NONE"
 side = "SERVER"

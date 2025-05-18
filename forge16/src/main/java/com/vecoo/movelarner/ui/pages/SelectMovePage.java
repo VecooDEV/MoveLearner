@@ -76,7 +76,6 @@ public class SelectMovePage implements Page {
         }
 
         ItemStack fillerItem = Utils.parseItemCustomModel(MoveLearner.getInstance().getGui().getFillerItem());
-
         GuiConfig guiConfig = MoveLearner.getInstance().getGui();
 
         buttons.collect(Buttons.createButton(45, guiConfig.getPreviousPageName(), guiConfig.getPreviousPageItem())

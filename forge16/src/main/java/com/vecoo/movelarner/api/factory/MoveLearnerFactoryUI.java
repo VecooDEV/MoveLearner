@@ -9,6 +9,7 @@ import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.battles.attacks.Attack;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.movelarner.MoveLearner;
+import com.vecoo.movelarner.api.events.LearnEvent;
 import com.vecoo.movelarner.config.LocaleConfig;
 import com.vecoo.movelarner.ui.pages.SelectMovePage;
 import com.vecoo.movelarner.util.Utils;
@@ -18,6 +19,7 @@ import de.waterdu.atlantis.util.text.TextUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Util;
+import net.minecraftforge.common.MinecraftForge;
 
 public class MoveLearnerFactoryUI {
     public static void openPageAndCheck(ServerPlayerEntity player, Pokemon pokemon, Page page) {
@@ -69,7 +71,7 @@ public class MoveLearnerFactoryUI {
                 player.sendMessage(TextUtils.asComponent(localeConfig.getNotItems()
                         .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
 
-                AtlantisUI.close(player);
+                AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""));
                 return;
             }
 
@@ -89,6 +91,8 @@ public class MoveLearnerFactoryUI {
                 Utils.removeItemStackTag(player, itemStack, "CustomModelData", amountPrice);
             }
         }
+
+        MinecraftForge.EVENT_BUS.post(new LearnEvent.BuyItem(player, pokemon, attack, itemStack, amountPrice));
 
         if (moveset.size() >= 4) {
             LearnMoveController.sendLearnMove(player, pokemon.getUUID(), attack);
@@ -142,13 +146,16 @@ public class MoveLearnerFactoryUI {
         if (bankAccount.getBalance().intValue() < price) {
             player.sendMessage(TextUtils.asComponent(localeConfig.getNotCurrency()
                     .replace("%amount%", String.valueOf(price))), Util.NIL_UUID);
-            AtlantisUI.close(player);
+
+            AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""));
             return;
         }
 
         if (price > 0) {
             bankAccount.take(price);
         }
+
+        MinecraftForge.EVENT_BUS.post(new LearnEvent.BuyCurrency(player, pokemon, attack, price));
 
         if (moveset.size() >= 4) {
             LearnMoveController.sendLearnMove(player, pokemon.getUUID(), attack);

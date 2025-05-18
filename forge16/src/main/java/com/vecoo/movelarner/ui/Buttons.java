@@ -10,12 +10,4 @@ public class Buttons {
                 .item(Utils.parseItemCustomModel(itemId))
                 .index(index);
     }
-
-    public static Button.Builder createButton(int index, String name, String lore, String itemId) {
-        return Button.builder()
-                .name(name)
-                .lore(lore)
-                .item(Utils.parseItemCustomModel(itemId))
-                .index(index);
-    }
 }
