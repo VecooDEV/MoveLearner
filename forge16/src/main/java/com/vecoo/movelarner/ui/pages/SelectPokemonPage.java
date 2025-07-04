@@ -19,14 +19,14 @@ public class SelectPokemonPage implements Page {
     @Override
     public PageOptions getPageOptions(PlayerReference player) {
         return PageOptions.builder()
-                .title(MoveLearner.getInstance().getGui().getSelectPokemonTitle())
+                .title(MoveLearner.getInstance().getGuiConfig().getSelectPokemonTitle())
                 .rows(3)
                 .build();
     }
 
     @Override
     public void addButtons(PlayerReference player, ButtonCollector buttons) {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGui();
+        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         if (guiConfig.isFillerChoicePokemonUI()) {
             ItemStack fillerItem = Utils.parseItemCustomModel(guiConfig.getFillerItem());

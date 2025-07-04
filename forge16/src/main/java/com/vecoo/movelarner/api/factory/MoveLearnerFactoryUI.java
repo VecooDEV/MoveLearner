@@ -66,6 +66,35 @@ public class MoveLearnerFactoryUI {
 
         int amountPrice = Utils.movePrice(pokemon, attack);
 
+        if (MinecraftForge.EVENT_BUS.post(new LearnEvent.BuyItem(player, pokemon, attack, itemStack, amountPrice))) {
+            return;
+        }
+
+        buyItem(player, pokemon, itemStack, filter, amountPrice);
+
+        if (moveset.size() >= 4) {
+            LearnMoveController.sendLearnMove(player, pokemon.getUUID(), attack);
+            AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""), true);
+        } else {
+            moveset.add(new Attack(attack));
+            AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""));
+        }
+
+        if (amountPrice > 0) {
+            player.sendMessage(TextUtils.asComponent(localeConfig.getBuyAttackItem()
+                    .replace("%attack%", attack.getAttackName())
+                    .replace("%pokemon%", pokemon.getLocalizedName())
+                    .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
+        } else {
+            player.sendMessage(TextUtils.asComponent(localeConfig.getBuyAttackFree()
+                    .replace("%attack%", attack.getAttackName())
+                    .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
+        }
+    }
+
+    private static void buyItem(ServerPlayerEntity player, Pokemon pokemon, ItemStack itemStack, String filter, int amountPrice) {
+        LocaleConfig localeConfig = MoveLearner.getInstance().getLocale();
+
         if (MoveLearner.getInstance().getConfig().isItemStrongTags()) {
             if (Utils.countItemStack(player, itemStack) < amountPrice) {
                 player.sendMessage(TextUtils.asComponent(localeConfig.getNotItems()
@@ -91,27 +120,6 @@ public class MoveLearnerFactoryUI {
                 Utils.removeItemStackTag(player, itemStack, "CustomModelData", amountPrice);
             }
         }
-
-        MinecraftForge.EVENT_BUS.post(new LearnEvent.BuyItem(player, pokemon, attack, itemStack, amountPrice));
-
-        if (moveset.size() >= 4) {
-            LearnMoveController.sendLearnMove(player, pokemon.getUUID(), attack);
-            AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""), true);
-        } else {
-            moveset.add(new Attack(attack));
-            AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""));
-        }
-
-        if (amountPrice > 0) {
-            player.sendMessage(TextUtils.asComponent(localeConfig.getBuyAttackItem()
-                    .replace("%attack%", attack.getAttackName())
-                    .replace("%pokemon%", pokemon.getLocalizedName())
-                    .replace("%amount%", String.valueOf(amountPrice))), Util.NIL_UUID);
-        } else {
-            player.sendMessage(TextUtils.asComponent(localeConfig.getBuyAttackFree()
-                    .replace("%attack%", attack.getAttackName())
-                    .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
-        }
     }
 
     public static void learnMoveCurrency(ServerPlayerEntity player, Pokemon pokemon, ImmutableAttack attack, String filter) {
@@ -134,28 +142,13 @@ public class MoveLearnerFactoryUI {
             return;
         }
 
-        BankAccount bankAccount = BankAccountProxy.getBankAccountUnsafe(player.getUUID());
-
-        if (bankAccount == null) {
-            player.sendMessage(TextUtils.asComponent(localeConfig.getError()), Util.NIL_UUID);
-            return;
-        }
-
         int price = Utils.movePrice(pokemon, attack);
 
-        if (bankAccount.getBalance().intValue() < price) {
-            player.sendMessage(TextUtils.asComponent(localeConfig.getNotCurrency()
-                    .replace("%amount%", String.valueOf(price))), Util.NIL_UUID);
-
-            AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""));
+        if (MinecraftForge.EVENT_BUS.post(new LearnEvent.BuyCurrency(player, pokemon, attack, price))) {
             return;
         }
 
-        if (price > 0) {
-            bankAccount.take(price);
-        }
-
-        MinecraftForge.EVENT_BUS.post(new LearnEvent.BuyCurrency(player, pokemon, attack, price));
+        buyCurrency(player, pokemon, filter, price);
 
         if (moveset.size() >= 4) {
             LearnMoveController.sendLearnMove(player, pokemon.getUUID(), attack);
@@ -174,6 +167,30 @@ public class MoveLearnerFactoryUI {
             player.sendMessage(TextUtils.asComponent(localeConfig.getBuyAttackFree()
                     .replace("%attack%", attack.getAttackName())
                     .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
+        }
+    }
+
+    private static void buyCurrency(ServerPlayerEntity player, Pokemon pokemon, String filter, int price) {
+        LocaleConfig localeConfig = MoveLearner.getInstance().getLocale();
+
+
+        BankAccount bankAccount = BankAccountProxy.getBankAccountUnsafe(player.getUUID());
+
+        if (bankAccount == null) {
+            player.sendMessage(TextUtils.asComponent(localeConfig.getError()), Util.NIL_UUID);
+            return;
+        }
+        
+        if (bankAccount.getBalance().intValue() < price) {
+            player.sendMessage(TextUtils.asComponent(localeConfig.getNotCurrency()
+                    .replace("%amount%", String.valueOf(price))), Util.NIL_UUID);
+
+            AtlantisUI.open(player, new SelectMovePage(pokemon, filter, ""));
+            return;
+        }
+
+        if (price > 0) {
+            bankAccount.take(price);
         }
     }
 }

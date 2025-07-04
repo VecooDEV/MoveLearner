@@ -10,10 +10,7 @@ import com.vecoo.movelarner.ui.settings.PageFilter;
 import com.vecoo.movelarner.util.Utils;
 import de.waterdu.atlantis.util.text.TextUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +18,15 @@ import java.util.List;
 public class ButtonLore {
     public static List<ITextComponent> pokemonMoves(Pokemon pokemon, ServerPlayerEntity player) {
         List<ITextComponent> lore = new ArrayList<>();
-
-        GuiConfig guiConfig = MoveLearner.getInstance().getGui();
+        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         lore.add(TextUtils.asComponent(guiConfig.getMovesLore()));
 
         boolean showLocalizedNames = guiConfig.isLocalizedNameMoves() && !player.getLanguage().equals("en_us");
 
         for (Attack move : pokemon.getMoveset()) {
-            IFormattableTextComponent formattedText = TextUtils.asComponent(guiConfig.getMoveSymbol()).withStyle(Style.EMPTY.withItalic(false)).append(move.getMove().getTranslatedName()).withStyle(TextFormatting.WHITE);
+            IFormattableTextComponent formattedText = TextUtils.asComponent(guiConfig.getMoveSymbol()).withStyle(Style.EMPTY.withItalic(false))
+                    .append(move.getMove().getTranslatedName()).withStyle(TextFormatting.WHITE);
 
             if (showLocalizedNames) {
                 formattedText.append(TextUtils.asComponent(guiConfig.getLocalizedMoveLore()
@@ -42,17 +39,38 @@ public class ButtonLore {
         return lore;
     }
 
-    public static ITextComponent movePrice(Pokemon pokemon, ImmutableAttack attack) { //TODO: Power/PP attack.
+    public static List<ITextComponent> moveLore(Pokemon pokemon, ImmutableAttack attack) {
+        List<ITextComponent> lore = new ArrayList<>();
+        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
         int price = Utils.movePrice(pokemon, attack);
-        GuiConfig guiConfig = MoveLearner.getInstance().getGui();
 
-        if (price <= 0) {
-            return TextUtils.asComponent(guiConfig.getPriceFreeLore());
+        String category = attack.getAttackCategory().name();
+
+        if (category.equals("PHYSICAL")) {
+            category = " ⚔";
+        } else if (category.equals("SPECIAL")) {
+            category = " ⚡";
+        } else {
+            category = " \uD83E\uDDEA";
         }
 
-        String lore = MoveLearner.getInstance().getConfig().isUseCurrency() ? guiConfig.getPriceCurrencyLore() : guiConfig.getPriceItemLore();
+        lore.add(TextUtils.asComponent(guiConfig.getTypeLore())
+                .append(attack.getAttackType().getTranslatedName().withStyle(Style.EMPTY.withItalic(false)
+                        .withColor(Color.fromRgb(attack.getAttackType().getColor()))))
+                .append(category).withStyle(Style.EMPTY.withItalic(false).withColor(TextFormatting.WHITE)));
 
-        return TextUtils.asComponent(lore.replace("%amount%", String.valueOf(Utils.movePrice(pokemon, attack))));
+        lore.add(TextUtils.asComponent(guiConfig.getPowerLore().replace("%amount%", String.valueOf(attack.getBasePower()))));
+        lore.add(TextUtils.asComponent(guiConfig.getAccuracyLore().replace("%amount%", String.valueOf(attack.getAccuracy()))));
+        lore.add(TextUtils.asComponent(guiConfig.getPpLore().replace("%amount%", String.valueOf(attack.getPPBase())).replace("%maxAmount%", String.valueOf(attack.getPPMax()))));
+
+        if (price <= 0) {
+            lore.add(TextUtils.asComponent(guiConfig.getPriceFreeLore()));
+        } else {
+            String priceLore = (MoveLearner.getInstance().getConfig().isUseCurrency() ? guiConfig.getPriceCurrencyLore() : guiConfig.getPriceItemLore());
+            lore.add(TextUtils.asComponent(priceLore.replace("%amount%", String.valueOf(price))));
+        }
+
+        return lore;
     }
 
     public static List<ITextComponent> filter(String filter) {
@@ -82,6 +100,6 @@ public class ButtonLore {
     }
 
     private static ITextComponent createFilterLine(String text, boolean isActive) {
-        return TextUtils.asComponent(MoveLearner.getInstance().getGui().getFilterSymbol() + (isActive ? "&f" : "&7") + text);
+        return TextUtils.asComponent(MoveLearner.getInstance().getGuiConfig().getFilterSymbol() + (isActive ? "&f" : "&7") + text);
     }
 }

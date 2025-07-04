@@ -74,16 +74,16 @@ public class MoveLearner {
         return LOGGER;
     }
 
-    public GuiConfig getGui() {
-        return instance.gui;
-    }
-
     public ServerConfig getConfig() {
         return instance.config;
     }
 
     public LocaleConfig getLocale() {
         return instance.locale;
+    }
+
+    public GuiConfig getGuiConfig() {
+        return instance.gui;
     }
 
     public MinecraftServer getServer() {

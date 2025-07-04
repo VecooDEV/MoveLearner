@@ -4,8 +4,10 @@ import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
+@Cancelable
 public class LearnEvent extends Event {
     private final ServerPlayerEntity player;
     private final Pokemon pokemon;
@@ -29,6 +31,7 @@ public class LearnEvent extends Event {
         return this.attack;
     }
 
+    @Cancelable
     public static class BuyItem extends LearnEvent {
         private final ItemStack itemStack;
         private final int amount;
@@ -48,7 +51,7 @@ public class LearnEvent extends Event {
         }
     }
 
-
+    @Cancelable
     public static class BuyCurrency extends LearnEvent {
         private final int price;
 

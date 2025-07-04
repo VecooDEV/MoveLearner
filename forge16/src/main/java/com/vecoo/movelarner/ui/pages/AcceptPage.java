@@ -29,14 +29,14 @@ public class AcceptPage implements Page {
     @Override
     public PageOptions getPageOptions(PlayerReference player) {
         return PageOptions.builder()
-                .title(MoveLearner.getInstance().getGui().getAcceptTitle())
+                .title(MoveLearner.getInstance().getGuiConfig().getAcceptTitle())
                 .rows(3)
                 .build();
     }
 
     @Override
     public void addButtons(PlayerReference player, ButtonCollector buttons) {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGui();
+        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         ItemStack fillerItem = Utils.parseItemCustomModel(guiConfig.getFillerItem());
 

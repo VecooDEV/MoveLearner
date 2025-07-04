@@ -10,11 +10,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 
 public class ButtonName {
-    public static IFormattableTextComponent translatedTM(ImmutableAttack attack, ServerPlayerEntity player) {
+    public static ITextComponent translatedTM(ImmutableAttack attack, ServerPlayerEntity player) {
         IFormattableTextComponent name = attack.getTranslatedName().withStyle(Style.EMPTY.withItalic(false));
 
-        if (MoveLearner.getInstance().getGui().isLocalizedNameMoves() && !player.getLanguage().equals("en_us")) {
-            name.append(TextUtils.asComponent(MoveLearner.getInstance().getGui().getLocalizedMoveName()
+        if (MoveLearner.getInstance().getGuiConfig().isLocalizedNameMoves() && !player.getLanguage().equals("en_us")) {
+            name.append(TextUtils.asComponent(MoveLearner.getInstance().getGuiConfig().getLocalizedMoveName()
                     .replace("%move%", attack.getAttackName())));
         }
 

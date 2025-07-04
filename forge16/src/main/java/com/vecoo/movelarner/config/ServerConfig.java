@@ -28,7 +28,7 @@ public class ServerConfig extends AbstractYamlConfig {
     }
 
     public boolean isItemStrongTags() {
-        return this.    itemStrongTags;
+        return this.itemStrongTags;
     }
 
     public boolean isHmMove() {

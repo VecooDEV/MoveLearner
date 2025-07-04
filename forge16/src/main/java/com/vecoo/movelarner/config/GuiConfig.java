@@ -38,6 +38,10 @@ public class GuiConfig extends AbstractYamlConfig {
     private String backName = "&cBack";
     private String acceptName = "&aAccept";
     private String cancelName = "&cCancel";
+    private String typeLore = "&fType: ";
+    private String powerLore = "&fPower: %amount%";
+    private String accuracyLore = "&fAccuracy: %amount%";
+    private String ppLore = "&fPP: %amount% (%maxAmount%)";
     private String priceItemLore = "&fPrice: %amount% rare candy";
     private String priceCurrencyLore = "&fPrice: %amount% pokedollars";
     private String priceFreeLore = "&fPrice: free";
@@ -163,6 +167,22 @@ public class GuiConfig extends AbstractYamlConfig {
 
     public String getCancelName() {
         return this.cancelName;
+    }
+
+    public String getTypeLore() {
+        return this.typeLore;
+    }
+
+    public String getPowerLore() {
+        return this.powerLore;
+    }
+
+    public String getAccuracyLore() {
+        return this.accuracyLore;
+    }
+
+    public String getPpLore() {
+        return this.ppLore;
     }
 
     public String getPriceItemLore() {

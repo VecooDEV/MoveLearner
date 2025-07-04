@@ -18,6 +18,7 @@ import de.waterdu.atlantis.ui.api.*;
 import de.waterdu.atlantis.util.entity.PlayerReference;
 import de.waterdu.atlantis.util.text.TextUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class SelectMovePage implements Page {
     @Override
     public PageOptions getPageOptions(PlayerReference player) {
         return PageOptions.builder()
-                .title(MoveLearner.getInstance().getGui().getSelectMoveTitle())
+                .title(MoveLearner.getInstance().getGuiConfig().getSelectMoveTitle())
                 .rows(6)
                 .build();
     }
@@ -63,23 +64,30 @@ public class SelectMovePage implements Page {
 
             ImmutableAttack attack = availableAttacks.get(i);
             ItemStack itemStackTM = Utils.getTM(attack);
-            ITextComponent movePriceLore = ButtonLore.movePrice(pokemon, attack);
 
             buttons.collect(Button.builder()
                     .directName(ButtonName.translatedTM(attack, player.entityDirect()))
                     .item(itemStackTM)
-                    .lore(movePriceLore)
+                    .directLore(ButtonLore.moveLore(pokemon, attack))
                     .index(i % 45)
                     .page(page)
                     .clickAction(clickData -> MoveLearnerFactoryUI.openPageAndCheck(clickData.entity(), pokemon, new AcceptPage(pokemon, attack, itemStackTM, filter)))
                     .build());
         }
 
-        ItemStack fillerItem = Utils.parseItemCustomModel(MoveLearner.getInstance().getGui().getFillerItem());
-        GuiConfig guiConfig = MoveLearner.getInstance().getGui();
+        ItemStack fillerItem = Utils.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getFillerItem());
+        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         buttons.collect(Buttons.createButton(45, guiConfig.getPreviousPageName(), guiConfig.getPreviousPageItem())
                 .prevPage()
+                .build());
+
+        buttons.collect(Buttons.createButton(49, guiConfig.getBackName(), guiConfig.getBackItem())
+                .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectPokemonPage()))
+                .build());
+
+        buttons.collect(Buttons.createButton(53, guiConfig.getNextPageName(), guiConfig.getNextPageItem())
+                .nextPage()
                 .build());
 
         buttons.collect(Buttons.createButton(46, guiConfig.getFilterName(), guiConfig.getFilterItem())
@@ -94,7 +102,7 @@ public class SelectMovePage implements Page {
                 .build());
 
         buttons.collect(Buttons.createButton(47, guiConfig.getSearchName(), guiConfig.getSearchItem())
-                .lore(TextUtils.asComponent(MoveLearner.getInstance().getGui().getSearchLore()))
+                .lore(TextUtils.asComponent(MoveLearner.getInstance().getGuiConfig().getSearchLore()))
                 .clickAction(clickData -> {
                     if (clickData.clickState().button() == ClickState.MouseButton.RIGHT) {
                         if (!filter.isEmpty()) {
@@ -109,14 +117,6 @@ public class SelectMovePage implements Page {
                                 .open(clickData.entity());
                     }
                 })
-                .build());
-
-        buttons.collect(Buttons.createButton(49, guiConfig.getBackName(), guiConfig.getBackItem())
-                .clickAction(clickData -> AtlantisUI.open(clickData.entity(), new SelectPokemonPage()))
-                .build());
-
-        buttons.collect(Buttons.createButton(53, guiConfig.getNextPageName(), guiConfig.getNextPageItem())
-                .nextPage()
                 .build());
 
         if (guiConfig.isFillerChoiceMovesUI()) {
