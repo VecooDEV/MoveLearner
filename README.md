@@ -1,4 +1,4 @@
-![](https://i.imgur.com/ebPvACE.png)   
+![](https://i.imgur.com/LVgeKCu.png)   
 [![](https://i.imgur.com/B4evs2K.png)](https://discord.gg/VSGEVagRPq) [![](https://i.imgur.com/uquQMuU.png)](https://github.com/VecooDEV/MoveLearner/wiki) [![](https://i.imgur.com/eaHjYUQ.png)](https://www.patreon.com/Vecoo) [![](https://i.imgur.com/yPBPV5c.png)](https://ko-fi.com/vecoo)
 
 ![](https://i.imgur.com/7UrBh85.png)
