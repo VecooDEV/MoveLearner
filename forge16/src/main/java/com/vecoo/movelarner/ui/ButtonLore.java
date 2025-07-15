@@ -79,19 +79,13 @@ public class ButtonLore {
         ServerConfig config = MoveLearner.getInstance().getConfig();
 
         lore.add(createFilterLine("All", filter.equals(PageFilter.ALL)));
-
         lore.add(createFilterLine("Level", filter.equals(PageFilter.LEVEL)));
-
         lore.add(createFilterLine("TM/TR", filter.equals(PageFilter.TMTR)));
-
         if (config.isHmMove()) {
             lore.add(createFilterLine("HM", filter.equals(PageFilter.HM)));
         }
-
         lore.add(createFilterLine("Tutor", filter.equals(PageFilter.TUTOR)));
-
         lore.add(createFilterLine("Transfer", filter.equals(PageFilter.TRANSFER)));
-
         if (config.isEggMove()) {
             lore.add(createFilterLine("Egg", filter.equals(PageFilter.EGG)));
         }
