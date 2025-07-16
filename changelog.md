@@ -1,1 +1,1 @@
-* Fix locale amount price.
+* Change licence.
