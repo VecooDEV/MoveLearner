@@ -175,7 +175,7 @@ public class MoveLearnerFactoryUI {
         }
 
         if (bankAccount.getBalance().intValue() < price) {
-            sendNotItemsMessage(player, pokemon);
+            sendNotCurrencyMessage(player, pokemon);
             return false;
         }
 
@@ -191,7 +191,13 @@ public class MoveLearnerFactoryUI {
     }
 
     private static void sendNotItemsMessage(ServerPlayerEntity player, Pokemon pokemon) {
-        player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getNotPokemon()
+        player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getNotItems()
+                .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
+        AtlantisUI.close(player);
+    }
+
+    private static void sendNotCurrencyMessage(ServerPlayerEntity player, Pokemon pokemon) {
+        player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getNotCurrency()
                 .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
         AtlantisUI.close(player);
     }
