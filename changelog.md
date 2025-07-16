@@ -1,1 +1,1 @@
-* Change licence.
+* Change license.
