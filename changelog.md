@@ -1,1 +1,1 @@
-* Fix locale not items/currency.
+* Fix locale amount price.

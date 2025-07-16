@@ -91,7 +91,7 @@ public class MoveLearnerFactoryUI {
     private static boolean buyItem(ServerPlayerEntity player, Pokemon pokemon, ImmutableAttack attack, ItemStack itemStack, int amountPrice) {
         if (MoveLearner.getInstance().getConfig().isItemStrongTags()) {
             if (Utils.countItemStack(player, itemStack) < amountPrice) {
-                sendNotItemsMessage(player, pokemon);
+                sendNotItemsMessage(player, amountPrice);
                 return false;
             }
 
@@ -104,7 +104,7 @@ public class MoveLearnerFactoryUI {
             }
         } else {
             if (Utils.countItemStackTag(player, itemStack, "CustomModelData") < amountPrice) {
-                sendNotItemsMessage(player, pokemon);
+                sendNotItemsMessage(player, amountPrice);
                 return false;
             }
 
@@ -175,7 +175,7 @@ public class MoveLearnerFactoryUI {
         }
 
         if (bankAccount.getBalance().intValue() < price) {
-            sendNotCurrencyMessage(player, pokemon);
+            sendNotCurrencyMessage(player, price);
             return false;
         }
 
@@ -190,15 +190,15 @@ public class MoveLearnerFactoryUI {
         return true;
     }
 
-    private static void sendNotItemsMessage(ServerPlayerEntity player, Pokemon pokemon) {
+    private static void sendNotItemsMessage(ServerPlayerEntity player, int amount) {
         player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getNotItems()
-                .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
+                .replace("%amount%", String.valueOf(amount))), Util.NIL_UUID);
         AtlantisUI.close(player);
     }
 
-    private static void sendNotCurrencyMessage(ServerPlayerEntity player, Pokemon pokemon) {
+    private static void sendNotCurrencyMessage(ServerPlayerEntity player, int amount) {
         player.sendMessage(TextUtils.asComponent(MoveLearner.getInstance().getLocale().getNotCurrency()
-                .replace("%pokemon%", pokemon.getLocalizedName())), Util.NIL_UUID);
+                .replace("%amount%", String.valueOf(amount))), Util.NIL_UUID);
         AtlantisUI.close(player);
     }
 }
