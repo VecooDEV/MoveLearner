@@ -164,6 +164,14 @@ public class Utils {
         return 0;
     }
 
+    public static String formatAccuracyAttack(int accuracyAttack) {
+        if (accuracyAttack == -1) {
+            return "-";
+        }
+
+        return String.valueOf(accuracyAttack);
+    }
+
     public static int countItemStack(ServerPlayerEntity player, ItemStack searchItemStack) {
         int count = 0;
 

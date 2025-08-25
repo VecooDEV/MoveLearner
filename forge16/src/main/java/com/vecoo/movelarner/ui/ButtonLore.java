@@ -60,7 +60,7 @@ public class ButtonLore {
                 .append(category).withStyle(Style.EMPTY.withItalic(false).withColor(TextFormatting.WHITE)));
 
         lore.add(TextUtils.asComponent(guiConfig.getPowerLore().replace("%amount%", String.valueOf(attack.getBasePower()))));
-        lore.add(TextUtils.asComponent(guiConfig.getAccuracyLore().replace("%amount%", String.valueOf(attack.getAccuracy()))));
+        lore.add(TextUtils.asComponent(guiConfig.getAccuracyLore().replace("%amount%", Utils.formatAccuracyAttack(attack.getAccuracy()))));
         lore.add(TextUtils.asComponent(guiConfig.getPpLore().replace("%amount%", String.valueOf(attack.getPPBase())).replace("%maxAmount%", String.valueOf(attack.getPPMax()))));
 
         if (price <= 0) {
