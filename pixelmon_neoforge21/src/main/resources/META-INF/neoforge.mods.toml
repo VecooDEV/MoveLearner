@@ -1,0 +1,39 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+license = "MIT"
+
+[[mods]]
+modId = "movelearner"
+version = "${project_version}"
+displayName = "${project_name}"
+logoFile ="logo.png"
+authors = "Vecoo"
+description = "Sidemod for Pixelmon. Add move learn system."
+
+[[dependencies.movelearner]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.movelearner]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.movelearner]]
+modId = "pixelmon"
+type = "required"
+versionRange = "[9.3,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.movelearner]]
+modId = "extralib"
+type = "required"
+versionRange = "[1.8.8,)"
+ordering = "NONE"
+side = "BOTH"

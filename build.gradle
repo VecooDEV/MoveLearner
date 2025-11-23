@@ -11,7 +11,7 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven { url = "https://cursemaven.com" }
+        maven { url = "https://api.modrinth.com/maven" }
         ivy {
             setUrl('https://download.nodecdn.net/containers/reforged/server/release')
             metadataSources {
@@ -35,7 +35,6 @@ subprojects {
         }
 
         from(fileTree("build/libs") {
-            include '*Forge.jar'
             include '*NeoForge.jar'
         })
 

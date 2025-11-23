@@ -3,3 +3,7 @@
 /.idea/
 /.gradle/
 /build/
+/pixelmon_neoforge21/.gradle/
+/pixelmon_neoforge21/build/
+/pixelmon_neoforge21/runs/
+/cobblemon_neoforge21/build/
