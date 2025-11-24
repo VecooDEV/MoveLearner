@@ -23,7 +23,7 @@ public class Buttons {
     @NotNull
     public static GuiElementBuilder getFillerButton() {
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getFillerItem()))
-                .setName(UtilChat.formatMessage(""));
+                .setName(Component.empty());
     }
 
     @NotNull
@@ -112,7 +112,8 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getComingButton() {
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getComingItem()));
+        return new GuiElementBuilder(UtilItem.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getComingItem()))
+                .setName(Component.empty());
     }
 
     @NotNull

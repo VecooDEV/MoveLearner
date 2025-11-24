@@ -11,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class ButtonNames {
     @NotNull
-    public static Component getMoveName(@NotNull ImmutableAttack attack, @NotNull ServerPlayer player) {
+    public static Component getMoveName(@NotNull ImmutableAttack move, @NotNull ServerPlayer player) {
         GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
-        MutableComponent moveName = attack.getTranslatedName();
+        MutableComponent moveName = move.getTranslatedName();
 
         if (guiConfig.isLocalizedNameMoves() && !player.getLanguage().equals("en_us")) {
             moveName.append(UtilChat.formatMessage(guiConfig.getLocalizedMoveName()
-                    .replace("%move%", attack.getAttackName())));
+                    .replace("%move%", move.getAttackName())));
         }
 
         return moveName;

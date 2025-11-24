@@ -1,12 +1,12 @@
 plugins {
     id 'net.neoforged.moddev' version '2.0.119'
-    id "com.modrinth.minotaur" version "2.8.10"
-    id "org.jetbrains.kotlin.jvm" version "1.9.24" // если нужен Kotlin
+    id 'com.modrinth.minotaur' version '2.8.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.24'
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-version = "${project_version}-1.21.1-NeoForge"
+version = "${project_version}-1.21.1-Cobblemon-NeoForge"
 
 neoForge {
     version = "${neoforge_21}"
@@ -16,7 +16,7 @@ dependencies {
     compileOnly "maven.modrinth:cobblemon:1.7.0-neoforge,1.21.1"
     compileOnly "maven.modrinth:extralib:${extralib}-neoforge,1.21.1"
 
-    jarJar (compileOnly(fileTree(dir: 'libs', include: ['SGui-1.10.0-1.21.1.jar'])))
+    jarJar(compileOnly(fileTree(dir: 'libs', include: ["SGui-1.10.0-1.21.1-NeoForge.jar"])))
 }
 
 processResources {

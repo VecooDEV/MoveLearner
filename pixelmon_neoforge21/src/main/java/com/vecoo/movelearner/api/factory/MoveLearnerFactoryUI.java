@@ -150,7 +150,7 @@ public class MoveLearnerFactoryUI {
     }
 
     public static void learnMoveCurrency(@NotNull ServerPlayer player, @NotNull ImmutableAttack move, @NotNull Pokemon pokemon,
-                                     @NotNull MoveFilter filter, @NotNull String search, int price) {
+                                         @NotNull MoveFilter filter, @NotNull String search, int price) {
         learnMoveCurrency(player, new AcceptPage(player, move, pokemon, filter, search, price));
     }
 

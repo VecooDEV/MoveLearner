@@ -29,6 +29,7 @@ public class SelectPokemonPage extends SimpleGui {
 
         fillAllSlotsWithFiller();
         fillPokemonSlots();
+        addInformationButton();
     }
 
     private void fillPokemonSlots() {
@@ -41,8 +42,8 @@ public class SelectPokemonPage extends SimpleGui {
         int startSlot = 10;
 
         for (Pokemon pokemon : partyStorage.getAll()) {
-            if (GUI_CONFIG.isInformationUI() && startSlot == 13) {
-                setSlot(startSlot++, Buttons.getInformationButton());
+            if (startSlot == 13) {
+                startSlot++;
             }
 
             setSlot(startSlot++, getPokemonSlotButton(pokemon));
@@ -53,6 +54,12 @@ public class SelectPokemonPage extends SimpleGui {
         if (GUI_CONFIG.isFillerChoicePokemonUI()) {
             IntStream.rangeClosed(0, 26)
                     .forEach(i -> setSlot(i, Buttons.getFillerButton()));
+        }
+    }
+
+    private void addInformationButton() {
+        if (GUI_CONFIG.isInformationUI()) {
+            setSlot(13, Buttons.getInformationButton());
         }
     }
 

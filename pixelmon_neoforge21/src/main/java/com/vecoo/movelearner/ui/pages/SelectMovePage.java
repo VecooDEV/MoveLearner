@@ -18,6 +18,7 @@ import net.minecraft.world.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -182,27 +183,35 @@ public class SelectMovePage extends SimpleGui {
     }
 
     private void changeFilterDown(@NotNull MoveFilter filter) {
-        switch (filter) {
-            case ALL -> openPage(MoveFilter.LEVEL);
-            case LEVEL -> openPage(MoveFilter.TM_TR);
-            case TM_TR -> openPage(CONFIG.isHmMove() ? MoveFilter.HM : MoveFilter.TUTOR);
-            case HM -> openPage(MoveFilter.TUTOR);
-            case TUTOR -> openPage(MoveFilter.TRANSFER);
-            case TRANSFER -> openPage(CONFIG.isEggMove() ? MoveFilter.EGG : MoveFilter.ALL);
-            case EGG -> openPage(MoveFilter.ALL);
-        }
+        List<MoveFilter> order = getFilterList();
+        openPage(order.get((order.indexOf(filter) + 1) % order.size()));
     }
 
     private void changeFilterUp(@NotNull MoveFilter filter) {
-        switch (filter) {
-            case ALL -> openPage(CONFIG.isEggMove() ? MoveFilter.EGG : MoveFilter.TRANSFER);
-            case LEVEL -> openPage(MoveFilter.ALL);
-            case TM_TR -> openPage(MoveFilter.LEVEL);
-            case HM -> openPage(MoveFilter.TM_TR);
-            case TUTOR -> openPage(CONFIG.isHmMove() ? MoveFilter.HM : MoveFilter.TM_TR);
-            case TRANSFER -> openPage(MoveFilter.TUTOR);
-            case EGG -> openPage(MoveFilter.TRANSFER);
+        List<MoveFilter> order = getFilterList();
+        openPage(order.get((order.indexOf(filter) - 1 + order.size()) % order.size()));
+    }
+
+    @NotNull
+    private List<MoveFilter> getFilterList() {
+        List<MoveFilter> list = new ArrayList<>();
+
+        list.add(MoveFilter.ALL);
+        list.add(MoveFilter.LEVEL);
+        list.add(MoveFilter.TM_TR);
+
+        if (CONFIG.isHmMove()) {
+            list.add(MoveFilter.HM);
         }
+
+        list.add(MoveFilter.TUTOR);
+        list.add(MoveFilter.TRANSFER);
+
+        if (CONFIG.isEggMove()) {
+            list.add(MoveFilter.EGG);
+        }
+
+        return list;
     }
 
     @NotNull
@@ -211,15 +220,27 @@ public class SelectMovePage extends SimpleGui {
             case ALL -> moves.getAllMoves().stream()
                     .filter(move -> CONFIG.isHmMove() || !moves.getHMMoves().contains(move))
                     .filter(move -> CONFIG.isEggMove() || !moves.getEggMoves().contains(move))
+                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
-            case LEVEL -> moves.getAllLevelUpMoves();
-            case TM_TR -> Stream.concat(
-                    moves.getTMMoves().stream(),
-                    moves.getTRMoves().stream().map(ITechnicalMove::getAttack)).collect(Collectors.toSet());
-            case HM -> moves.getHMMoves();
-            case TUTOR -> moves.getTutorMoves();
-            case TRANSFER -> moves.getTransferMoves();
-            case EGG -> moves.getEggMoves();
+            case LEVEL -> moves.getAllLevelUpMoves().stream()
+                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .collect(Collectors.toSet());
+            case TM_TR -> Stream.concat(moves.getTMMoves().stream(),
+                            moves.getTRMoves().stream().map(ITechnicalMove::getAttack))
+                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .collect(Collectors.toSet());
+            case HM -> moves.getHMMoves().stream()
+                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .collect(Collectors.toSet());
+            case TUTOR -> moves.getTutorMoves().stream()
+                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .collect(Collectors.toSet());
+            case TRANSFER -> moves.getTransferMoves().stream()
+                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .collect(Collectors.toSet());
+            case EGG -> moves.getEggMoves().stream()
+                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .collect(Collectors.toSet());
         };
     }
 }

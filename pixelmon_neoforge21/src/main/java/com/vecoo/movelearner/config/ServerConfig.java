@@ -10,6 +10,7 @@ public class ServerConfig extends AbstractYamlConfig {
     private boolean useCurrency = false;
     private String itemPriceMove = "pixelmon:rare_candy";
     private boolean itemStrongTags = true;
+    private boolean hideAlreadyMove = false;
     private boolean hmMove = true;
     private boolean eggMove = true;
     private int levelMovePrice = 16;
@@ -29,6 +30,10 @@ public class ServerConfig extends AbstractYamlConfig {
 
     public boolean isItemStrongTags() {
         return this.itemStrongTags;
+    }
+
+    public boolean isHideAlreadyMove() {
+        return this.hideAlreadyMove;
     }
 
     public boolean isHmMove() {

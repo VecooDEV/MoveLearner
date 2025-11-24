@@ -1,9 +1,10 @@
 * Fix project packet name.
-* Port 1.21.1 NeoForge.
+* Port 1.21.1 NeoForge and Fabric.
 * Unsupported 1.16.5.
 * Improve logger.
-* Existing moves are no longer excluded from the list of available moves.
+* New setting in the config: will attacks be hidden if a Pokemon has them.
 * Refactoring code.
 * Improve change page.
+* Update depends.
 * Added annotations.
 * Fixes bugs.

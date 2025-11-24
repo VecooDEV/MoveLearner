@@ -8,7 +8,7 @@ version = "${project_version}"
 displayName = "${project_name}"
 logoFile ="logo.png"
 authors = "Vecoo"
-description = "Sidemod for Pixelmon. Add move learn system."
+description = "Sidemod for Pixelmon/Cobblemon. Add move learn system."
 
 [[dependencies.movelearner]]
 modId = "minecraft"

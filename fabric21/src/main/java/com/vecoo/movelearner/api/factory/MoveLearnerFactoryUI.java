@@ -10,7 +10,6 @@ import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.item.UtilItem;
 import com.vecoo.extralib.player.UtilPlayer;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.events.LearnEvent;
 import com.vecoo.movelearner.config.LocaleConfig;
 import com.vecoo.movelearner.ui.pages.AcceptPage;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
@@ -20,7 +19,6 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -105,18 +103,10 @@ public class MoveLearnerFactoryUI {
                 return false;
             }
 
-            if (NeoForge.EVENT_BUS.post(new LearnEvent.BuyItem(player, pokemon, move.create(), itemStack, amount)).isCanceled()) {
-                return false;
-            }
-
             UtilPlayer.removeItemStack(player, itemStack, amount);
         } else {
             if (UtilPlayer.countItemStackTag(player, itemStack, DataComponents.CUSTOM_MODEL_DATA) < amount) {
                 sendNotItemsMessage(player, amount);
-                return false;
-            }
-
-            if (NeoForge.EVENT_BUS.post(new LearnEvent.BuyItem(player, pokemon, move.create(), itemStack, amount)).isCanceled()) {
                 return false;
             }
 
