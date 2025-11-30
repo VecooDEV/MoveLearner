@@ -119,6 +119,5 @@ public class MoveLearnerFactoryUI {
     private static void sendNotItemsMessage(@NotNull ServerPlayer player, int amount) {
         player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocale().getNotItems()
                 .replace("%amount%", String.valueOf(amount))));
-        GuiHelpers.close(player);
     }
 }
