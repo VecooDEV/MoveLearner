@@ -1,1 +1,1 @@
-* [Fabric] Added new configuration "low permission" to use /learn command not has permission.
+* Remove close gui action.
