@@ -4,6 +4,7 @@ import com.vecoo.extralib.gson.UtilGson;
 import com.vecoo.movelearner.MoveLearner;
 
 public class ServerConfig {
+    private boolean lowPermission = true;
     private String itemPriceMove = "cobblemon:rare_candy";
     private boolean itemStrongTags = true;
     private boolean hideAlreadyMove = false;
@@ -16,6 +17,10 @@ public class ServerConfig {
     private int tutorMovePrice = 16;
     private int specialMovePrice = 16;
     private int eggMovePrice = 32;
+
+    public boolean isLowPermission() {
+        return this.lowPermission;
+    }
 
     public String getItemPriceMove() {
         return this.itemPriceMove;
@@ -73,6 +78,7 @@ public class ServerConfig {
         boolean completed = UtilGson.readFileAsync("/config/MoveLearner/", "config.json", el -> {
             ServerConfig config = UtilGson.newGson().fromJson(el, ServerConfig.class);
 
+            this.lowPermission = config.isLowPermission();
             this.itemPriceMove = config.getItemPriceMove();
             this.itemStrongTags = config.isItemStrongTags();
             this.hideAlreadyMove = config.isHideAlreadyMove();

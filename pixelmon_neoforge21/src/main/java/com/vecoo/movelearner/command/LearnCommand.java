@@ -29,7 +29,7 @@ public class LearnCommand {
     }
 
     private static int executeLearn(@NotNull ServerPlayer player) {
-        new SelectPokemonPage(player).reOpen();
+        new SelectPokemonPage(player).open();
         return 1;
     }
 

@@ -52,8 +52,8 @@ public class SelectMovePage extends SimpleGui {
         int start = (page - 1) * 45;
         int end = Math.min(start + 45, this.moves.size());
 
-        fillMoveSlots(this.moves.subList(start, end));
         fillAllSlotsWithFiller();
+        fillMoveSlots(this.moves.subList(start, end));
         addPreviousPageButton();
         addFilterButton();
         addSearchButton();

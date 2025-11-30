@@ -29,20 +29,20 @@ public class GuiConfig {
     private String moveSymbol = "&7» ";
     private String localizedMoveName = " &7(%move%)";
     private String localizedMoveLore = " &7(%move%)";
-    private String previousPageName = "&fPrevious page";
-    private String nextPageName = "&fNext page";
+    private String previousPageName = "Previous page";
+    private String nextPageName = "Next page";
     private String backName = "&cBack";
     private String acceptName = "&aAccept";
     private String cancelName = "&cCancel";
-    private String typeLore = "&fType: ";
-    private String powerLore = "&fPower: %amount%";
-    private String accuracyLore = "&fAccuracy: %amount%";
-    private String ppLore = "&fPP: %amount% (%maxAmount%)";
-    private String priceItemLore = "&fPrice: %amount% rare candy";
-    private String priceFreeLore = "&fPrice: free";
-    private String informationName = "&fInformation:";
-    private String informationLore = "&fIn this menu you can select a Pokemon that will be equipped with any move available to it of your choice.";
-    private String filterName = "&fFilter";
+    private String typeLore = "Type: ";
+    private String powerLore = "Power: %amount%";
+    private String accuracyLore = "Accuracy: %amount%";
+    private String ppLore = "PP: %amount% (%maxAmount%)";
+    private String priceItemLore = "Price: %amount% rare candy";
+    private String priceFreeLore = "Price: free";
+    private String informationName = "Information:";
+    private String informationLore = "In this menu you can select a Pokemon that will be equipped with any move available to it of your choice.";
+    private String filterName = "Filter";
     private String filterSymbol = "&7» ";
 
     public boolean isFillerChoicePokemonUI() {

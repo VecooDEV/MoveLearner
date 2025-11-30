@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class LearnCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection commandSelection) {
         dispatcher.register(Commands.literal("learn")
-                .requires(p -> UtilPermission.hasPermission(p, "minecraft.command.learn"))
+                .requires(p -> MoveLearner.getInstance().getConfig().isLowPermission() || UtilPermission.hasPermission(p, "minecraft.command.learn"))
                 .executes(e -> executeLearn(e.getSource().getPlayerOrException()))
 
                 .then(Commands.literal("open")
@@ -29,7 +29,7 @@ public class LearnCommand {
     }
 
     private static int executeLearn(@NotNull ServerPlayer player) {
-        new SelectPokemonPage(player).reOpen();
+        new SelectPokemonPage(player).open();
         return 1;
     }
 
