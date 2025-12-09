@@ -3,6 +3,7 @@ package com.vecoo.movelearner.ui.pages;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.extralib.chat.UtilChat;
+import com.vecoo.extralib.ui.api.elements.GuiElementBuilder;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.factory.MoveLearnerFactoryUI;
