@@ -6,11 +6,11 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.common.collect.Lists;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.item.UtilItem;
+import com.vecoo.extralib.ui.api.elements.GuiElementBuilder;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
-import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 

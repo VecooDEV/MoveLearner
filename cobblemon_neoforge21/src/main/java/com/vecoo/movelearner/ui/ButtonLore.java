@@ -50,9 +50,9 @@ public class ButtonLore {
 
         lore.add(typeLine);
         lore.add(UtilChat.formatMessage(guiConfig.getPowerLore()
-                .replace("%amount%", Utils.getStatMoveFormat(move.getPower()))));
+                .replace("%amount%", Utils.formatStatMove(move.getPower()))));
         lore.add(UtilChat.formatMessage(guiConfig.getAccuracyLore()
-                .replace("%amount%", Utils.getStatMoveFormat(move.getAccuracy()))));
+                .replace("%amount%", Utils.formatStatMove(move.getAccuracy()))));
         lore.add(UtilChat.formatMessage(guiConfig.getPpLore()
                 .replace("%amount%", String.valueOf(move.getPp()))
                 .replace("%maxAmount%", String.valueOf(move.getMaxPp()))));

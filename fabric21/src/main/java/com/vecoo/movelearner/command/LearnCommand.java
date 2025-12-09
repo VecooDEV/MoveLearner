@@ -36,7 +36,7 @@ public class LearnCommand {
     private static int executeLearnPlayer(@NotNull CommandSourceStack source, @NotNull ServerPlayer player) {
         new SelectPokemonPage(player).reOpen();
 
-        source.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocale().getOpenLearn()
+        source.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getOpenLearn()
                 .replace("%player%", player.getName().getString())));
         return 1;
     }
@@ -44,7 +44,7 @@ public class LearnCommand {
     private static int executeReload(@NotNull CommandSourceStack source) {
         MoveLearner.getInstance().loadConfig();
 
-        source.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocale().getReload()));
+        source.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getReload()));
         return 1;
     }
 }

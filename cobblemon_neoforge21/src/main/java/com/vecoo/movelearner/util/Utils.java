@@ -95,7 +95,7 @@ public class Utils {
     }
 
     @NotNull
-    public static String getStatMoveFormat(double stat) {
+    public static String formatStatMove(double stat) {
         if (stat <= 0) {
             return "-";
         }

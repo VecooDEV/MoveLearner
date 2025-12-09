@@ -18,8 +18,8 @@ public class MoveLearner implements ModInitializer {
     private static MoveLearner instance;
 
     private ServerConfig config;
-    private LocaleConfig locale;
-    private GuiConfig gui;
+    private LocaleConfig localeConfig;
+    private GuiConfig guiConfig;
 
     private MinecraftServer server;
 
@@ -37,10 +37,10 @@ public class MoveLearner implements ModInitializer {
         try {
             this.config = new ServerConfig();
             this.config.init();
-            this.locale = new LocaleConfig();
-            this.locale.init();
-            this.gui = new GuiConfig();
-            this.gui.init();
+            this.localeConfig = new LocaleConfig();
+            this.localeConfig.init();
+            this.guiConfig = new GuiConfig();
+            this.guiConfig.init();
         } catch (Exception e) {
             LOGGER.error("Error load config.", e);
         }
@@ -58,12 +58,12 @@ public class MoveLearner implements ModInitializer {
         return instance.config;
     }
 
-    public LocaleConfig getLocale() {
-        return instance.locale;
+    public LocaleConfig getLocaleConfig() {
+        return instance.localeConfig;
     }
 
     public GuiConfig getGuiConfig() {
-        return instance.gui;
+        return instance.guiConfig;
     }
 
     public MinecraftServer getServer() {

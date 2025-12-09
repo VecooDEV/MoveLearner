@@ -70,13 +70,13 @@ public class ServerConfig {
         return this.eggMovePrice;
     }
 
-    private void write() {
-        UtilGson.writeFileAsync("/config/MoveLearner/", "config.json", UtilGson.newGson().toJson(this)).join();
+    private void save() {
+        UtilGson.writeFileAsync("/config/MoveLearner/", "config.json", UtilGson.getGson().toJson(this)).join();
     }
 
     public void init() {
         boolean completed = UtilGson.readFileAsync("/config/MoveLearner/", "config.json", el -> {
-            ServerConfig config = UtilGson.newGson().fromJson(el, ServerConfig.class);
+            ServerConfig config = UtilGson.getGson().fromJson(el, ServerConfig.class);
 
             this.lowPermission = config.isLowPermission();
             this.itemPriceMove = config.getItemPriceMove();
@@ -95,7 +95,7 @@ public class ServerConfig {
 
         if (!completed) {
             MoveLearner.getLogger().error("Error init config, generating new config.");
-            write();
+            save();
         }
     }
 }

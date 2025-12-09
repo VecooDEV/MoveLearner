@@ -193,13 +193,13 @@ public class GuiConfig {
         return this.filterSymbol;
     }
 
-    private void write() {
-        UtilGson.writeFileAsync("/config/MoveLearner/", "gui.json", UtilGson.newGson().toJson(this)).join();
+    private void save() {
+        UtilGson.writeFileAsync("/config/MoveLearner/", "gui.json", UtilGson.getGson().toJson(this)).join();
     }
 
     public void init() {
         boolean completed = UtilGson.readFileAsync("/config/MoveLearner/", "gui.json", el -> {
-            GuiConfig config = UtilGson.newGson().fromJson(el, GuiConfig.class);
+            GuiConfig config = UtilGson.getGson().fromJson(el, GuiConfig.class);
 
             this.fillerChoicePokemonUI = config.isFillerChoicePokemonUI();
             this.fillerChoiceMovesUI = config.isFillerChoiceMovesUI();
@@ -242,7 +242,7 @@ public class GuiConfig {
 
         if (!completed) {
             MoveLearner.getLogger().error("Error init gui config, generating new gui config.");
-            write();
+            save();
         }
     }
 }

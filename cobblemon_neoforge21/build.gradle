@@ -1,5 +1,5 @@
 plugins {
-    id 'net.neoforged.moddev' version '2.0.119'
+    id 'net.neoforged.moddev' version '2.0.121'
     id 'com.modrinth.minotaur' version '2.8.10'
     id 'org.jetbrains.kotlin.jvm' version '1.9.24'
 }
@@ -13,10 +13,8 @@ neoForge {
 }
 
 dependencies {
-    compileOnly "maven.modrinth:cobblemon:1.7.0-neoforge,1.21.1"
+    compileOnly "maven.modrinth:cobblemon:${cobblemon_21}-neoforge,1.21.1"
     compileOnly "maven.modrinth:extralib:${extralib}-neoforge,1.21.1"
-
-    jarJar(compileOnly(fileTree(dir: 'libs', include: ["SGui-1.10.0-1.21.1-NeoForge.jar"])))
 }
 
 processResources {

@@ -16,11 +16,8 @@ dependencies {
     modCompileOnly "net.fabricmc:fabric-loader:${fabric_loader}"
     modCompileOnly "net.fabricmc.fabric-api:fabric-api:${fabric_api_21}"
     modCompileOnly "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin}"
-    modCompileOnly "maven.modrinth:cobblemon:1.7.0-fabric,1.21.1"
+    modCompileOnly "maven.modrinth:cobblemon:${cobblemon_21}-fabric,1.21.1"
     modCompileOnly "maven.modrinth:extralib:${extralib}-fabric,1.21.1"
-
-    modCompileOnly "ep.pb4:sgui:1.10.0-1.21.1"
-    include "ep.pb4:sgui:1.10.0-1.21.1"
 }
 
 processResources {

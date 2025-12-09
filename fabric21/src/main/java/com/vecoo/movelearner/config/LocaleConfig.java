@@ -46,13 +46,13 @@ public class LocaleConfig {
         return this.notValidItem;
     }
 
-    private void write() {
-        UtilGson.writeFileAsync("/config/MoveLearner/", "locale.json", UtilGson.newGson().toJson(this)).join();
+    private void save() {
+        UtilGson.writeFileAsync("/config/MoveLearner/", "locale.json", UtilGson.getGson().toJson(this)).join();
     }
 
     public void init() {
         boolean completed = UtilGson.readFileAsync("/config/MoveLearner/", "locale.json", el -> {
-            LocaleConfig config = UtilGson.newGson().fromJson(el, LocaleConfig.class);
+            LocaleConfig config = UtilGson.getGson().fromJson(el, LocaleConfig.class);
 
             this.reload = config.getReload();
             this.openLearn = config.getOpenLearn();
@@ -66,7 +66,7 @@ public class LocaleConfig {
 
         if (!completed) {
             MoveLearner.getLogger().error("Error init locale config, generating new locale config.");
-            write();
+            save();
         }
     }
 }

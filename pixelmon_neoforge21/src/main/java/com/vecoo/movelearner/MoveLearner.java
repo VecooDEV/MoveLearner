@@ -24,8 +24,8 @@ public class MoveLearner {
     private static MoveLearner instance;
 
     private ServerConfig config;
-    private LocaleConfig locale;
-    private GuiConfig gui;
+    private LocaleConfig localeConfig;
+    private GuiConfig guiConfig;
 
     private MinecraftServer server;
 
@@ -55,8 +55,8 @@ public class MoveLearner {
     public void loadConfig() {
         try {
             this.config = YamlConfigFactory.getInstance(ServerConfig.class);
-            this.locale = YamlConfigFactory.getInstance(LocaleConfig.class);
-            this.gui = YamlConfigFactory.getInstance(GuiConfig.class);
+            this.localeConfig = YamlConfigFactory.getInstance(LocaleConfig.class);
+            this.guiConfig = YamlConfigFactory.getInstance(GuiConfig.class);
         } catch (Exception e) {
             LOGGER.error("Error load config.", e);
         }
@@ -74,12 +74,12 @@ public class MoveLearner {
         return instance.config;
     }
 
-    public LocaleConfig getLocale() {
-        return instance.locale;
+    public LocaleConfig getLocaleConfig() {
+        return instance.localeConfig;
     }
 
     public GuiConfig getGuiConfig() {
-        return instance.gui;
+        return instance.guiConfig;
     }
 
     public MinecraftServer getServer() {

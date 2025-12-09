@@ -12,14 +12,14 @@ import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.item.UtilItem;
 import com.vecoo.extralib.player.UtilPlayer;
+import com.vecoo.extralib.ui.api.GuiHelpers;
+import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.events.LearnEvent;
 import com.vecoo.movelearner.config.LocaleConfig;
 import com.vecoo.movelearner.ui.pages.AcceptPage;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
-import eu.pb4.sgui.api.GuiHelpers;
-import eu.pb4.sgui.api.gui.SimpleGui;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +32,7 @@ public class MoveLearnerFactoryUI {
         PlayerPartyStorage partyStorage = StorageProxy.getPartyNow(player);
 
         if (partyStorage == null || pokemon == null || partyStorage.get(pokemon.getUUID()) == null) {
-            player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocale().getNotPokemon()));
+            player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getNotPokemon()));
             GuiHelpers.close(player);
             return;
         }
@@ -41,7 +41,7 @@ public class MoveLearnerFactoryUI {
     }
 
     public static void learnMoveItem(@NotNull ServerPlayer player, @NotNull AcceptPage page) {
-        LocaleConfig localeConfig = MoveLearner.getInstance().getLocale();
+        LocaleConfig localeConfig = MoveLearner.getInstance().getLocaleConfig();
         PlayerPartyStorage partyStorage = StorageProxy.getPartyNow(player);
         Pokemon pokemon = page.getPreviousPage().getPokemon();
 
@@ -102,7 +102,7 @@ public class MoveLearnerFactoryUI {
     }
 
     public static void learnMoveCurrency(@NotNull ServerPlayer player, @NotNull AcceptPage page) {
-        LocaleConfig localeConfig = MoveLearner.getInstance().getLocale();
+        LocaleConfig localeConfig = MoveLearner.getInstance().getLocaleConfig();
         PlayerPartyStorage partyStorage = StorageProxy.getPartyNow(player);
         Pokemon pokemon = page.getPreviousPage().getPokemon();
 
@@ -187,7 +187,7 @@ public class MoveLearnerFactoryUI {
         BankAccount bankAccount = BankAccountProxy.getBankAccountNow(player.getUUID());
 
         if (bankAccount == null) {
-            player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocale().getError()));
+            player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getError()));
             return false;
         }
 
@@ -204,12 +204,12 @@ public class MoveLearnerFactoryUI {
     }
 
     private static void sendNotItemsMessage(@NotNull ServerPlayer player, int amount) {
-        player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocale().getNotItems()
+        player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getNotItems()
                 .replace("%amount%", String.valueOf(amount))));
     }
 
     private static void sendNotCurrencyMessage(@NotNull ServerPlayer player, int amount) {
-        player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocale().getNotCurrency()
+        player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getNotCurrency()
                 .replace("%amount%", String.valueOf(amount))));
     }
 }

@@ -1,1 +1,1 @@
-* Remove close gui action.
+* SGui is no longer included in the mod's jar, it is now located as an ExtraLib library, which means the conflict problem is solved.
