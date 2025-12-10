@@ -1,5 +1,10 @@
-/release/
-/forge16/build/
 /.idea/
 /.gradle/
+/release/
+/forge16/build/
+/fabric21/build/
+/fabric21/.gradle/
+/fabric21/run/
+/pixelmon_neoforge21/build/
+/cobblemon_neoforge21/build/
 /build/
