@@ -2,11 +2,11 @@ pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        maven { url = "https://maven.fabricmc.net/" }
         maven { url = "https://maven.neoforged.net/releases" }
+        maven { url = "https://maven.fabricmc.net/" }
     }
 }
 
 rootProject.name = project_name
 
-include 'fabric21', 'pixelmon_neoforge21', 'cobblemon_neoforge21'
+include 'pixelmon_neoforge21', 'cobblemon_neoforge21', 'fabric21'

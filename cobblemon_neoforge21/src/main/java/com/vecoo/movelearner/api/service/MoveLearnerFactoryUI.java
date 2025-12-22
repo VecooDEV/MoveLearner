@@ -1,4 +1,4 @@
-package com.vecoo.movelearner.api.factory;
+package com.vecoo.movelearner.api.service;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.moves.BenchedMove;

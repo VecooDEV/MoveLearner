@@ -1,1 +1,6 @@
-* SGui is no longer included in the mod's jar, it is now located as an ExtraLib library, which means the conflict problem is solved.
+* Update depends.
+* Support impactor and custom currency.
+* Remove rarity item gui.
+* Changes configs.
+* Update config reload.
+* Improve code.

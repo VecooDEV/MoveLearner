@@ -1,16 +1,16 @@
 package com.vecoo.movelearner.ui.pages;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.elements.GuiElementBuilder;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.factory.MoveLearnerFactoryUI;
+import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
+import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +33,7 @@ public class SelectPokemonPage extends SimpleGui {
     }
 
     private void fillPokemonSlots() {
-        PlayerPartyStorage partyStorage = StorageProxy.getPartyNow(player);
+        val partyStorage = StorageProxy.getPartyNow(player);
 
         if (partyStorage == null) {
             return;
@@ -70,7 +70,7 @@ public class SelectPokemonPage extends SimpleGui {
         }
 
         return Buttons.getPokemonButton(pokemon, player)
-                .setCallback(() -> MoveLearnerFactoryUI.openPage(player, pokemon,
+                .setCallback(() -> MoveLearnerServiceUI.openPage(player, pokemon,
                         new SelectMovePage(player, pokemon, MoveFilter.ALL, "", 1)));
     }
 }

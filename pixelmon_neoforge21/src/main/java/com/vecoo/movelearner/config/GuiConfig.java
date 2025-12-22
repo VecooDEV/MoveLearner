@@ -1,12 +1,11 @@
 package com.vecoo.movelearner.config;
 
-import com.pixelmonmod.pixelmon.api.config.api.data.ConfigPath;
-import com.pixelmonmod.pixelmon.api.config.api.yaml.AbstractYamlConfig;
-import info.pixelmon.repack.org.spongepowered.objectmapping.ConfigSerializable;
+import com.vecoo.extralib.shade.spongepowered.configurate.objectmapping.ConfigSerializable;
+import lombok.Getter;
 
-@ConfigPath("config/MoveLearner/gui.yml")
+@Getter
 @ConfigSerializable
-public class GuiConfig extends AbstractYamlConfig {
+public class GuiConfig {
     private boolean localizedNameMoves = true;
     private boolean fillerChoicePokemonUI = true;
     private boolean fillerChoiceMovesUI = true;
@@ -43,8 +42,7 @@ public class GuiConfig extends AbstractYamlConfig {
     private String powerLore = "Power: %amount%";
     private String accuracyLore = "Accuracy: %amount%";
     private String ppLore = "PP: %amount% (%maxAmount%)";
-    private String priceItemLore = "Price: %amount% rare candy";
-    private String priceCurrencyLore = "Price: %amount% pokedollars";
+    private String priceLore = "Price: %amount% %currency%";
     private String priceFreeLore = "Price: free";
     private String informationName = "Information:";
     private String informationLore = "In this menu you can select a Pokemon that will be equipped with any move available to it of your choice.";
@@ -55,179 +53,8 @@ public class GuiConfig extends AbstractYamlConfig {
     private String searchAcceptDialogue = "Accept";
     private String searchLoreDialogue = "Enter the first letters or the name of the move to search. Search does not support translatable names.";
 
-    public boolean isLocalizedNameMoves() {
-        return this.localizedNameMoves;
-    }
-
-    public boolean isFillerChoicePokemonUI() {
-        return this.fillerChoicePokemonUI;
-    }
-
-    public boolean isFillerChoiceMovesUI() {
-        return this.fillerChoiceMovesUI;
-    }
-
-    public boolean isFillerSureUI() {
-        return this.fillerSureUI;
-    }
-
-    public boolean isInformationUI() {
-        return this.informationUI;
-    }
-
-    public String getFillerItem() {
-        return this.fillerItem;
-    }
-
-    public String getEmptyPokemonItem() {
-        return this.emptyPokemonItem;
-    }
-
-    public String getPreviousPageItem() {
-        return this.previousPageItem;
-    }
-
-    public String getNextPageItem() {
-        return this.nextPageItem;
-    }
-
-    public String getBackItem() {
-        return this.backItem;
-    }
-
-    public String getAcceptItem() {
-        return this.acceptItem;
-    }
-
-    public String getComingItem() {
-        return this.comingItem;
-    }
-
-    public String getCancelItem() {
-        return this.cancelItem;
-    }
-
-    public String getInformationItem() {
-        return this.informationItem;
-    }
-
-    public String getFilterItem() {
-        return this.filterItem;
-    }
-
-    public String getSearchItem() {
-        return this.searchItem;
-    }
-
-    public String getSelectPokemonTitle() {
-        return this.selectPokemonTitle;
-    }
-
-    public String getSelectMoveTitle() {
-        return this.selectMoveTitle;
-    }
-
-    public String getAcceptTitle() {
-        return this.acceptTitle;
-    }
-
-    public String getEmptyPokemonName() {
-        return this.emptyPokemonName;
-    }
-
-    public String getMovesLore() {
-        return this.movesLore;
-    }
-
-    public String getMoveSymbol() {
-        return this.moveSymbol;
-    }
-
-    public String getLocalizedMoveName() {
-        return this.localizedMoveName;
-    }
-
-    public String getLocalizedMoveLore() {
-        return this.localizedMoveLore;
-    }
-
-    public String getPreviousPageName() {
-        return this.previousPageName;
-    }
-
-    public String getNextPageName() {
-        return this.nextPageName;
-    }
-
-    public String getBackName() {
-        return this.backName;
-    }
-
-    public String getAcceptName() {
-        return this.acceptName;
-    }
-
-    public String getCancelName() {
-        return this.cancelName;
-    }
-
-    public String getTypeLore() {
-        return this.typeLore;
-    }
-
-    public String getPowerLore() {
-        return this.powerLore;
-    }
-
-    public String getAccuracyLore() {
-        return this.accuracyLore;
-    }
-
-    public String getPpLore() {
-        return this.ppLore;
-    }
-
-    public String getPriceItemLore() {
-        return this.priceItemLore;
-    }
-
-    public String getPriceCurrencyLore() {
-        return this.priceCurrencyLore;
-    }
-
-    public String getPriceFreeLore() {
-        return this.priceFreeLore;
-    }
-
-    public String getInformationName() {
-        return this.informationName;
-    }
-
-    public String getInformationLore() {
-        return this.informationLore;
-    }
-
-    public String getFilterName() {
-        return this.filterName;
-    }
-
-    public String getFilterSymbol() {
-        return this.filterSymbol;
-    }
-
-    public String getSearchName() {
-        return this.searchName;
-    }
-
-    public String getSearchLore() {
-        return this.searchLore;
-    }
-
-    public String getSearchAcceptDialogue() {
-        return this.searchAcceptDialogue;
-    }
-
-    public String getSearchLoreDialogue() {
-        return this.searchLoreDialogue;
-    }
+    private String itemCurrency = "rare candy";
+    private String pixelmonCurrency = "pokedollars";
+    private String impactorCurrency = "money";
+    private String customCurrency = "crystals";
 }

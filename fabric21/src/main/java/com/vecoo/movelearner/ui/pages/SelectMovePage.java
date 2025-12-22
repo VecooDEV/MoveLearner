@@ -6,7 +6,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.factory.MoveLearnerFactoryUI;
+import com.vecoo.movelearner.api.service.MoveLearnerFactoryUI;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.config.ServerConfig;
 import com.vecoo.movelearner.ui.Buttons;

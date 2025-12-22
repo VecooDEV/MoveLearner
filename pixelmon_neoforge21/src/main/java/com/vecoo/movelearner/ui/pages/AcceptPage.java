@@ -1,14 +1,13 @@
 package com.vecoo.movelearner.ui.pages;
 
-import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.factory.MoveLearnerFactoryUI;
+import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.ui.Buttons;
-import com.vecoo.movelearner.ui.settings.MoveFilter;
+import lombok.Getter;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
@@ -16,10 +15,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
+@Getter
 public class AcceptPage extends SimpleGui {
     private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
 
+    @NotNull
     private final ImmutableAttack move;
+    @NotNull
     private final SelectMovePage previousPage;
 
     public AcceptPage(@NotNull ServerPlayer player, @NotNull ImmutableAttack move, @NotNull SelectMovePage previousPage) {
@@ -38,21 +40,6 @@ public class AcceptPage extends SimpleGui {
         addAcceptButton();
     }
 
-    public AcceptPage(@NotNull ServerPlayer player, @NotNull ImmutableAttack move, @NotNull Pokemon pokemon,
-                      @NotNull MoveFilter filter, @NotNull String search, int page) {
-        this(player, move, new SelectMovePage(player, pokemon, filter, search, page));
-    }
-
-    @NotNull
-    public ImmutableAttack getMove() {
-        return this.move;
-    }
-
-    @NotNull
-    public SelectMovePage getPreviousPage() {
-        return this.previousPage;
-    }
-
     private void fillAllSlotsWithFiller() {
         if (GUI_CONFIG.isFillerSureUI()) {
             IntStream.rangeClosed(0, 26)
@@ -62,7 +49,7 @@ public class AcceptPage extends SimpleGui {
 
     private void addCancelButton() {
         setSlot(10, Buttons.getCancelButton()
-                .setCallback(() -> MoveLearnerFactoryUI.openPage(player, this.previousPage.getPokemon(), this.previousPage)));
+                .setCallback(() -> MoveLearnerServiceUI.openPage(player, this.previousPage.getPokemon(), this.previousPage)));
     }
 
     private void addMoveButton() {
@@ -74,17 +61,12 @@ public class AcceptPage extends SimpleGui {
     }
 
     private void addPokemonButton() {
-        setSlot(14, Buttons.getPokemonButton(Objects.requireNonNull(this.previousPage.getPokemon()), player));
+        setSlot(14, Buttons.getPokemonButton(this.previousPage.getPokemon(), player));
     }
 
     private void addAcceptButton() {
         setSlot(16, Buttons.getAcceptButton()
-                .setCallback(() -> {
-                    if (MoveLearner.getInstance().getConfig().isUseCurrency()) {
-                        MoveLearnerFactoryUI.learnMoveCurrency(player, this);
-                    } else {
-                        MoveLearnerFactoryUI.learnMoveItem(player, this);
-                    }
-                }));
+                .setCallback(() -> MoveLearnerServiceUI.learnMove(player, this.previousPage.getPokemon(), this.move,
+                        this.previousPage.getFilter(), this.previousPage.getSearch(), this.previousPage.getPage())));
     }
 }

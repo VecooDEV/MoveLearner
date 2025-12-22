@@ -5,12 +5,10 @@ import com.pixelmonmod.pixelmon.battles.attacks.Attack;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.config.GuiConfig;
-import com.vecoo.movelearner.config.ServerConfig;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
+import lombok.val;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,13 +18,13 @@ import java.util.List;
 public class ButtonLore {
     @NotNull
     public static List<Component> getPokemonMovesLore(@NotNull Pokemon pokemon, @NotNull ServerPlayer player) {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
         List<Component> lore = new ArrayList<>();
 
         lore.add(UtilChat.formatMessage(guiConfig.getMovesLore()));
 
         for (Attack move : pokemon.getMoveset()) {
-            MutableComponent moveLore = UtilChat.formatMessage(guiConfig.getMoveSymbol())
+            val moveLore = UtilChat.formatMessage(guiConfig.getMoveSymbol())
                     .copy()
                     .append(move.getMove().getTranslatedName());
 
@@ -43,13 +41,13 @@ public class ButtonLore {
 
     @NotNull
     public static List<Component> getMoveLore(@NotNull Pokemon pokemon, @NotNull ImmutableAttack move) {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
         List<Component> lore = new ArrayList<>();
 
-        Component type = move.getAttackType().value().name().copy()
+        val type = move.getAttackType().value().name().copy()
                 .withColor(move.getAttackType().value().color().getRGB());
 
-        Component typeLine = UtilChat.formatMessage(guiConfig.getTypeLore())
+        val typeLine = UtilChat.formatMessage(guiConfig.getTypeLore())
                 .copy()
                 .append(type)
                 .append(getCategoryIcon(move));
@@ -63,12 +61,26 @@ public class ButtonLore {
                 .replace("%amount%", String.valueOf(move.getPPBase()))
                 .replace("%maxAmount%", String.valueOf(move.getPPMax()))));
 
-        int price = Utils.getMovePrice(pokemon, move);
+        val price = Utils.getMovePrice(pokemon, move);
 
         if (price > 0) {
-            lore.add(UtilChat.formatMessage(MoveLearner.getInstance().getConfig().isUseCurrency() ? guiConfig.getPriceCurrencyLore()
-                    .replace("%amount%", String.valueOf(price)) : guiConfig.getPriceItemLore()
-                    .replace("%amount%", String.valueOf(price))));
+            switch (MoveLearner.getInstance().getServerConfig().getCurrencyType().toLowerCase()) {
+                case "item" -> lore.add(UtilChat.formatMessage(guiConfig.getPriceLore()
+                        .replace("%amount%", String.valueOf(price))
+                        .replace("%currency%", guiConfig.getItemCurrency())));
+
+                case "pixelmon" -> lore.add(UtilChat.formatMessage(guiConfig.getPriceLore()
+                        .replace("%amount%", String.valueOf(price))
+                        .replace("%currency%", guiConfig.getPixelmonCurrency())));
+
+                case "impactor" -> lore.add(UtilChat.formatMessage(guiConfig.getPriceLore()
+                        .replace("%amount%", String.valueOf(price))
+                        .replace("%currency%", guiConfig.getImpactorCurrency())));
+
+                default -> lore.add(UtilChat.formatMessage(guiConfig.getPriceLore()
+                        .replace("%amount%", String.valueOf(price))
+                        .replace("%currency%", guiConfig.getCustomCurrency())));
+            }
         } else {
             lore.add(UtilChat.formatMessage(guiConfig.getPriceFreeLore()));
         }
@@ -78,7 +90,7 @@ public class ButtonLore {
 
     @NotNull
     public static List<Component> getFilterLore(@NotNull MoveFilter filter) {
-        ServerConfig config = MoveLearner.getInstance().getConfig();
+        val serverConfig = MoveLearner.getInstance().getServerConfig();
 
         List<Component> lore = new ArrayList<>();
 
@@ -86,14 +98,14 @@ public class ButtonLore {
         lore.add(createFilterLine("Level", filter == MoveFilter.LEVEL));
         lore.add(createFilterLine("TM/TR", filter == MoveFilter.TM_TR));
 
-        if (config.isHmMove()) {
+        if (serverConfig.isHmMove()) {
             lore.add(createFilterLine("HM", filter == MoveFilter.HM));
         }
 
         lore.add(createFilterLine("Tutor", filter == MoveFilter.TUTOR));
         lore.add(createFilterLine("Transfer", filter == MoveFilter.TRANSFER));
 
-        if (config.isEggMove()) {
+        if (serverConfig.isEggMove()) {
             lore.add(createFilterLine("Egg", filter == MoveFilter.EGG));
         }
 

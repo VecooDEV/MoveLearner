@@ -1,23 +1,21 @@
 package com.vecoo.movelearner.util;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.api.pokemon.species.moves.Moves;
-import com.pixelmonmod.pixelmon.api.pokemon.type.Type;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.pixelmonmod.pixelmon.enums.TMType;
 import com.pixelmonmod.pixelmon.enums.technicalmoves.ITechnicalMove;
 import com.pixelmonmod.pixelmon.init.registry.ItemRegistration;
 import com.pixelmonmod.pixelmon.items.TechnicalMoveItem;
 import com.vecoo.movelearner.MoveLearner;
-import net.minecraft.resources.ResourceKey;
+import lombok.val;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class Utils {
     @NotNull
     public static ItemStack getItemTM(@NotNull ImmutableAttack move) {
-        ItemStack itemStack = ItemRegistration.TM8_BLANK.get().getDefaultInstance();
-        ResourceKey<Type> type = move.getAttackType().getKey();
+        var itemStack = ItemRegistration.TM8_BLANK.get().getDefaultInstance();
+        val type = move.getAttackType().getKey();
 
         if (type == null) {
             return itemStack;
@@ -48,30 +46,30 @@ public class Utils {
     }
 
     public static int getMovePrice(@NotNull Pokemon pokemon, @NotNull ImmutableAttack move) {
-        Moves moves = pokemon.getForm().getMoves();
+        val moves = pokemon.getForm().getMoves();
 
         if (moves.getAllLevelUpMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getLevelMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getLevelMovePrice();
         }
 
         if (moves.getTMMoves().contains(move) || moves.getTRMoves().stream().map(ITechnicalMove::getAttack).toList().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getTmTrMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getTmTrMovePrice();
         }
 
         if (moves.getHMMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getHmMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getHmMovePrice();
         }
 
         if (moves.getTutorMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getTutorMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getTutorMovePrice();
         }
 
         if (moves.getTransferMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getTransferMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getTransferMovePrice();
         }
 
         if (moves.getEggMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getEggMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getEggMovePrice();
         }
 
         return 0;

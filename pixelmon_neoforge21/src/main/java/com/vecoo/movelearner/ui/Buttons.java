@@ -23,7 +23,8 @@ public class Buttons {
     @NotNull
     public static GuiElementBuilder getFillerButton() {
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getFillerItem()))
-                .setName(Component.empty());
+                .setName(Component.empty())
+                .removeRarity();
     }
 
     @NotNull
@@ -32,14 +33,16 @@ public class Buttons {
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getInformationItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getInformationName()))
-                .setLore(Lists.newArrayList(UtilChat.formatMessage(guiConfig.getInformationLore())));
+                .setLore(Lists.newArrayList(UtilChat.formatMessage(guiConfig.getInformationLore())))
+                .removeRarity();
     }
 
     @NotNull
     public static GuiElementBuilder getPokemonButton(@NotNull Pokemon pokemon, @NotNull ServerPlayer player) {
         return new GuiElementBuilder(SpriteItemHelper.getPhoto(pokemon))
                 .setName(pokemon.getTranslatedName())
-                .setLore(ButtonLore.getPokemonMovesLore(pokemon, player));
+                .setLore(ButtonLore.getPokemonMovesLore(pokemon, player))
+                .removeRarity();
     }
 
     @NotNull
@@ -47,14 +50,16 @@ public class Buttons {
         GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getEmptyPokemonItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getEmptyPokemonName()));
+                .setName(UtilChat.formatMessage(guiConfig.getEmptyPokemonName()))
+                .removeRarity();
     }
 
     @NotNull
     public static GuiElementBuilder getMoveButton(@NotNull Pokemon pokemon, @NotNull ImmutableAttack move, @NotNull ServerPlayer player) {
         return new GuiElementBuilder(Utils.getItemTM(move))
                 .setName(ButtonNames.getMoveName(move, player))
-                .setLore(ButtonLore.getMoveLore(pokemon, move));
+                .setLore(ButtonLore.getMoveLore(pokemon, move))
+                .removeRarity();
     }
 
     @NotNull
@@ -62,7 +67,8 @@ public class Buttons {
         GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getPreviousPageItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getPreviousPageName()));
+                .setName(UtilChat.formatMessage(guiConfig.getPreviousPageName()))
+                .removeRarity();
     }
 
     @NotNull
@@ -70,7 +76,8 @@ public class Buttons {
         GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getNextPageItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getNextPageName()));
+                .setName(UtilChat.formatMessage(guiConfig.getNextPageName()))
+                .removeRarity();
     }
 
     @NotNull
@@ -79,7 +86,8 @@ public class Buttons {
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getFilterItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getFilterName()))
-                .setLore(ButtonLore.getFilterLore(filter));
+                .setLore(ButtonLore.getFilterLore(filter))
+                .removeRarity();
     }
 
     @NotNull
@@ -91,7 +99,8 @@ public class Buttons {
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getSearchItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getSearchName()))
-                .setLore(lore);
+                .setLore(lore)
+                .removeRarity();
     }
 
     @NotNull
@@ -99,7 +108,8 @@ public class Buttons {
         GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getBackItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getBackName()));
+                .setName(UtilChat.formatMessage(guiConfig.getBackName()))
+                .removeRarity();
     }
 
     @NotNull
@@ -107,13 +117,15 @@ public class Buttons {
         GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getCancelItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getCancelName()));
+                .setName(UtilChat.formatMessage(guiConfig.getCancelName()))
+                .removeRarity();
     }
 
     @NotNull
     public static GuiElementBuilder getComingButton() {
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getComingItem()))
-                .setName(Component.empty());
+                .setName(Component.empty())
+                .removeRarity();
     }
 
     @NotNull
@@ -121,14 +133,13 @@ public class Buttons {
         GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getAcceptItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getAcceptName()));
+                .setName(UtilChat.formatMessage(guiConfig.getAcceptName()))
+                .removeRarity();
     }
 
     @NotNull
     public static DialogueButton.Builder getDialogueAcceptButton() {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
-
         return DialogueButton.builder()
-                .text(UtilChat.formatMessage(guiConfig.getSearchAcceptDialogue()));
+                .text(UtilChat.formatMessage(MoveLearner.getInstance().getGuiConfig().getSearchAcceptDialogue()));
     }
 }

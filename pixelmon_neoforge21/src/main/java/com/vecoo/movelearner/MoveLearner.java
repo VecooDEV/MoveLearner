@@ -1,14 +1,20 @@
 package com.vecoo.movelearner;
 
 import com.mojang.logging.LogUtils;
-import com.pixelmonmod.pixelmon.api.config.api.yaml.YamlConfigFactory;
+import com.vecoo.extralib.config.YamlConfigFactory;
+import com.vecoo.movelearner.api.currency.CurrencyProviderRegistry;
+import com.vecoo.movelearner.api.currency.impl.ImpactorCurrencyProvider;
+import com.vecoo.movelearner.api.currency.impl.ItemCurrencyProvider;
+import com.vecoo.movelearner.api.currency.impl.PixelmonCurrencyProvider;
 import com.vecoo.movelearner.command.LearnCommand;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.config.LocaleConfig;
 import com.vecoo.movelearner.config.ServerConfig;
 import com.vecoo.movelearner.util.PermissionNodes;
+import lombok.Getter;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -16,14 +22,17 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.server.permission.events.PermissionGatherEvent;
 import org.slf4j.Logger;
 
+import java.nio.file.Path;
+
 @Mod(MoveLearner.MOD_ID)
 public class MoveLearner {
     public static final String MOD_ID = "movelearner";
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    @Getter
     private static MoveLearner instance;
 
-    private ServerConfig config;
+    private ServerConfig serverConfig;
     private LocaleConfig localeConfig;
     private GuiConfig guiConfig;
 
@@ -33,6 +42,7 @@ public class MoveLearner {
         instance = this;
 
         loadConfig();
+        loadCurrencies();
 
         NeoForge.EVENT_BUS.register(this);
     }
@@ -53,25 +63,26 @@ public class MoveLearner {
     }
 
     public void loadConfig() {
-        try {
-            this.config = YamlConfigFactory.getInstance(ServerConfig.class);
-            this.localeConfig = YamlConfigFactory.getInstance(LocaleConfig.class);
-            this.guiConfig = YamlConfigFactory.getInstance(GuiConfig.class);
-        } catch (Exception e) {
-            LOGGER.error("Error load config.", e);
-        }
+        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, Path.of("config/MoveLearner/config.yml"));
+        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, Path.of("config/MoveLearner/locale.yml"));
+        this.guiConfig = YamlConfigFactory.load(GuiConfig.class, Path.of("config/MoveLearner/gui.yml"));
     }
 
-    public static MoveLearner getInstance() {
-        return instance;
+    private void loadCurrencies() {
+        CurrencyProviderRegistry.register("item", ItemCurrencyProvider::new);
+        CurrencyProviderRegistry.register("pixelmon", PixelmonCurrencyProvider::new);
+
+        if (ModList.get().isLoaded("impactor")) {
+            CurrencyProviderRegistry.register("impactor", ImpactorCurrencyProvider::new);
+        }
     }
 
     public static Logger getLogger() {
         return LOGGER;
     }
 
-    public ServerConfig getConfig() {
-        return instance.config;
+    public ServerConfig getServerConfig() {
+        return instance.serverConfig;
     }
 
     public LocaleConfig getLocaleConfig() {
