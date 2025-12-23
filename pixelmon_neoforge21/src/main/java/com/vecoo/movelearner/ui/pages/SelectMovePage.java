@@ -14,6 +14,7 @@ import com.vecoo.movelearner.config.ServerConfig;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import lombok.Getter;
+import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
@@ -159,12 +160,12 @@ public class SelectMovePage extends SimpleGui {
     }
 
     private void changeFilterDown(@NotNull MoveFilter filter) {
-        List<MoveFilter> order = getFilterList();
+        val order = getFilterList();
         openPage(order.get((order.indexOf(filter) + 1) % order.size()));
     }
 
     private void changeFilterUp(@NotNull MoveFilter filter) {
-        List<MoveFilter> order = getFilterList();
+        val order = getFilterList();
         openPage(order.get((order.indexOf(filter) - 1 + order.size()) % order.size()));
     }
 

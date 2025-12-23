@@ -5,10 +5,11 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.service.MoveLearnerFactoryUI;
+import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
+import lombok.Getter;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
@@ -16,10 +17,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
+@Getter
 public class AcceptPage extends SimpleGui {
     private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
 
+    @NotNull
     private final MoveTemplate move;
+    @NotNull
     private final SelectMovePage previousPage;
 
     public AcceptPage(@NotNull ServerPlayer player, @NotNull MoveTemplate move, @NotNull SelectMovePage previousPage) {
@@ -43,16 +47,6 @@ public class AcceptPage extends SimpleGui {
         this(player, move, new SelectMovePage(player, pokemon, filter, search, page));
     }
 
-    @NotNull
-    public MoveTemplate getMove() {
-        return this.move;
-    }
-
-    @NotNull
-    public SelectMovePage getPreviousPage() {
-        return this.previousPage;
-    }
-
     private void fillAllSlotsWithFiller() {
         if (GUI_CONFIG.isFillerSureUI()) {
             IntStream.rangeClosed(0, 26)
@@ -62,7 +56,7 @@ public class AcceptPage extends SimpleGui {
 
     private void addCancelButton() {
         setSlot(10, Buttons.getCancelButton()
-                .setCallback(() -> MoveLearnerFactoryUI.openPage(player, this.previousPage.getPokemon(), this.previousPage)));
+                .setCallback(() -> MoveLearnerServiceUI.openPage(player, this.previousPage.getPokemon(), this.previousPage)));
     }
 
     private void addMoveButton() {
@@ -79,6 +73,7 @@ public class AcceptPage extends SimpleGui {
 
     private void addAcceptButton() {
         setSlot(16, Buttons.getAcceptButton()
-                .setCallback(() -> MoveLearnerFactoryUI.learnMoveItem(player, this)));
+                .setCallback(() -> MoveLearnerServiceUI.learnMove(player, this.previousPage.getPokemon(), this.move,
+                        this.previousPage.getFilter(), this.previousPage.getSearch(), this.previousPage.getPage())));
     }
 }

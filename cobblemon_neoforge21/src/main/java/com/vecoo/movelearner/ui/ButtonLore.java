@@ -5,10 +5,9 @@ import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.config.GuiConfig;
-import com.vecoo.movelearner.config.ServerConfig;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
+import lombok.val;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,7 @@ import java.util.List;
 public class ButtonLore {
     @NotNull
     public static List<Component> getPokemonMovesLore(@NotNull Pokemon pokemon) {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
         List<Component> lore = new ArrayList<>();
 
         lore.add(UtilChat.formatMessage(guiConfig.getMovesLore()));
@@ -37,13 +36,13 @@ public class ButtonLore {
 
     @NotNull
     public static List<Component> getMoveLore(@NotNull Pokemon pokemon, @NotNull MoveTemplate move) {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
         List<Component> lore = new ArrayList<>();
 
-        Component type = move.getElementalType().getDisplayName().copy()
+        val type = move.getElementalType().getDisplayName().copy()
                 .withColor(move.getElementalType().getHue());
 
-        Component typeLine = UtilChat.formatMessage(guiConfig.getTypeLore())
+        val typeLine = UtilChat.formatMessage(guiConfig.getTypeLore())
                 .copy()
                 .append(type)
                 .append(getCategoryIcon(move));
@@ -57,11 +56,22 @@ public class ButtonLore {
                 .replace("%amount%", String.valueOf(move.getPp()))
                 .replace("%maxAmount%", String.valueOf(move.getMaxPp()))));
 
-        int price = Utils.getMovePrice(pokemon, move);
+        val price = Utils.getMovePrice(pokemon, move);
 
         if (price > 0) {
-            lore.add(UtilChat.formatMessage(guiConfig.getPriceItemLore()
-                    .replace("%amount%", String.valueOf(price))));
+            switch (MoveLearner.getInstance().getServerConfig().getCurrencyType().toLowerCase()) {
+                case "item" -> lore.add(UtilChat.formatMessage(guiConfig.getPriceLore()
+                        .replace("%amount%", String.valueOf(price))
+                        .replace("%currency%", guiConfig.getItemCurrency())));
+
+                case "impactor" -> lore.add(UtilChat.formatMessage(guiConfig.getPriceLore()
+                        .replace("%amount%", String.valueOf(price))
+                        .replace("%currency%", guiConfig.getImpactorCurrency())));
+
+                default -> lore.add(UtilChat.formatMessage(guiConfig.getPriceLore()
+                        .replace("%amount%", String.valueOf(price))
+                        .replace("%currency%", guiConfig.getCustomCurrency())));
+            }
         } else {
             lore.add(UtilChat.formatMessage(guiConfig.getPriceFreeLore()));
         }
@@ -71,7 +81,7 @@ public class ButtonLore {
 
     @NotNull
     public static List<Component> getFilterLore(@NotNull MoveFilter filter) {
-        ServerConfig config = MoveLearner.getInstance().getConfig();
+        val serverConfig = MoveLearner.getInstance().getServerConfig();
 
         List<Component> lore = new ArrayList<>();
 
@@ -79,17 +89,17 @@ public class ButtonLore {
         lore.add(createFilterLine("Level", filter == MoveFilter.LEVEL));
         lore.add(createFilterLine("TM", filter == MoveFilter.TM));
 
-        if (config.isLegacyMove()) {
+        if (serverConfig.isLegacyMove()) {
             lore.add(createFilterLine("Legacy", filter == MoveFilter.LEGACY));
         }
 
         lore.add(createFilterLine("Tutor", filter == MoveFilter.TUTOR));
 
-        if (config.isSpecialMove()) {
+        if (serverConfig.isSpecialMove()) {
             lore.add(createFilterLine("Special", filter == MoveFilter.SPECIAL));
         }
 
-        if (config.isEggMove()) {
+        if (serverConfig.isEggMove()) {
             lore.add(createFilterLine("Egg", filter == MoveFilter.EGG));
         }
 

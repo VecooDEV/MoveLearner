@@ -5,6 +5,7 @@ import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.permission.UtilPermission;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.ui.pages.SelectPokemonPage;
+import lombok.val;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public class LearnCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection commandSelection) {
         dispatcher.register(Commands.literal("learn")
-                .requires(p -> MoveLearner.getInstance().getConfig().isLowPermission() || UtilPermission.hasPermission(p, "minecraft.command.learn"))
+                .requires(p -> MoveLearner.getInstance().getServerConfig().isLowPermission() || UtilPermission.hasPermission(p, "minecraft.command.learn"))
                 .executes(e -> executeLearn(e.getSource().getPlayerOrException()))
 
                 .then(Commands.literal("open")
@@ -42,9 +43,17 @@ public class LearnCommand {
     }
 
     private static int executeReload(@NotNull CommandSourceStack source) {
-        MoveLearner.getInstance().loadConfig();
+        val localeConfig = MoveLearner.getInstance().getLocaleConfig();
 
-        source.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getReload()));
+        try {
+            MoveLearner.getInstance().loadConfig();
+        } catch (Exception e) {
+            source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getErrorReload()));
+            MoveLearner.getLogger().error(e.getMessage());
+            return 0;
+        }
+
+        source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getReload()));
         return 1;
     }
 }

@@ -6,7 +6,7 @@ import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.elements.GuiElementBuilder;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.service.MoveLearnerFactoryUI;
+import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
@@ -46,7 +46,7 @@ public class SelectPokemonPage extends SimpleGui {
     private void fillAllSlotsWithFiller() {
         if (GUI_CONFIG.isFillerChoicePokemonUI()) {
             IntStream.rangeClosed(0, 26)
-                    .forEach(i -> setSlot(i, Buttons.getFillerButton()));
+                    .forEach(slot -> setSlot(slot, Buttons.getFillerButton()));
         }
     }
 
@@ -63,7 +63,7 @@ public class SelectPokemonPage extends SimpleGui {
         }
 
         return Buttons.getPokemonButton(pokemon)
-                .setCallback(() -> MoveLearnerFactoryUI.openPage(player, pokemon,
+                .setCallback(() -> MoveLearnerServiceUI.openPage(player, pokemon,
                         new SelectMovePage(player, pokemon, MoveFilter.ALL, "", 1)));
     }
 }

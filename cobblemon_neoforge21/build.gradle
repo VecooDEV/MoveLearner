@@ -14,6 +14,7 @@ neoForge {
 
 dependencies {
     compileOnly "maven.modrinth:cobblemon:${cobblemon_21}-neoforge,1.21.1"
+    compileOnly "maven.modrinth:impactor:${impactor_21}-Neoforge-neoforge,1.21.1"
     compileOnly "maven.modrinth:extralib:${extralib}-neoforge,1.21.1"
 }
 
@@ -46,6 +47,7 @@ modrinth {
     dependencies {
         required.project "cobblemon"
         required.project "extralib"
+        optional.project "impactor"
     }
 }
 

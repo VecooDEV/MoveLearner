@@ -1,23 +1,32 @@
 package com.vecoo.movelearner;
 
 import com.mojang.logging.LogUtils;
+import com.vecoo.extralib.config.YamlConfigFactory;
+import com.vecoo.movelearner.api.currency.CurrencyProviderRegistry;
+import com.vecoo.movelearner.api.currency.impl.ImpactorCurrencyProvider;
+import com.vecoo.movelearner.api.currency.impl.ItemCurrencyProvider;
 import com.vecoo.movelearner.command.LearnCommand;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.config.LocaleConfig;
 import com.vecoo.movelearner.config.ServerConfig;
+import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
+
+import java.nio.file.Path;
 
 public class MoveLearner implements ModInitializer {
     public static final String MOD_ID = "movelearner";
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    @Getter
     private static MoveLearner instance;
 
-    private ServerConfig config;
+    private ServerConfig serverConfig;
     private LocaleConfig localeConfig;
     private GuiConfig guiConfig;
 
@@ -34,28 +43,25 @@ public class MoveLearner implements ModInitializer {
     }
 
     public void loadConfig() {
-        try {
-            this.config = new ServerConfig();
-            this.config.init();
-            this.localeConfig = new LocaleConfig();
-            this.localeConfig.init();
-            this.guiConfig = new GuiConfig();
-            this.guiConfig.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load config.", e);
-        }
+        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, Path.of("config/MoveLearner/config.yml"));
+        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, Path.of("config/MoveLearner/locale.yml"));
+        this.guiConfig = YamlConfigFactory.load(GuiConfig.class, Path.of("config/MoveLearner/gui.yml"));
     }
 
-    public static MoveLearner getInstance() {
-        return instance;
+    private void loadCurrencies() {
+        CurrencyProviderRegistry.register("item", ItemCurrencyProvider::new);
+
+        if (FabricLoader.getInstance().isModLoaded("impactor")) {
+            CurrencyProviderRegistry.register("impactor", ImpactorCurrencyProvider::new);
+        }
     }
 
     public static Logger getLogger() {
         return LOGGER;
     }
 
-    public ServerConfig getConfig() {
-        return instance.config;
+    public ServerConfig getServerConfig() {
+        return instance.serverConfig;
     }
 
     public LocaleConfig getLocaleConfig() {

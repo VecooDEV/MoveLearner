@@ -9,9 +9,9 @@ import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.item.UtilItem;
 import com.vecoo.extralib.ui.api.elements.GuiElementBuilder;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
+import lombok.val;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +29,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getInformationButton() {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getInformationItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getInformationName()))
@@ -47,7 +47,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getEmptyPokemonButton() {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getEmptyPokemonItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getEmptyPokemonName()))
@@ -64,7 +64,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getPreviousPageButton() {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getPreviousPageItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getPreviousPageName()))
@@ -73,7 +73,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getNextPageButton() {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getNextPageItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getNextPageName()))
@@ -82,7 +82,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getFilterButton(@NotNull MoveFilter filter) {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getFilterItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getFilterName()))
@@ -92,7 +92,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getSearchButton() {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
         List<Component> lore = Arrays.stream(guiConfig.getSearchLore().split("\\\\n"))
                 .map(UtilChat::formatMessage)
                 .toList();
@@ -105,7 +105,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getBackButton() {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getBackItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getBackName()))
@@ -114,7 +114,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getCancelButton() {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getCancelItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getCancelName()))
@@ -130,7 +130,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getAcceptButton() {
-        GuiConfig guiConfig = MoveLearner.getInstance().getGuiConfig();
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getAcceptItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getAcceptName()))

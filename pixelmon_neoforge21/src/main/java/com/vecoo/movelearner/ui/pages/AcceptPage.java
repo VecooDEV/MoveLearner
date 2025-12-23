@@ -1,5 +1,6 @@
 package com.vecoo.movelearner.ui.pages;
 
+import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
@@ -7,6 +8,7 @@ import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.ui.Buttons;
+import com.vecoo.movelearner.ui.settings.MoveFilter;
 import lombok.Getter;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
@@ -38,6 +40,11 @@ public class AcceptPage extends SimpleGui {
         addComingButton();
         addPokemonButton();
         addAcceptButton();
+    }
+
+    public AcceptPage(@NotNull ServerPlayer player, @NotNull ImmutableAttack move, @NotNull Pokemon pokemon,
+                      @NotNull MoveFilter filter, @NotNull String search, int page) {
+        this(player, move, new SelectMovePage(player, pokemon, filter, search, page));
     }
 
     private void fillAllSlotsWithFiller() {

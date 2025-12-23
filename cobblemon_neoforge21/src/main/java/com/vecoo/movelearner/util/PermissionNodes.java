@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PermissionNodes {
-    public static final Set<PermissionNode<?>> PERMISSION_LIST = new HashSet<>();
+    private static final Set<PermissionNode<?>> PERMISSION_LIST = new HashSet<>();
 
     public static PermissionNode<Boolean> LEARN_COMMAND = UtilPermission.getPermissionNode("minecraft.command.learn");
     public static PermissionNode<Boolean> LEARN_OPEN_COMMAND = UtilPermission.getPermissionNode("minecraft.command.learn.open");

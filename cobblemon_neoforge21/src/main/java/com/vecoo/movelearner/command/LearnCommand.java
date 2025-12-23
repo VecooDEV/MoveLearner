@@ -6,6 +6,7 @@ import com.vecoo.extralib.permission.UtilPermission;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.ui.pages.SelectPokemonPage;
 import com.vecoo.movelearner.util.PermissionNodes;
+import lombok.val;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -42,9 +43,17 @@ public class LearnCommand {
     }
 
     private static int executeReload(@NotNull CommandSourceStack source) {
-        MoveLearner.getInstance().loadConfig();
+        val localeConfig = MoveLearner.getInstance().getLocaleConfig();
 
-        source.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getReload()));
+        try {
+            MoveLearner.getInstance().loadConfig();
+        } catch (Exception e) {
+            source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getErrorReload()));
+            MoveLearner.getLogger().error(e.getMessage());
+            return 0;
+        }
+
+        source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getReload()));
         return 1;
     }
 }

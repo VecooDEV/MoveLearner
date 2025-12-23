@@ -32,6 +32,13 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.movelearner]]
+modId = "impactor"
+type = "optional"
+versionRange = "[5,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.movelearner]]
 modId = "extralib"
 type = "required"
 versionRange = "[2.1.1,)"

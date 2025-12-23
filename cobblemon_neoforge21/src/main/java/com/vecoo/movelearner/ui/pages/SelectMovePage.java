@@ -6,16 +6,17 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.service.MoveLearnerFactoryUI;
+import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
 import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.config.ServerConfig;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
+import lombok.Getter;
+import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +24,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Getter
 public class SelectMovePage extends SimpleGui {
-    private final ServerConfig CONFIG = MoveLearner.getInstance().getConfig();
+    private final ServerConfig CONFIG = MoveLearner.getInstance().getServerConfig();
     private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
 
     private final Pokemon pokemon;
+    @NotNull
     private final MoveFilter filter;
+    @NotNull
     private final String search;
+    @NotNull
     private final List<MoveTemplate> moves;
     private final int page;
     private final int totalPages;
@@ -59,48 +64,20 @@ public class SelectMovePage extends SimpleGui {
         addNextPageButton();
     }
 
-    @Nullable
-    public Pokemon getPokemon() {
-        return this.pokemon;
-    }
-
-    @NotNull
-    public MoveFilter getFilter() {
-        return this.filter;
-    }
-
-    @NotNull
-    public String getSearch() {
-        return this.search;
-    }
-
-    @NotNull
-    public List<MoveTemplate> getMoves() {
-        return this.moves;
-    }
-
-    public int getPage() {
-        return this.page;
-    }
-
-    public int getTotalPages() {
-        return this.totalPages;
-    }
-
     private void openPage() {
-        MoveLearnerFactoryUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, this.filter, this.search, this.page));
+        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, this.filter, this.search, this.page));
     }
 
     private void openPage(int newPage) {
-        MoveLearnerFactoryUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, this.filter, this.search, newPage));
+        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, this.filter, this.search, newPage));
     }
 
     private void openPage(@NotNull MoveFilter filter) {
-        MoveLearnerFactoryUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, filter, "", 1));
+        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, filter, "", 1));
     }
 
     private void openPage(@NotNull String search) {
-        MoveLearnerFactoryUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, MoveFilter.ALL, search, 1));
+        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, MoveFilter.ALL, search, 1));
     }
 
     @NotNull
@@ -123,7 +100,7 @@ public class SelectMovePage extends SimpleGui {
 
         for (MoveTemplate move : moves) {
             setSlot(slot++, Buttons.getMoveButton(this.pokemon, move)
-                    .setCallback(() -> MoveLearnerFactoryUI.openPage(player, this.pokemon, new AcceptPage(player, move, this))));
+                    .setCallback(() -> MoveLearnerServiceUI.openPage(player, this.pokemon, new AcceptPage(player, move, this))));
         }
     }
 
@@ -182,12 +159,12 @@ public class SelectMovePage extends SimpleGui {
 //    }
 
     private void changeFilterDown(@NotNull MoveFilter filter) {
-        List<MoveFilter> order = getFilterOrder();
+        val order = getFilterOrder();
         openPage(order.get((order.indexOf(filter) + 1) % order.size()));
     }
 
     private void changeFilterUp(@NotNull MoveFilter filter) {
-        List<MoveFilter> order = getFilterOrder();
+        val order = getFilterOrder();
         openPage(order.get((order.indexOf(filter) - 1 + order.size()) % order.size()));
     }
 

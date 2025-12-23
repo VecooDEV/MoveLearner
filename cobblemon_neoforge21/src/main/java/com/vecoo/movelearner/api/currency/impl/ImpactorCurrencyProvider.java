@@ -1,7 +1,7 @@
 package com.vecoo.movelearner.api.currency.impl;
 
-import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
+import com.cobblemon.mod.common.api.moves.MoveTemplate;
+import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProvider;
@@ -22,7 +22,7 @@ public class ImpactorCurrencyProvider implements CurrencyProvider {
     private static final Currency CURRENCY = ECONOMY_SERVICE.currencies().primary();
 
     @Override
-    public boolean buy(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull ImmutableAttack move, int price) {
+    public boolean buy(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveTemplate move, int price) {
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
         val account = getAccount(player.getUUID());
 
@@ -41,19 +41,19 @@ public class ImpactorCurrencyProvider implements CurrencyProvider {
     }
 
     @Override
-    public void successfulBuyMessage(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull ImmutableAttack move, int price) {
+    public void successfulBuyMessage(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveTemplate move, int price) {
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
 
         if (price > 0) {
             player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getBuyMove()
-                    .replace("%move%", move.getAttackName())
-                    .replace("%pokemon%", pokemon.getTranslatedName().getString())
+                    .replace("%move%", move.getDisplayName().getString())
+                    .replace("%pokemon%", pokemon.getDisplayName(false).getString())
                     .replace("%amount%", String.valueOf(price))
                     .replace("%currency%", localeConfig.getImpactorCurrency())));
         } else {
             player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getBuyMoveFree()
-                    .replace("%move%", move.getAttackName())
-                    .replace("%pokemon%", pokemon.getTranslatedName().getString())));
+                    .replace("%move%", move.getDisplayName().getString())
+                    .replace("%pokemon%", pokemon.getDisplayName(false).getString())));
         }
     }
 

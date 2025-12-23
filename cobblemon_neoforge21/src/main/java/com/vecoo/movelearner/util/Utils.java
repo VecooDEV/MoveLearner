@@ -6,6 +6,7 @@ import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.api.pokemon.moves.Learnset;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.movelearner.MoveLearner;
+import lombok.val;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 public class Utils {
     @NotNull
     public static ItemStack getItemTM(@NotNull MoveTemplate move) {
-        ItemStack itemStack = CobblemonItems.NORMAL_GEM.getDefaultInstance();
+        var itemStack = CobblemonItems.NORMAL_GEM.getDefaultInstance();
 
         switch (move.getElementalType().getName()) {
             case "Bug" -> itemStack = CobblemonItems.BUG_GEM.getDefaultInstance();
@@ -44,30 +45,30 @@ public class Utils {
     }
 
     public static int getMovePrice(@NotNull Pokemon pokemon, @NotNull MoveTemplate move) {
-        Learnset moves = pokemon.getForm().getMoves();
+        val moves = pokemon.getForm().getMoves();
 
         if (moves.getLevelUpMoves().values().stream().anyMatch(list -> list.contains(move))) {
-            return MoveLearner.getInstance().getConfig().getLevelMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getLevelMovePrice();
         }
 
         if (moves.getTmMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getTmMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getTmMovePrice();
         }
 
         if (moves.getLegacyMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getLegacyMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getLegacyMovePrice();
         }
 
         if (moves.getTutorMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getTutorMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getTutorMovePrice();
         }
 
         if (moves.getSpecialMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getSpecialMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getSpecialMovePrice();
         }
 
         if (moves.getEggMoves().contains(move)) {
-            return MoveLearner.getInstance().getConfig().getEggMovePrice();
+            return MoveLearner.getInstance().getServerConfig().getEggMovePrice();
         }
 
         return 0;

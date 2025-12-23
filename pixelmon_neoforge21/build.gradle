@@ -14,7 +14,7 @@ neoForge {
 
 dependencies {
     compileOnly "pixelmon:Pixelmon-1.21.1-${pixelmon_21}-server:${pixelmon_21}"
-    compileOnly "maven.modrinth:impactor:${impactor_21}-neoforge,1.21.1"
+    compileOnly "maven.modrinth:impactor:${impactor_21}-Neoforge-neoforge,1.21.1"
     compileOnly "maven.modrinth:extralib:${extralib}-neoforge,1.21.1"
 }
 

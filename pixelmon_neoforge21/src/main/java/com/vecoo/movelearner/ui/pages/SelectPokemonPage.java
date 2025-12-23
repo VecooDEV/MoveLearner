@@ -53,7 +53,7 @@ public class SelectPokemonPage extends SimpleGui {
     private void fillAllSlotsWithFiller() {
         if (GUI_CONFIG.isFillerChoicePokemonUI()) {
             IntStream.rangeClosed(0, 26)
-                    .forEach(i -> setSlot(i, Buttons.getFillerButton()));
+                    .forEach(slot -> setSlot(slot, Buttons.getFillerButton()));
         }
     }
 
