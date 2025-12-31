@@ -24,19 +24,25 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Getter
 public class SelectMovePage extends SimpleGui {
     private final ServerConfig CONFIG = MoveLearner.getInstance().getServerConfig();
     private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
 
+    @Getter
+    @NotNull
     private final Pokemon pokemon;
+    @Getter
     @NotNull
     private final MoveFilter filter;
+    @Getter
     @NotNull
     private final String search;
+    @Getter
     @NotNull
     private final List<MoveTemplate> moves;
+    @Getter
     private final int page;
+    @Getter
     private final int totalPages;
 
     public SelectMovePage(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveFilter filter,
@@ -59,13 +65,13 @@ public class SelectMovePage extends SimpleGui {
         fillMoveSlots(this.moves.subList(start, end));
         addPreviousPageButton();
         addFilterButton();
-//        addSearchButton();
         addBackButton();
         addNextPageButton();
     }
 
-    private void openPage() {
-        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, this.filter, this.search, this.page));
+    public SelectMovePage(@NotNull SelectMovePage selectMovePage) {
+        this(selectMovePage.getPlayer(), selectMovePage.getPokemon(), selectMovePage.getFilter(),
+                selectMovePage.getSearch(), selectMovePage.getPage());
     }
 
     private void openPage(int newPage) {
@@ -99,7 +105,7 @@ public class SelectMovePage extends SimpleGui {
         int slot = 0;
 
         for (MoveTemplate move : moves) {
-            setSlot(slot++, Buttons.getMoveButton(this.pokemon, move)
+            setSlot(slot++, Buttons.getMoveButton(this.pokemon, move, player)
                     .setCallback(() -> MoveLearnerServiceUI.openPage(player, this.pokemon, new AcceptPage(player, move, this))));
         }
     }
@@ -134,37 +140,15 @@ public class SelectMovePage extends SimpleGui {
                 .setCallback(() -> new SelectPokemonPage(player).openForce()));
     }
 
-//    private void addSearchButton() {
-//        setSlot(47, Buttons.getSearchButton()
-//                .setCallback(clickType -> {
-//                    if (clickType.isRight) {
-//                        if (!this.search.isEmpty()) {
-//                            openPage(MoveFilter.ALL);
-//                        }
-//                    } else if (clickType.isLeft) {
-//                        DialogueFactory.builder()
-//                                .title(UtilChat.formatMessage(GUI_CONFIG.getSearchName()))
-//                                .description(UtilChat.formatMessage(GUI_CONFIG.getSearchLoreDialogue()))
-//                                .onlyAlphabeticalAndSpaceInput()
-//                                .maxInputLength(15)
-//                                .closeOnEscape()
-//                                .onClose(closedScreen -> openPage())
-//                                .buttons(Buttons.getDialogueAcceptButton()
-//                                        .onClick(dialogue -> MoveLearner.getInstance().getServer().execute(() ->
-//                                                openPage(dialogue.getInput().toLowerCase()))).build())
-//                                .sendTo(player);
-//                        SignGui
-//                    }
-//                }));
-//    }
-
     private void changeFilterDown(@NotNull MoveFilter filter) {
         val order = getFilterOrder();
+
         openPage(order.get((order.indexOf(filter) + 1) % order.size()));
     }
 
     private void changeFilterUp(@NotNull MoveFilter filter) {
         val order = getFilterOrder();
+
         openPage(order.get((order.indexOf(filter) - 1 + order.size()) % order.size()));
     }
 

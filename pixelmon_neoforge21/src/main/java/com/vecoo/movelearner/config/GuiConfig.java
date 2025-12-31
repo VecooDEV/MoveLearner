@@ -53,8 +53,16 @@ public class GuiConfig {
     private String searchAcceptDialogue = "Accept";
     private String searchLoreDialogue = "Enter the first letters or the name of the move to search. Search does not support translatable names.";
 
+    private String filterAll = "All";
+    private String filterLevel = "Level";
+    private String filterTMTR = "TM/TR";
+    private String filterHM = "HM";
+    private String filterTutor = "Tutor";
+    private String filterTransfer = "Transfer";
+    private String filterEgg = "Egg";
+
     private String itemCurrency = "rare candy";
     private String pixelmonCurrency = "pokedollars";
     private String impactorCurrency = "money";
-    private String customCurrency = "crystals";
+    private String notValidCurrency = "&cType currency - %currency% not supported.";
 }

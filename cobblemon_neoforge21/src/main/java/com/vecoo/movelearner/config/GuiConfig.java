@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @ConfigSerializable
 public class GuiConfig {
+    private boolean localizedNameMoves = true;
     private boolean fillerChoicePokemonUI = true;
     private boolean fillerChoiceMovesUI = true;
     private boolean fillerSureUI = true;
@@ -47,7 +48,16 @@ public class GuiConfig {
     private String filterName = "Filter";
     private String filterSymbol = "&7» ";
 
+    private String filterAll = "All";
+    private String filterLevel = "Level";
+    private String filterTM = "TM";
+    private String filterLegacy = "Legacy";
+    private String filterTutor = "Tutor";
+    private String filterSpecial = "Special";
+    private String filterEgg = "Egg";
+
     private String itemCurrency = "rare candy";
+    private String cobblemonCurrency = "cobbledollars";
     private String impactorCurrency = "money";
-    private String customCurrency = "crystals";
+    private String notValidCurrency = "&cType currency - %currency% not supported.";
 }

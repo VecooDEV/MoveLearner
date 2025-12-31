@@ -32,6 +32,13 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.movelearner]]
+modId = "extralib"
+type = "required"
+versionRange = "[2.1.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.movelearner]]
 modId = "impactor"
 type = "optional"
 versionRange = "[5,)"
@@ -39,8 +46,8 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.movelearner]]
-modId = "extralib"
-type = "required"
-versionRange = "[2.1.1,)"
+modId = "cobbledollars"
+type = "optional"
+versionRange = "[2.0,)"
 ordering = "NONE"
 side = "BOTH"

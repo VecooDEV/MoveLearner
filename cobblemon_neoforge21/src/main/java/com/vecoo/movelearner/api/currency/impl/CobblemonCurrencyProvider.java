@@ -1,19 +1,21 @@
 package com.vecoo.movelearner.api.currency.impl;
 
-import com.pixelmonmod.pixelmon.api.economy.BankAccountProxy;
-import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
+import com.cobblemon.mod.common.api.moves.MoveTemplate;
+import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProvider;
 import com.vecoo.movelearner.api.events.LearnEvent;
+import fr.harmex.cobbledollars.common.utils.extensions.PlayerExtensionKt;
 import lombok.val;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 
-public class PixelmonCurrencyProvider implements CurrencyProvider {
+import java.math.BigDecimal;
+
+public class CobblemonCurrencyProvider implements CurrencyProvider {
     @Override
     @NotNull
     public Component lore(int price) {
@@ -21,23 +23,18 @@ public class PixelmonCurrencyProvider implements CurrencyProvider {
 
         return UtilChat.formatMessage(guiConfig.getPriceLore()
                 .replace("%amount%", String.valueOf(price))
-                .replace("%currency%", guiConfig.getPixelmonCurrency()));
+                .replace("%currency%", guiConfig.getCobblemonCurrency()));
     }
 
     @Override
-    public boolean buy(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull ImmutableAttack move, int price) {
+    public boolean buy(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveTemplate move, int price) {
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
-        val bankAccount = BankAccountProxy.getBankAccountNow(player.getUUID());
+        val balance = PlayerExtensionKt.getCobbleDollars(player);
 
-        if (bankAccount == null) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getError()));
-            return false;
-        }
-
-        if (bankAccount.getBalance().intValue() < price) {
+        if (balance.intValue() < price) {
             player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotCurrency()
                     .replace("%amount%", String.valueOf(price))
-                    .replace("%currency%", localeConfig.getPixelmonCurrency())));
+                    .replace("%currency%", localeConfig.getCobblemonCurrency())));
             return false;
         }
 
@@ -45,23 +42,24 @@ public class PixelmonCurrencyProvider implements CurrencyProvider {
             return false;
         }
 
-        return bankAccount.take(price);
+        PlayerExtensionKt.setCobbleDollars(player, balance.subtract(new BigDecimal(price).toBigInteger()));
+        return true;
     }
 
     @Override
-    public void successfulBuyMessage(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull ImmutableAttack move, int price) {
+    public void successfulBuyMessage(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveTemplate move, int price) {
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
 
         if (price > 0) {
             player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getBuyMove()
-                    .replace("%move%", move.getAttackName())
-                    .replace("%pokemon%", pokemon.getTranslatedName().getString())
+                    .replace("%move%", move.getDisplayName().getString())
+                    .replace("%pokemon%", pokemon.getDisplayName(false).getString())
                     .replace("%amount%", String.valueOf(price))
-                    .replace("%currency%", localeConfig.getPixelmonCurrency())));
+                    .replace("%currency%", localeConfig.getCobblemonCurrency())));
         } else {
             player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getBuyMoveFree()
-                    .replace("%move%", move.getAttackName())
-                    .replace("%pokemon%", pokemon.getTranslatedName().getString())));
+                    .replace("%move%", move.getDisplayName().getString())
+                    .replace("%pokemon%", pokemon.getDisplayName(false).getString())));
         }
     }
 }

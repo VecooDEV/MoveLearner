@@ -4,14 +4,13 @@ import com.pixelmonmod.pixelmon.api.pokemon.LearnMoveController;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.battles.attacks.Attack;
-import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.GuiHelpers;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProviderRegistry;
+import com.vecoo.movelearner.ui.pages.AcceptPage;
 import com.vecoo.movelearner.ui.pages.SelectMovePage;
-import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
 import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,8 +30,7 @@ public class MoveLearnerServiceUI {
         page.openForce();
     }
 
-    public static void learnMove(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull ImmutableAttack move,
-                                 @NotNull MoveFilter filter, @NotNull String search, int page) {
+    public static void learnMove(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull AcceptPage acceptPage) {
         val serverConfig = MoveLearner.getInstance().getServerConfig();
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
         val partyStorage = StorageProxy.getPartyNow(player);
@@ -44,12 +42,13 @@ public class MoveLearnerServiceUI {
         }
 
         val moveset = pokemon.getMoveset();
+        val move = acceptPage.getMove();
 
         if (moveset.hasAttack(move)) {
             player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getAlreadyMove()
                     .replace("%pokemon%", pokemon.getTranslatedName().getString())
                     .replace("%move%", move.getAttackName())));
-            new SelectMovePage(player, pokemon, filter, search, page).openForce();
+            new SelectMovePage(acceptPage.getSelectMovePage()).openForce();
             return;
         }
 
@@ -69,10 +68,10 @@ public class MoveLearnerServiceUI {
 
         if (moveset.size() >= 4) {
             LearnMoveController.sendLearnMove(player, pokemon.getUUID(), move);
-            new SelectMovePage(player, pokemon, filter, search, page).safeOpen(player);
+            new SelectMovePage(acceptPage.getSelectMovePage()).safeOpen(player);
         } else {
             moveset.add(new Attack(move));
-            new SelectMovePage(player, pokemon, filter, search, page).openForce();
+            new SelectMovePage(acceptPage.getSelectMovePage()).openForce();
         }
 
         currencyProvider.successfulBuyMessage(player, pokemon, move, price);

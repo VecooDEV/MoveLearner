@@ -21,6 +21,22 @@ import java.util.List;
 
 public class Buttons {
     @NotNull
+    public static GuiElementBuilder getPokemonButton(@NotNull Pokemon pokemon, @NotNull ServerPlayer player) {
+        return new GuiElementBuilder(SpriteItemHelper.getPhoto(pokemon))
+                .setName(pokemon.getTranslatedName())
+                .setLore(ButtonLore.getPokemonMovesLore(pokemon, player))
+                .removeRarity();
+    }
+
+    @NotNull
+    public static GuiElementBuilder getMoveButton(@NotNull Pokemon pokemon, @NotNull ImmutableAttack move, @NotNull ServerPlayer player) {
+        return new GuiElementBuilder(Utils.getItemTM(move))
+                .setName(ButtonNames.getMoveName(move, player))
+                .setLore(ButtonLore.getMoveLore(pokemon, move))
+                .removeRarity();
+    }
+
+    @NotNull
     public static GuiElementBuilder getFillerButton() {
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getFillerItem()))
                 .setName(Component.empty())
@@ -38,27 +54,11 @@ public class Buttons {
     }
 
     @NotNull
-    public static GuiElementBuilder getPokemonButton(@NotNull Pokemon pokemon, @NotNull ServerPlayer player) {
-        return new GuiElementBuilder(SpriteItemHelper.getPhoto(pokemon))
-                .setName(pokemon.getTranslatedName())
-                .setLore(ButtonLore.getPokemonMovesLore(pokemon, player))
-                .removeRarity();
-    }
-
-    @NotNull
     public static GuiElementBuilder getEmptyPokemonButton() {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getEmptyPokemonItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getEmptyPokemonName()))
-                .removeRarity();
-    }
-
-    @NotNull
-    public static GuiElementBuilder getMoveButton(@NotNull Pokemon pokemon, @NotNull ImmutableAttack move, @NotNull ServerPlayer player) {
-        return new GuiElementBuilder(Utils.getItemTM(move))
-                .setName(ButtonNames.getMoveName(move, player))
-                .setLore(ButtonLore.getMoveLore(pokemon, move))
                 .removeRarity();
     }
 

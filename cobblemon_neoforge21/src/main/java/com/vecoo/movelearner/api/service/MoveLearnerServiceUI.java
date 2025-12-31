@@ -2,15 +2,14 @@ package com.vecoo.movelearner.api.service;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.moves.BenchedMove;
-import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.GuiHelpers;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProviderRegistry;
+import com.vecoo.movelearner.ui.pages.AcceptPage;
 import com.vecoo.movelearner.ui.pages.SelectMovePage;
-import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
 import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,8 +29,7 @@ public class MoveLearnerServiceUI {
         page.openForce();
     }
 
-    public static void learnMove(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveTemplate move,
-                                 @NotNull MoveFilter filter, @NotNull String search, int page) {
+    public static void learnMove(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull AcceptPage acceptPage) {
         val serverConfig = MoveLearner.getInstance().getServerConfig();
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
         val partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
@@ -43,12 +41,13 @@ public class MoveLearnerServiceUI {
         }
 
         val moveset = pokemon.getMoveSet();
+        val move = acceptPage.getMove();
 
         if (Utils.isLearnedMove(pokemon, move)) {
             player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getAlreadyMove()
                     .replace("%pokemon%", pokemon.getDisplayName(false).getString())
                     .replace("%move%", move.getDisplayName().getString())));
-            new SelectMovePage(player, pokemon, filter, search, page).openForce();
+            new SelectMovePage(acceptPage.getSelectMovePage()).openForce();
             return;
         }
 
@@ -72,7 +71,7 @@ public class MoveLearnerServiceUI {
             moveset.add(move.create());
         }
 
-        new SelectMovePage(player, pokemon, filter, search, page).openForce();
+        new SelectMovePage(acceptPage.getSelectMovePage()).openForce();
         currencyProvider.successfulBuyMessage(player, pokemon, move, price);
     }
 }

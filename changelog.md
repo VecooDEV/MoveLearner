@@ -1,6 +1,6 @@
-* Update depends.
-* Support impactor and custom currency.
-* Remove rarity item gui.
-* Changes configs.
-* Update config reload.
-* Improve code.
+* Code improvements.
+* Currency integration is now unlimited.
+* Localization has been added for the filter.
+* Mod CobbleDollars support.
+* Support localized moves name (Cobblemon).
+* Fix load currency (Fabric).

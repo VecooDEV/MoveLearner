@@ -62,7 +62,7 @@ public class SelectPokemonPage extends SimpleGui {
             return Buttons.getEmptyPokemonButton();
         }
 
-        return Buttons.getPokemonButton(pokemon)
+        return Buttons.getPokemonButton(pokemon, player)
                 .setCallback(() -> MoveLearnerServiceUI.openPage(player, pokemon,
                         new SelectMovePage(player, pokemon, MoveFilter.ALL, "", 1)));
     }

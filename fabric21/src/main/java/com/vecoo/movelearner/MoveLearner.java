@@ -3,6 +3,7 @@ package com.vecoo.movelearner;
 import com.mojang.logging.LogUtils;
 import com.vecoo.extralib.config.YamlConfigFactory;
 import com.vecoo.movelearner.api.currency.CurrencyProviderRegistry;
+import com.vecoo.movelearner.api.currency.impl.CobblemonCurrencyProvider;
 import com.vecoo.movelearner.api.currency.impl.ImpactorCurrencyProvider;
 import com.vecoo.movelearner.api.currency.impl.ItemCurrencyProvider;
 import com.vecoo.movelearner.command.LearnCommand;
@@ -37,6 +38,7 @@ public class MoveLearner implements ModInitializer {
         instance = this;
 
         loadConfig();
+        loadCurrencies();
 
         CommandRegistrationCallback.EVENT.register(LearnCommand::register);
         ServerLifecycleEvents.SERVER_STARTING.register(server -> this.server = server);
@@ -50,6 +52,10 @@ public class MoveLearner implements ModInitializer {
 
     private void loadCurrencies() {
         CurrencyProviderRegistry.register("item", ItemCurrencyProvider::new);
+
+        if (FabricLoader.getInstance().isModLoaded("cobbledollars")) {
+            CurrencyProviderRegistry.register("cobbledollars", CobblemonCurrencyProvider::new);
+        }
 
         if (FabricLoader.getInstance().isModLoaded("impactor")) {
             CurrencyProviderRegistry.register("impactor", ImpactorCurrencyProvider::new);

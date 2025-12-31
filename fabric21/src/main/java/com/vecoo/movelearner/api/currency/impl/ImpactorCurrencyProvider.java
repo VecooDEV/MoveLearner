@@ -9,6 +9,7 @@ import lombok.val;
 import net.impactdev.impactor.api.economy.EconomyService;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.economy.currency.Currency;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +19,17 @@ import java.util.UUID;
 public class ImpactorCurrencyProvider implements CurrencyProvider {
     private static final EconomyService ECONOMY_SERVICE = EconomyService.instance();
     private static final Currency CURRENCY = ECONOMY_SERVICE.currencies().primary();
+
+    @Override
+    @NotNull
+    public Component lore(int price) {
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
+
+        return UtilChat.formatMessage(guiConfig.getPriceLore()
+                .replace("%amount%", String.valueOf(price))
+                .replace("%currency%", guiConfig.getImpactorCurrency()));
+    }
+
 
     @Override
     public boolean buy(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveTemplate move, int price) {

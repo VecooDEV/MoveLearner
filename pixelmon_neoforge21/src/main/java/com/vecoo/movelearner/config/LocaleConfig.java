@@ -22,5 +22,4 @@ public class LocaleConfig {
     private String itemCurrency = "rare candy";
     private String pixelmonCurrency = "pokedollars";
     private String impactorCurrency = "money";
-    private String customCurrency = "crystals";
 }

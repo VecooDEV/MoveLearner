@@ -20,6 +20,6 @@ public class LocaleConfig {
     private String error = "&c(!) Error. Try again.";
 
     private String itemCurrency = "rare candy";
+    private String cobblemonCurrency = "cobbledollars";
     private String impactorCurrency = "money";
-    private String customCurrency = "crystals";
 }

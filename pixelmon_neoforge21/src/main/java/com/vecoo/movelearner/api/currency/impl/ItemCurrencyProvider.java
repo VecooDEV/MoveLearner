@@ -11,11 +11,22 @@ import com.vecoo.movelearner.api.currency.CurrencyProvider;
 import com.vecoo.movelearner.api.events.LearnEvent;
 import lombok.val;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemCurrencyProvider implements CurrencyProvider {
+    @Override
+    @NotNull
+    public Component lore(int price) {
+        val guiConfig = MoveLearner.getInstance().getGuiConfig();
+
+        return UtilChat.formatMessage(guiConfig.getPriceLore()
+                .replace("%amount%", String.valueOf(price))
+                .replace("%currency%", guiConfig.getItemCurrency()));
+    }
+
     @Override
     public boolean buy(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull ImmutableAttack move, int price) {
         val serverConfig = MoveLearner.getInstance().getServerConfig();

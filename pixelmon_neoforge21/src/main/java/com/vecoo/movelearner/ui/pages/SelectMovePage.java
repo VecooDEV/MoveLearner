@@ -26,19 +26,25 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-@Getter
 public class SelectMovePage extends SimpleGui {
     private final ServerConfig CONFIG = MoveLearner.getInstance().getServerConfig();
     private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
 
+    @Getter
+    @NotNull
     private final Pokemon pokemon;
+    @Getter
     @NotNull
     private final MoveFilter filter;
+    @Getter
     @NotNull
     private final String search;
+    @Getter
     @NotNull
     private final List<ImmutableAttack> moves;
+    @Getter
     private final int page;
+    @Getter
     private final int totalPages;
 
     public SelectMovePage(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveFilter filter,
@@ -66,8 +72,13 @@ public class SelectMovePage extends SimpleGui {
         addNextPageButton();
     }
 
+    public SelectMovePage(@NotNull SelectMovePage selectMovePage) {
+        this(selectMovePage.getPlayer(), selectMovePage.getPokemon(), selectMovePage.getFilter(),
+                selectMovePage.getSearch(), selectMovePage.getPage());
+    }
+
     private void openPage() {
-        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, this.filter, this.search, this.page));
+        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(this));
     }
 
     private void openPage(int newPage) {
@@ -161,11 +172,13 @@ public class SelectMovePage extends SimpleGui {
 
     private void changeFilterDown(@NotNull MoveFilter filter) {
         val order = getFilterList();
+
         openPage(order.get((order.indexOf(filter) + 1) % order.size()));
     }
 
     private void changeFilterUp(@NotNull MoveFilter filter) {
         val order = getFilterList();
+
         openPage(order.get((order.indexOf(filter) - 1 + order.size()) % order.size()));
     }
 

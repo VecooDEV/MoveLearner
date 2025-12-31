@@ -12,9 +12,26 @@ import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
 import lombok.val;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
 public class Buttons {
+    @NotNull
+    public static GuiElementBuilder getPokemonButton(@NotNull Pokemon pokemon, @NotNull ServerPlayer player) {
+        return new GuiElementBuilder(PokemonItem.from(pokemon))
+                .setName(pokemon.getDisplayName(false))
+                .setLore(ButtonLore.getPokemonMovesLore(pokemon, player))
+                .removeRarity();
+    }
+
+    @NotNull
+    public static GuiElementBuilder getMoveButton(@NotNull Pokemon pokemon, @NotNull MoveTemplate move, @NotNull ServerPlayer player) {
+        return new GuiElementBuilder(Utils.getItemTM(move))
+                .setName(ButtonNames.getMoveName(move, player))
+                .setLore(ButtonLore.getMoveLore(pokemon, move))
+                .removeRarity();
+    }
+
     @NotNull
     public static GuiElementBuilder getFillerButton() {
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getFillerItem()))
@@ -33,27 +50,11 @@ public class Buttons {
     }
 
     @NotNull
-    public static GuiElementBuilder getPokemonButton(@NotNull Pokemon pokemon) {
-        return new GuiElementBuilder(PokemonItem.from(pokemon))
-                .setName(pokemon.getDisplayName(false))
-                .setLore(ButtonLore.getPokemonMovesLore(pokemon))
-                .removeRarity();
-    }
-
-    @NotNull
     public static GuiElementBuilder getEmptyPokemonButton() {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
         return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getEmptyPokemonItem()))
                 .setName(UtilChat.formatMessage(guiConfig.getEmptyPokemonName()))
-                .removeRarity();
-    }
-
-    @NotNull
-    public static GuiElementBuilder getMoveButton(@NotNull Pokemon pokemon, @NotNull MoveTemplate move) {
-        return new GuiElementBuilder(Utils.getItemTM(move))
-                .setName(move.getDisplayName())
-                .setLore(ButtonLore.getMoveLore(pokemon, move))
                 .removeRarity();
     }
 
@@ -84,19 +85,6 @@ public class Buttons {
                 .setLore(ButtonLore.getFilterLore(filter))
                 .removeRarity();
     }
-
-//    @NotNull
-//    public static GuiElementBuilder getSearchButton() {
-//        val guiConfig = MoveLearner.getInstance().getGuiConfig();
-//        List<Component> lore = Arrays.stream(guiConfig.getSearchLore().split("\\\\n"))
-//                .map(UtilChat::formatMessage)
-//                .toList();
-//
-//        return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getSearchItem()))
-//                .setName(UtilChat.formatMessage(guiConfig.getSearchName()))
-//                .setLore(lore)
-//                .removeRarity();
-//    }
 
     @NotNull
     public static GuiElementBuilder getBackButton() {

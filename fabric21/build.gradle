@@ -17,6 +17,7 @@ dependencies {
     modCompileOnly "net.fabricmc.fabric-api:fabric-api:${fabric_api_21}"
     modCompileOnly "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin}"
     modCompileOnly "maven.modrinth:cobblemon:${cobblemon_21}-fabric,1.21.1"
+    modCompileOnly "maven.modrinth:cobbledollars:${cobbledollars_21}-fabric,1.21.1"
     modCompileOnly "maven.modrinth:impactor:${impactor_21}-Fabric-fabric,1.21.1"
     modCompileOnly "maven.modrinth:extralib:${extralib}-fabric,1.21.1"
 }
@@ -52,6 +53,7 @@ modrinth {
     dependencies {
         required.project "cobblemon"
         required.project "extralib"
+        optional.project "cobbledollars"
         optional.project "impactor"
     }
 }
