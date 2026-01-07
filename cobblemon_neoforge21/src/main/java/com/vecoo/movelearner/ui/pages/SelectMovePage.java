@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SelectMovePage extends SimpleGui {
-    private final ServerConfig CONFIG = MoveLearner.getInstance().getServerConfig();
+    private final ServerConfig SERVER_CONFIG = MoveLearner.getInstance().getServerConfig();
     private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
 
     @Getter
@@ -160,17 +160,17 @@ public class SelectMovePage extends SimpleGui {
         order.add(MoveFilter.LEVEL);
         order.add(MoveFilter.TM);
 
-        if (CONFIG.isLegacyMove()) {
+        if (SERVER_CONFIG.isLegacyMove()) {
             order.add(MoveFilter.LEGACY);
         }
 
         order.add(MoveFilter.TUTOR);
 
-        if (CONFIG.isSpecialMove()) {
+        if (SERVER_CONFIG.isSpecialMove()) {
             order.add(MoveFilter.SPECIAL);
         }
 
-        if (CONFIG.isEggMove()) {
+        if (SERVER_CONFIG.isEggMove()) {
             order.add(MoveFilter.EGG);
         }
 
@@ -181,10 +181,10 @@ public class SelectMovePage extends SimpleGui {
     private Set<MoveTemplate> getFilteredMoves(@NotNull Learnset moves) {
         return switch (this.filter) {
             case ALL -> Utils.getAllMoves(moves).stream()
-                    .filter(move -> CONFIG.isEggMove() || !moves.getEggMoves().contains(move))
-                    .filter(move -> CONFIG.isLegacyMove() || !moves.getLegacyMoves().contains(move))
-                    .filter(move -> CONFIG.isSpecialMove() || !moves.getSpecialMoves().contains(move))
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> SERVER_CONFIG.isEggMove() || !moves.getEggMoves().contains(move))
+                    .filter(move -> SERVER_CONFIG.isLegacyMove() || !moves.getLegacyMoves().contains(move))
+                    .filter(move -> SERVER_CONFIG.isSpecialMove() || !moves.getSpecialMoves().contains(move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case LEVEL -> moves.getAllLegalMoves().stream()
                     .filter(move ->
@@ -192,22 +192,22 @@ public class SelectMovePage extends SimpleGui {
                                     .values()
                                     .stream()
                                     .anyMatch(list -> list.contains(move)))
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case TM -> moves.getTmMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case LEGACY -> moves.getLegacyMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case TUTOR -> moves.getTutorMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case SPECIAL -> moves.getSpecialMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case EGG -> moves.getEggMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
         };
     }

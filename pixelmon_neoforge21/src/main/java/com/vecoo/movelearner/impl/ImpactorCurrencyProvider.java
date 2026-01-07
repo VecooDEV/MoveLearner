@@ -1,6 +1,5 @@
-package com.vecoo.movelearner.api.currency.impl;
+package com.vecoo.movelearner.impl;
 
-import com.pixelmonmod.pixelmon.api.economy.BankAccountProxy;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.vecoo.extralib.chat.UtilChat;
@@ -8,12 +7,21 @@ import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProvider;
 import com.vecoo.movelearner.api.events.LearnEvent;
 import lombok.val;
+import net.impactdev.impactor.api.economy.EconomyService;
+import net.impactdev.impactor.api.economy.accounts.Account;
+import net.impactdev.impactor.api.economy.currency.Currency;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 
-public class PixelmonCurrencyProvider implements CurrencyProvider {
+import java.math.BigDecimal;
+import java.util.UUID;
+
+public class ImpactorCurrencyProvider implements CurrencyProvider {
+    private static final EconomyService ECONOMY_SERVICE = EconomyService.instance();
+    private static final Currency CURRENCY = ECONOMY_SERVICE.currencies().primary();
+
     @Override
     @NotNull
     public Component lore(int price) {
@@ -21,23 +29,18 @@ public class PixelmonCurrencyProvider implements CurrencyProvider {
 
         return UtilChat.formatMessage(guiConfig.getPriceLore()
                 .replace("%amount%", String.valueOf(price))
-                .replace("%currency%", guiConfig.getPixelmonCurrency()));
+                .replace("%currency%", guiConfig.getImpactorCurrency()));
     }
 
     @Override
     public boolean buy(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull ImmutableAttack move, int price) {
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
-        val bankAccount = BankAccountProxy.getBankAccountNow(player.getUUID());
+        val account = getAccount(player.getUUID());
 
-        if (bankAccount == null) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getError()));
-            return false;
-        }
-
-        if (bankAccount.getBalance().intValue() < price) {
+        if (account.balance().intValue() < price) {
             player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotCurrency()
                     .replace("%amount%", String.valueOf(price))
-                    .replace("%currency%", localeConfig.getPixelmonCurrency())));
+                    .replace("%currency%", localeConfig.getImpactorCurrency())));
             return false;
         }
 
@@ -45,7 +48,7 @@ public class PixelmonCurrencyProvider implements CurrencyProvider {
             return false;
         }
 
-        return bankAccount.take(price);
+        return account.withdraw(new BigDecimal(price)).successful();
     }
 
     @Override
@@ -57,11 +60,21 @@ public class PixelmonCurrencyProvider implements CurrencyProvider {
                     .replace("%move%", move.getAttackName())
                     .replace("%pokemon%", pokemon.getTranslatedName().getString())
                     .replace("%amount%", String.valueOf(price))
-                    .replace("%currency%", localeConfig.getPixelmonCurrency())));
+                    .replace("%currency%", localeConfig.getImpactorCurrency())));
         } else {
             player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getBuyMoveFree()
                     .replace("%move%", move.getAttackName())
                     .replace("%pokemon%", pokemon.getTranslatedName().getString())));
         }
     }
+
+    @NotNull
+    private Account getAccount(@NotNull UUID playerUUID) {
+        if (!ECONOMY_SERVICE.hasAccount(playerUUID).join()) {
+            return ECONOMY_SERVICE.account(playerUUID).join();
+        }
+
+        return ECONOMY_SERVICE.account(CURRENCY, playerUUID).join();
+    }
 }
+

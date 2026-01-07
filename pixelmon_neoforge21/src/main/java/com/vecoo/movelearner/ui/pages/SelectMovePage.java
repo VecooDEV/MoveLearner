@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class SelectMovePage extends SimpleGui {
-    private final ServerConfig CONFIG = MoveLearner.getInstance().getServerConfig();
+    private final ServerConfig SERVER_CONFIG = MoveLearner.getInstance().getServerConfig();
     private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
 
     @Getter
@@ -190,14 +190,14 @@ public class SelectMovePage extends SimpleGui {
         list.add(MoveFilter.LEVEL);
         list.add(MoveFilter.TM_TR);
 
-        if (CONFIG.isHmMove()) {
+        if (SERVER_CONFIG.isHmMove()) {
             list.add(MoveFilter.HM);
         }
 
         list.add(MoveFilter.TUTOR);
         list.add(MoveFilter.TRANSFER);
 
-        if (CONFIG.isEggMove()) {
+        if (SERVER_CONFIG.isEggMove()) {
             list.add(MoveFilter.EGG);
         }
 
@@ -208,28 +208,28 @@ public class SelectMovePage extends SimpleGui {
     private Set<ImmutableAttack> getFilteredMoves(@NotNull Moves moves) {
         return switch (this.filter) {
             case ALL -> moves.getAllMoves().stream()
-                    .filter(move -> CONFIG.isHmMove() || !moves.getHMMoves().contains(move))
-                    .filter(move -> CONFIG.isEggMove() || !moves.getEggMoves().contains(move))
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> SERVER_CONFIG.isHmMove() || !moves.getHMMoves().contains(move))
+                    .filter(move -> SERVER_CONFIG.isEggMove() || !moves.getEggMoves().contains(move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case LEVEL -> moves.getAllLevelUpMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case TM_TR -> Stream.concat(moves.getTMMoves().stream(),
                             moves.getTRMoves().stream().map(ITechnicalMove::getAttack))
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case HM -> moves.getHMMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case TUTOR -> moves.getTutorMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case TRANSFER -> moves.getTransferMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case EGG -> moves.getEggMoves().stream()
-                    .filter(move -> !CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
         };
     }

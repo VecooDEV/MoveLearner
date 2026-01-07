@@ -1,4 +1,4 @@
-package com.vecoo.movelearner.api.currency.impl;
+package com.vecoo.movelearner.impl;
 
 import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.pokemon.Pokemon;

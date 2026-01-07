@@ -1,4 +1,4 @@
-package com.vecoo.movelearner.api.currency.impl;
+package com.vecoo.movelearner.impl;
 
 import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.pokemon.Pokemon;
@@ -8,10 +8,12 @@ import com.vecoo.extralib.player.UtilPlayer;
 import com.vecoo.extralib.ui.api.GuiHelpers;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProvider;
+import com.vecoo.movelearner.api.events.LearnEvent;
 import lombok.val;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemCurrencyProvider implements CurrencyProvider {
@@ -45,12 +47,20 @@ public class ItemCurrencyProvider implements CurrencyProvider {
                 return false;
             }
 
+            if (NeoForge.EVENT_BUS.post(new LearnEvent.BuyItem(player, pokemon, move, itemStack, price)).isCanceled()) {
+                return false;
+            }
+
             UtilPlayer.removeItemStack(player, itemStack, price);
         } else {
             if (UtilPlayer.countItemStackTag(player, itemStack, DataComponents.CUSTOM_MODEL_DATA) < price) {
                 player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotCurrency()
                         .replace("%amount%", String.valueOf(price))
                         .replace("%currency%", localeConfig.getItemCurrency())));
+                return false;
+            }
+
+            if (NeoForge.EVENT_BUS.post(new LearnEvent.BuyItem(player, pokemon, move, itemStack, price)).isCanceled()) {
                 return false;
             }
 
