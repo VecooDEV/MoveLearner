@@ -5,7 +5,6 @@ import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
-import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.ui.Buttons;
 import lombok.Getter;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,13 +13,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.IntStream;
 
+@Getter
 public class AcceptPage extends SimpleGui {
-    private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
-
-    @Getter
     @NotNull
     private final ImmutableAttack move;
-    @Getter
     @NotNull
     private final SelectMovePage selectMovePage;
 
@@ -29,7 +25,7 @@ public class AcceptPage extends SimpleGui {
         this.move = move;
         this.selectMovePage = selectMovePage;
 
-        setTitle(UtilChat.formatMessage(GUI_CONFIG.getAcceptTitle()));
+        setTitle(UtilChat.formatMessage(MoveLearner.getInstance().getGuiConfig().getAcceptTitle()));
         setLockPlayerInventory(true);
 
         fillAllSlotsWithFiller();
@@ -41,7 +37,7 @@ public class AcceptPage extends SimpleGui {
     }
 
     private void fillAllSlotsWithFiller() {
-        if (GUI_CONFIG.isFillerSureUI()) {
+        if (MoveLearner.getInstance().getGuiConfig().isFillerSureUI()) {
             IntStream.rangeClosed(0, 26)
                     .forEach(i -> setSlot(i, Buttons.getFillerButton()));
         }

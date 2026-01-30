@@ -9,8 +9,6 @@ import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
-import com.vecoo.movelearner.config.GuiConfig;
-import com.vecoo.movelearner.config.ServerConfig;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import lombok.Getter;
@@ -26,25 +24,17 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+@Getter
 public class SelectMovePage extends SimpleGui {
-    private final ServerConfig SERVER_CONFIG = MoveLearner.getInstance().getServerConfig();
-    private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
-
-    @Getter
     @NotNull
     private final Pokemon pokemon;
-    @Getter
     @NotNull
     private final MoveFilter filter;
-    @Getter
     @NotNull
     private final String search;
-    @Getter
     @NotNull
     private final List<ImmutableAttack> moves;
-    @Getter
     private final int page;
-    @Getter
     private final int totalPages;
 
     public SelectMovePage(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveFilter filter,
@@ -57,7 +47,7 @@ public class SelectMovePage extends SimpleGui {
         this.moves = getFilteredAndSearchMoves();
         this.totalPages = Math.max(1, (this.moves.size() + 44) / 45);
 
-        setTitle(UtilChat.formatMessage(GUI_CONFIG.getSelectMoveTitle()));
+        setTitle(UtilChat.formatMessage(MoveLearner.getInstance().getGuiConfig().getSelectMoveTitle()));
         setLockPlayerInventory(true);
 
         int start = (page - 1) * 45;
@@ -102,7 +92,7 @@ public class SelectMovePage extends SimpleGui {
     }
 
     private void fillAllSlotsWithFiller() {
-        if (GUI_CONFIG.isFillerChoiceMovesUI()) {
+        if (MoveLearner.getInstance().getGuiConfig().isFillerChoiceMovesUI()) {
             IntStream.rangeClosed(45, 53)
                     .forEach(i -> setSlot(i, Buttons.getFillerButton()));
         }
@@ -155,9 +145,11 @@ public class SelectMovePage extends SimpleGui {
                             openPage(MoveFilter.ALL);
                         }
                     } else if (clickType.isLeft) {
+                        val guiConfig = MoveLearner.getInstance().getGuiConfig();
+
                         DialogueFactory.builder()
-                                .title(UtilChat.formatMessage(GUI_CONFIG.getSearchName()))
-                                .description(UtilChat.formatMessage(GUI_CONFIG.getSearchLoreDialogue()))
+                                .title(UtilChat.formatMessage(guiConfig.getSearchName()))
+                                .description(UtilChat.formatMessage(guiConfig.getSearchLoreDialogue()))
                                 .onlyAlphabeticalAndSpaceInput()
                                 .maxInputLength(15)
                                 .closeOnEscape()
@@ -184,20 +176,21 @@ public class SelectMovePage extends SimpleGui {
 
     @NotNull
     private List<MoveFilter> getFilterList() {
+        val serverConfig = MoveLearner.getInstance().getServerConfig();
         List<MoveFilter> list = new ArrayList<>();
 
         list.add(MoveFilter.ALL);
         list.add(MoveFilter.LEVEL);
         list.add(MoveFilter.TM_TR);
 
-        if (SERVER_CONFIG.isHmMove()) {
+        if (serverConfig.isHmMove()) {
             list.add(MoveFilter.HM);
         }
 
         list.add(MoveFilter.TUTOR);
         list.add(MoveFilter.TRANSFER);
 
-        if (SERVER_CONFIG.isEggMove()) {
+        if (serverConfig.isEggMove()) {
             list.add(MoveFilter.EGG);
         }
 
@@ -206,30 +199,32 @@ public class SelectMovePage extends SimpleGui {
 
     @NotNull
     private Set<ImmutableAttack> getFilteredMoves(@NotNull Moves moves) {
+        val serverConfig = MoveLearner.getInstance().getServerConfig();
+
         return switch (this.filter) {
             case ALL -> moves.getAllMoves().stream()
-                    .filter(move -> SERVER_CONFIG.isHmMove() || !moves.getHMMoves().contains(move))
-                    .filter(move -> SERVER_CONFIG.isEggMove() || !moves.getEggMoves().contains(move))
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> serverConfig.isHmMove() || !moves.getHMMoves().contains(move))
+                    .filter(move -> serverConfig.isEggMove() || !moves.getEggMoves().contains(move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case LEVEL -> moves.getAllLevelUpMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case TM_TR -> Stream.concat(moves.getTMMoves().stream(),
                             moves.getTRMoves().stream().map(ITechnicalMove::getAttack))
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case HM -> moves.getHMMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case TUTOR -> moves.getTutorMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case TRANSFER -> moves.getTransferMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
             case EGG -> moves.getEggMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !this.pokemon.getMoveset().hasAttack(move))
                     .collect(Collectors.toSet());
         };
     }

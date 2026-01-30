@@ -7,8 +7,6 @@ import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
-import com.vecoo.movelearner.config.GuiConfig;
-import com.vecoo.movelearner.config.ServerConfig;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
@@ -24,25 +22,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Getter
 public class SelectMovePage extends SimpleGui {
-    private final ServerConfig SERVER_CONFIG = MoveLearner.getInstance().getServerConfig();
-    private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
-
-    @Getter
     @NotNull
     private final Pokemon pokemon;
-    @Getter
     @NotNull
     private final MoveFilter filter;
-    @Getter
     @NotNull
     private final String search;
-    @Getter
     @NotNull
     private final List<MoveTemplate> moves;
-    @Getter
     private final int page;
-    @Getter
     private final int totalPages;
 
     public SelectMovePage(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveFilter filter,
@@ -55,7 +45,7 @@ public class SelectMovePage extends SimpleGui {
         this.moves = getFilteredAndSearchMoves();
         this.totalPages = Math.max(1, (this.moves.size() + 44) / 45);
 
-        setTitle(UtilChat.formatMessage(GUI_CONFIG.getSelectMoveTitle()));
+        setTitle(UtilChat.formatMessage(MoveLearner.getInstance().getGuiConfig().getSelectMoveTitle()));
         setLockPlayerInventory(true);
 
         int start = (page - 1) * 45;
@@ -95,7 +85,7 @@ public class SelectMovePage extends SimpleGui {
     }
 
     private void fillAllSlotsWithFiller() {
-        if (GUI_CONFIG.isFillerChoiceMovesUI()) {
+        if (MoveLearner.getInstance().getGuiConfig().isFillerChoiceMovesUI()) {
             IntStream.rangeClosed(45, 53)
                     .forEach(i -> setSlot(i, Buttons.getFillerButton()));
         }
@@ -154,23 +144,24 @@ public class SelectMovePage extends SimpleGui {
 
     @NotNull
     private List<MoveFilter> getFilterOrder() {
+        val serverConfig = MoveLearner.getInstance().getServerConfig();
         List<MoveFilter> order = new ArrayList<>();
 
         order.add(MoveFilter.ALL);
         order.add(MoveFilter.LEVEL);
         order.add(MoveFilter.TM);
 
-        if (SERVER_CONFIG.isLegacyMove()) {
+        if (serverConfig.isLegacyMove()) {
             order.add(MoveFilter.LEGACY);
         }
 
         order.add(MoveFilter.TUTOR);
 
-        if (SERVER_CONFIG.isSpecialMove()) {
+        if (serverConfig.isSpecialMove()) {
             order.add(MoveFilter.SPECIAL);
         }
 
-        if (SERVER_CONFIG.isEggMove()) {
+        if (serverConfig.isEggMove()) {
             order.add(MoveFilter.EGG);
         }
 
@@ -179,12 +170,14 @@ public class SelectMovePage extends SimpleGui {
 
     @NotNull
     private Set<MoveTemplate> getFilteredMoves(@NotNull Learnset moves) {
+        val serverConfig = MoveLearner.getInstance().getServerConfig();
+
         return switch (this.filter) {
             case ALL -> Utils.getAllMoves(moves).stream()
-                    .filter(move -> SERVER_CONFIG.isEggMove() || !moves.getEggMoves().contains(move))
-                    .filter(move -> SERVER_CONFIG.isLegacyMove() || !moves.getLegacyMoves().contains(move))
-                    .filter(move -> SERVER_CONFIG.isSpecialMove() || !moves.getSpecialMoves().contains(move))
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> serverConfig.isEggMove() || !moves.getEggMoves().contains(move))
+                    .filter(move -> serverConfig.isLegacyMove() || !moves.getLegacyMoves().contains(move))
+                    .filter(move -> serverConfig.isSpecialMove() || !moves.getSpecialMoves().contains(move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case LEVEL -> moves.getAllLegalMoves().stream()
                     .filter(move ->
@@ -192,22 +185,22 @@ public class SelectMovePage extends SimpleGui {
                                     .values()
                                     .stream()
                                     .anyMatch(list -> list.contains(move)))
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case TM -> moves.getTmMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case LEGACY -> moves.getLegacyMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case TUTOR -> moves.getTutorMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case SPECIAL -> moves.getSpecialMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
             case EGG -> moves.getEggMoves().stream()
-                    .filter(move -> !SERVER_CONFIG.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
+                    .filter(move -> !serverConfig.isHideAlreadyMove() || !Utils.isLearnedMove(this.pokemon, move))
                     .collect(Collectors.toSet());
         };
     }

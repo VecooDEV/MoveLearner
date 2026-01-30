@@ -7,7 +7,6 @@ import com.vecoo.extralib.ui.api.elements.GuiElementBuilder;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
-import com.vecoo.movelearner.config.GuiConfig;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,12 +17,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.stream.IntStream;
 
 public class SelectPokemonPage extends SimpleGui {
-    private final GuiConfig GUI_CONFIG = MoveLearner.getInstance().getGuiConfig();
-
     public SelectPokemonPage(@NotNull ServerPlayer player) {
         super(MenuType.GENERIC_9x3, player, false);
 
-        setTitle(UtilChat.formatMessage(GUI_CONFIG.getSelectPokemonTitle()));
+        setTitle(UtilChat.formatMessage(MoveLearner.getInstance().getGuiConfig().getSelectPokemonTitle()));
         setLockPlayerInventory(true);
 
         fillAllSlotsWithFiller();
@@ -44,14 +41,14 @@ public class SelectPokemonPage extends SimpleGui {
     }
 
     private void fillAllSlotsWithFiller() {
-        if (GUI_CONFIG.isFillerChoicePokemonUI()) {
+        if (MoveLearner.getInstance().getGuiConfig().isFillerChoicePokemonUI()) {
             IntStream.rangeClosed(0, 26)
                     .forEach(slot -> setSlot(slot, Buttons.getFillerButton()));
         }
     }
 
     private void addInformationButton() {
-        if (GUI_CONFIG.isInformationUI()) {
+        if (MoveLearner.getInstance().getGuiConfig().isInformationUI()) {
             setSlot(13, Buttons.getInformationButton());
         }
     }
