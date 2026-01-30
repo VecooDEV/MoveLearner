@@ -1,2 +1,2 @@
-* Update depends.
-* Improve code.
+* Cleanup gui code.
+* Change validation pokemon in gui.
