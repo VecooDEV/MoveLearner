@@ -67,20 +67,34 @@ public class SelectMovePage extends SimpleGui {
                 selectMovePage.getSearch(), selectMovePage.getPage());
     }
 
+    @Override
+    public void openForce() {
+        if (MoveLearnerServiceUI.validatePokemon(this.pokemon, player)) {
+            super.openForce();
+        }
+    }
+
+    @Override
+    public void safeOpen(@NotNull ServerPlayer player) {
+        if (MoveLearnerServiceUI.validatePokemon(this.pokemon, player)) {
+            super.safeOpen(player);
+        }
+    }
+
     private void openPage() {
-        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(this));
+        new SelectMovePage(this).openForce();
     }
 
     private void openPage(int newPage) {
-        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, this.filter, this.search, newPage));
+        new SelectMovePage(player, this.pokemon, this.filter, this.search, newPage).openForce();
     }
 
     private void openPage(@NotNull MoveFilter filter) {
-        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, filter, "", 1));
+        new SelectMovePage(player, this.pokemon, filter, "", 1).openForce();
     }
 
     private void openPage(@NotNull String search) {
-        MoveLearnerServiceUI.openPage(player, this.pokemon, new SelectMovePage(player, this.pokemon, MoveFilter.ALL, search, 1));
+        new SelectMovePage(player, this.pokemon, MoveFilter.ALL, search, 1).openForce();
     }
 
     @NotNull
@@ -103,7 +117,7 @@ public class SelectMovePage extends SimpleGui {
 
         for (ImmutableAttack move : moves) {
             setSlot(slot++, Buttons.getMoveButton(this.pokemon, move, player)
-                    .setCallback(() -> MoveLearnerServiceUI.openPage(player, this.pokemon, new AcceptPage(player, move, this))));
+                    .setCallback(() -> new AcceptPage(player, move, this).openForce()));
         }
     }
 

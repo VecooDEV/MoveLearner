@@ -36,6 +36,13 @@ public class AcceptPage extends SimpleGui {
         addAcceptButton();
     }
 
+    @Override
+    public void openForce() {
+        if (MoveLearnerServiceUI.validatePokemon(this.selectMovePage.getPokemon(), player)) {
+            super.openForce();
+        }
+    }
+
     private void fillAllSlotsWithFiller() {
         if (MoveLearner.getInstance().getGuiConfig().isFillerSureUI()) {
             IntStream.rangeClosed(0, 26)
@@ -45,7 +52,7 @@ public class AcceptPage extends SimpleGui {
 
     private void addCancelButton() {
         setSlot(10, Buttons.getCancelButton()
-                .setCallback(() -> MoveLearnerServiceUI.openPage(player, this.selectMovePage.getPokemon(), this.selectMovePage)));
+                .setCallback(() -> new SelectMovePage(this.selectMovePage).openForce()));
     }
 
     private void addMoveButton() {

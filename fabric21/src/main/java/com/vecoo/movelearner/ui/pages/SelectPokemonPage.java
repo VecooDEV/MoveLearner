@@ -6,7 +6,6 @@ import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.elements.GuiElementBuilder;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import net.minecraft.server.level.ServerPlayer;
@@ -60,7 +59,6 @@ public class SelectPokemonPage extends SimpleGui {
         }
 
         return Buttons.getPokemonButton(pokemon, player)
-                .setCallback(() -> MoveLearnerServiceUI.openPage(player, pokemon,
-                        new SelectMovePage(player, pokemon, MoveFilter.ALL, "", 1)));
+                .setCallback(() -> new SelectMovePage(player, pokemon, MoveFilter.ALL, "", 1).openForce());
     }
 }

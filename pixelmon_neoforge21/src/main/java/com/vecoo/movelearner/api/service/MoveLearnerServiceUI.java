@@ -6,7 +6,6 @@ import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.battles.attacks.Attack;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.GuiHelpers;
-import com.vecoo.extralib.ui.api.gui.SimpleGui;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProviderRegistry;
 import com.vecoo.movelearner.ui.pages.AcceptPage;
@@ -15,29 +14,26 @@ import com.vecoo.movelearner.util.Utils;
 import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class MoveLearnerServiceUI {
-    public static void openPage(@NotNull ServerPlayer player, @Nullable Pokemon pokemon, @NotNull SimpleGui page) {
+    public static boolean validatePokemon(@NotNull Pokemon oldPokemon, @NotNull ServerPlayer player) {
+        val localeConfig = MoveLearner.getInstance().getLocaleConfig();
         val partyStorage = StorageProxy.getPartyNow(player);
 
-        if (partyStorage == null || pokemon == null || partyStorage.get(pokemon.getUUID()) == null) {
-            player.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getNotPokemon()));
+        if (partyStorage == null || partyStorage.get(oldPokemon.getUUID()) == null) {
+            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotPokemon()));
             GuiHelpers.close(player);
-            return;
+            return false;
         }
 
-        page.openForce();
+        return true;
     }
 
     public static void learnMove(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull AcceptPage acceptPage) {
         val serverConfig = MoveLearner.getInstance().getServerConfig();
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
-        val partyStorage = StorageProxy.getPartyNow(player);
 
-        if (partyStorage == null || partyStorage.get(pokemon.getUUID()) == null) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotPokemon()));
-            GuiHelpers.close(player);
+        if (!validatePokemon(pokemon, player)) {
             return;
         }
 
