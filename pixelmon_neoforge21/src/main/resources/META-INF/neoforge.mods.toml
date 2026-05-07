@@ -34,7 +34,7 @@ side = "BOTH"
 [[dependencies.movelearner]]
 modId = "extralib"
 type = "required"
-versionRange = "[2.1.4,)"
+versionRange = "[3.0.0,)"
 ordering = "NONE"
 side = "BOTH"
 
