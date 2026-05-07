@@ -1,10 +1,10 @@
 package com.vecoo.movelearner.ui.pages;
 
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
-import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
+import com.vecoo.movelearner.manager.MoveLearnerManagerUI;
 import com.vecoo.movelearner.ui.Buttons;
 import lombok.Getter;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +25,7 @@ public class AcceptPage extends SimpleGui {
         this.move = move;
         this.selectMovePage = selectMovePage;
 
-        setTitle(UtilChat.formatMessage(MoveLearner.getInstance().getGuiConfig().getAcceptTitle()));
+        setTitle(TextUtil.formatMessage(MoveLearner.getInstance().getGuiConfig().getAcceptTitle()));
         setLockPlayerInventory(true);
 
         fillAllSlotsWithFiller();
@@ -38,7 +38,7 @@ public class AcceptPage extends SimpleGui {
 
     @Override
     public void openForce() {
-        if (MoveLearnerServiceUI.validatePokemon(this.selectMovePage.getPokemon(), player)) {
+        if (MoveLearnerManagerUI.validatePokemon(this.selectMovePage.getPokemon(), player)) {
             super.openForce();
         }
     }
@@ -69,6 +69,6 @@ public class AcceptPage extends SimpleGui {
 
     private void addAcceptButton() {
         setSlot(16, Buttons.getAcceptButton()
-                .setCallback(() -> MoveLearnerServiceUI.learnMove(player, this.selectMovePage.getPokemon(), this)));
+                .setCallback(() -> MoveLearnerManagerUI.learnMove(player, this.selectMovePage.getPokemon(), this)));
     }
 }

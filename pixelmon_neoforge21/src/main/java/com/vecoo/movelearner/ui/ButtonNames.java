@@ -1,7 +1,7 @@
 package com.vecoo.movelearner.ui;
 
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
-import com.vecoo.extralib.chat.UtilChat;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
 import lombok.val;
 import net.minecraft.network.chat.Component;
@@ -15,7 +15,7 @@ public class ButtonNames {
         val moveName = move.getTranslatedName();
 
         if (guiConfig.isLocalizedNameMoves() && !player.getLanguage().equals("en_us")) {
-            moveName.append(UtilChat.formatMessage(guiConfig.getLocalizedMoveName()
+            moveName.append(TextUtil.formatMessage(guiConfig.getLocalizedMoveName()
                     .replace("%move%", move.getAttackName())));
         }
 

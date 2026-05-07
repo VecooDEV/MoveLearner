@@ -1,8 +1,8 @@
 package com.vecoo.movelearner.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.vecoo.extralib.chat.UtilChat;
-import com.vecoo.extralib.permission.UtilPermission;
+import com.vecoo.extralib.util.PermissionUtil;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.ui.pages.SelectPokemonPage;
 import com.vecoo.movelearner.util.PermissionNodes;
@@ -16,16 +16,16 @@ import org.jetbrains.annotations.NotNull;
 public class LearnCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("learn")
-                .requires(p -> UtilPermission.hasPermission(p, PermissionNodes.LEARN_COMMAND))
+                .requires(p -> PermissionUtil.hasPermission(p, PermissionNodes.LEARN_COMMAND))
                 .executes(e -> executeLearn(e.getSource().getPlayerOrException()))
 
                 .then(Commands.literal("open")
-                        .requires(p -> UtilPermission.hasPermission(p, PermissionNodes.LEARN_OPEN_COMMAND))
+                        .requires(p -> PermissionUtil.hasPermission(p, PermissionNodes.LEARN_OPEN_COMMAND))
                         .then(Commands.argument("player", EntityArgument.player())
                                 .executes(e -> executeLearnPlayer(e.getSource(), EntityArgument.getPlayer(e, "player")))))
 
                 .then(Commands.literal("reload")
-                        .requires(p -> UtilPermission.hasPermission(p, PermissionNodes.LEARN_RELOAD_COMMAND))
+                        .requires(p -> PermissionUtil.hasPermission(p, PermissionNodes.LEARN_RELOAD_COMMAND))
                         .executes(e -> executeReload(e.getSource()))));
     }
 
@@ -35,9 +35,9 @@ public class LearnCommand {
     }
 
     private static int executeLearnPlayer(@NotNull CommandSourceStack source, @NotNull ServerPlayer player) {
-        new SelectPokemonPage(player).reOpen();
+        new SelectPokemonPage(player).openForce();
 
-        source.sendSystemMessage(UtilChat.formatMessage(MoveLearner.getInstance().getLocaleConfig().getOpenLearn()
+        source.sendSystemMessage(TextUtil.formatMessage(MoveLearner.getInstance().getLocaleConfig().getOpenLearn()
                 .replace("%player%", player.getName().getString())));
         return 1;
     }
@@ -48,12 +48,12 @@ public class LearnCommand {
         try {
             MoveLearner.getInstance().loadConfig();
         } catch (Exception e) {
-            source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getErrorReload()));
+            source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getErrorReload()));
             MoveLearner.getLogger().error(e.getMessage());
             return 0;
         }
 
-        source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getReload()));
+        source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getReload()));
         return 1;
     }
 }
