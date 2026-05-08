@@ -2,10 +2,10 @@ package com.vecoo.movelearner.impl;
 
 import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.vecoo.extralib.chat.UtilChat;
-import com.vecoo.extralib.item.UtilItem;
-import com.vecoo.extralib.player.UtilPlayer;
 import com.vecoo.extralib.ui.api.GuiHelpers;
+import com.vecoo.extralib.util.ItemUtil;
+import com.vecoo.extralib.util.PlayerUtil;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProvider;
 import lombok.val;
@@ -20,7 +20,7 @@ public class ItemCurrencyProvider implements CurrencyProvider {
     public Component lore(int price) {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return UtilChat.formatMessage(guiConfig.getPriceLore()
+        return TextUtil.formatMessage(guiConfig.getPriceLore()
                 .replace("%amount%", String.valueOf(price))
                 .replace("%currency%", guiConfig.getItemCurrency()));
     }
@@ -29,32 +29,32 @@ public class ItemCurrencyProvider implements CurrencyProvider {
     public boolean buy(@NotNull ServerPlayer player, @NotNull Pokemon pokemon, @NotNull MoveTemplate move, int price) {
         val serverConfig = MoveLearner.getInstance().getServerConfig();
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
-        val itemStack = UtilItem.parseItemCustomModel(serverConfig.getItemPriceMove());
+        val itemStack = ItemUtil.parseItemCustomModel(serverConfig.getItemPriceMove());
 
         if (itemStack.isEmpty()) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotValidItem()));
+            player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getNotValidItem()));
             GuiHelpers.close(player);
             return false;
         }
 
         if (serverConfig.isItemStrongTags()) {
-            if (UtilPlayer.countItemStack(player, itemStack) < price) {
-                player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotCurrency()
+            if (PlayerUtil.countItemStack(player, itemStack) < price) {
+                player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getNotCurrency()
                         .replace("%amount%", String.valueOf(price))
                         .replace("%currency%", localeConfig.getItemCurrency())));
                 return false;
             }
 
-            UtilPlayer.removeItemStack(player, itemStack, price);
+            PlayerUtil.removeItemStack(player, itemStack, price);
         } else {
-            if (UtilPlayer.countItemStackTag(player, itemStack, DataComponents.CUSTOM_MODEL_DATA) < price) {
-                player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotCurrency()
+            if (PlayerUtil.countItemStackTag(player, itemStack, DataComponents.CUSTOM_MODEL_DATA) < price) {
+                player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getNotCurrency()
                         .replace("%amount%", String.valueOf(price))
                         .replace("%currency%", localeConfig.getItemCurrency())));
                 return false;
             }
 
-            UtilPlayer.removeItemStackTag(player, itemStack, DataComponents.CUSTOM_MODEL_DATA, price);
+            PlayerUtil.removeItemStackTag(player, itemStack, DataComponents.CUSTOM_MODEL_DATA, price);
         }
 
         return true;
@@ -65,13 +65,13 @@ public class ItemCurrencyProvider implements CurrencyProvider {
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
 
         if (price > 0) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getBuyMove()
+            player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getBuyMove()
                     .replace("%move%", move.getDisplayName().getString())
                     .replace("%pokemon%", pokemon.getDisplayName(false).getString())
                     .replace("%amount%", String.valueOf(price))
                     .replace("%currency%", localeConfig.getItemCurrency())));
         } else {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getBuyMoveFree()
+            player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getBuyMoveFree()
                     .replace("%move%", move.getDisplayName().getString())
                     .replace("%pokemon%", pokemon.getDisplayName(false).getString())));
         }

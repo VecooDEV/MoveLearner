@@ -2,7 +2,7 @@ package com.vecoo.movelearner.impl;
 
 import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.vecoo.extralib.chat.UtilChat;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProvider;
 import com.vecoo.movelearner.api.events.LearnEvent;
@@ -21,7 +21,7 @@ public class CobblemonCurrencyProvider implements CurrencyProvider {
     public Component lore(int price) {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return UtilChat.formatMessage(guiConfig.getPriceLore()
+        return TextUtil.formatMessage(guiConfig.getPriceLore()
                 .replace("%amount%", String.valueOf(price))
                 .replace("%currency%", guiConfig.getCobblemonCurrency()));
     }
@@ -32,7 +32,7 @@ public class CobblemonCurrencyProvider implements CurrencyProvider {
         val balance = PlayerExtensionKt.getCobbleDollars(player);
 
         if (balance.intValue() < price) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotCurrency()
+            player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getNotCurrency()
                     .replace("%amount%", String.valueOf(price))
                     .replace("%currency%", localeConfig.getCobblemonCurrency())));
             return false;
@@ -51,13 +51,13 @@ public class CobblemonCurrencyProvider implements CurrencyProvider {
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
 
         if (price > 0) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getBuyMove()
+            player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getBuyMove()
                     .replace("%move%", move.getDisplayName().getString())
                     .replace("%pokemon%", pokemon.getDisplayName(false).getString())
                     .replace("%amount%", String.valueOf(price))
                     .replace("%currency%", localeConfig.getCobblemonCurrency())));
         } else {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getBuyMoveFree()
+            player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getBuyMoveFree()
                     .replace("%move%", move.getDisplayName().getString())
                     .replace("%pokemon%", pokemon.getDisplayName(false).getString())));
         }

@@ -1,10 +1,10 @@
-package com.vecoo.movelearner.api.service;
+package com.vecoo.movelearner.manager;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.moves.BenchedMove;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.GuiHelpers;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProviderRegistry;
 import com.vecoo.movelearner.ui.pages.AcceptPage;
@@ -14,12 +14,12 @@ import lombok.val;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
-public class MoveLearnerServiceUI {
+public class MoveLearnerManagerUI {
     public static boolean validatePokemon(@NotNull Pokemon oldPokemon, @NotNull ServerPlayer player) {
         val localeConfig = MoveLearner.getInstance().getLocaleConfig();
 
         if (Cobblemon.INSTANCE.getStorage().getParty(player).get(oldPokemon.getUuid()) == null) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotPokemon()));
+            player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getNotPokemon()));
             GuiHelpers.close(player);
             return false;
         }
@@ -39,7 +39,7 @@ public class MoveLearnerServiceUI {
         val move = acceptPage.getMove();
 
         if (Utils.isLearnedMove(pokemon, move)) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getAlreadyMove()
+            player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getAlreadyMove()
                     .replace("%pokemon%", pokemon.getDisplayName(false).getString())
                     .replace("%move%", move.getDisplayName().getString())));
             new SelectMovePage(acceptPage.getSelectMovePage()).openForce();
@@ -49,7 +49,7 @@ public class MoveLearnerServiceUI {
         val currencyProvider = CurrencyProviderRegistry.get(serverConfig.getCurrencyType());
 
         if (currencyProvider == null) {
-            player.sendSystemMessage(UtilChat.formatMessage(localeConfig.getNotValidCurrency()
+            player.sendSystemMessage(TextUtil.formatMessage(localeConfig.getNotValidCurrency()
                     .replace("%currency%", MoveLearner.getInstance().getServerConfig().getCurrencyType())));
             return;
         }

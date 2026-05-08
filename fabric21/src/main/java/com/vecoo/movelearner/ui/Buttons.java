@@ -4,9 +4,8 @@ import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.common.collect.Lists;
-import com.vecoo.extralib.chat.UtilChat;
-import com.vecoo.extralib.item.UtilItem;
 import com.vecoo.extralib.ui.api.elements.GuiElementBuilder;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
@@ -34,7 +33,7 @@ public class Buttons {
 
     @NotNull
     public static GuiElementBuilder getFillerButton() {
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getFillerItem()))
+        return new GuiElementBuilder((MoveLearner.getInstance().getGuiConfig().getFillerItem()))
                 .setName(Component.empty())
                 .removeRarity();
     }
@@ -43,9 +42,9 @@ public class Buttons {
     public static GuiElementBuilder getInformationButton() {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getInformationItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getInformationName()))
-                .setLore(Lists.newArrayList(UtilChat.formatMessage(guiConfig.getInformationLore())))
+        return new GuiElementBuilder(guiConfig.getInformationItem())
+                .setFormattedName(guiConfig.getInformationName())
+                .setLore(Lists.newArrayList(TextUtil.formatMessage(guiConfig.getInformationLore())))
                 .removeRarity();
     }
 
@@ -53,8 +52,8 @@ public class Buttons {
     public static GuiElementBuilder getEmptyPokemonButton() {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getEmptyPokemonItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getEmptyPokemonName()))
+        return new GuiElementBuilder(guiConfig.getEmptyPokemonItem())
+                .setFormattedName(guiConfig.getEmptyPokemonName())
                 .removeRarity();
     }
 
@@ -62,8 +61,8 @@ public class Buttons {
     public static GuiElementBuilder getPreviousPageButton() {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getPreviousPageItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getPreviousPageName()))
+        return new GuiElementBuilder(guiConfig.getPreviousPageItem())
+                .setFormattedName(guiConfig.getPreviousPageName())
                 .removeRarity();
     }
 
@@ -71,8 +70,8 @@ public class Buttons {
     public static GuiElementBuilder getNextPageButton() {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getNextPageItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getNextPageName()))
+        return new GuiElementBuilder(guiConfig.getNextPageItem())
+                .setFormattedName(guiConfig.getNextPageName())
                 .removeRarity();
     }
 
@@ -80,8 +79,8 @@ public class Buttons {
     public static GuiElementBuilder getFilterButton(@NotNull MoveFilter filter) {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getFilterItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getFilterName()))
+        return new GuiElementBuilder(guiConfig.getFilterItem())
+                .setFormattedName(guiConfig.getFilterName())
                 .setLore(ButtonLore.getFilterLore(filter))
                 .removeRarity();
     }
@@ -90,8 +89,8 @@ public class Buttons {
     public static GuiElementBuilder getBackButton() {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getBackItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getBackName()))
+        return new GuiElementBuilder(guiConfig.getBackItem())
+                .setFormattedName(guiConfig.getBackName())
                 .removeRarity();
     }
 
@@ -99,14 +98,14 @@ public class Buttons {
     public static GuiElementBuilder getCancelButton() {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getCancelItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getCancelName()))
+        return new GuiElementBuilder(guiConfig.getCancelItem())
+                .setFormattedName(guiConfig.getCancelName())
                 .removeRarity();
     }
 
     @NotNull
     public static GuiElementBuilder getComingButton() {
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(MoveLearner.getInstance().getGuiConfig().getComingItem()))
+        return new GuiElementBuilder(MoveLearner.getInstance().getGuiConfig().getComingItem())
                 .setName(Component.empty())
                 .removeRarity();
     }
@@ -115,8 +114,8 @@ public class Buttons {
     public static GuiElementBuilder getAcceptButton() {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
 
-        return new GuiElementBuilder(UtilItem.parseItemCustomModel(guiConfig.getAcceptItem()))
-                .setName(UtilChat.formatMessage(guiConfig.getAcceptName()))
+        return new GuiElementBuilder(guiConfig.getAcceptItem())
+                .setFormattedName(guiConfig.getAcceptName())
                 .removeRarity();
     }
 }

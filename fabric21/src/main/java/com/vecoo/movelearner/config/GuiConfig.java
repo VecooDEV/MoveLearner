@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 @ConfigSerializable
+@SuppressWarnings("FieldMayBeFinal")
 public class GuiConfig {
     private boolean localizedNameMoves = true;
     private boolean fillerChoicePokemonUI = true;

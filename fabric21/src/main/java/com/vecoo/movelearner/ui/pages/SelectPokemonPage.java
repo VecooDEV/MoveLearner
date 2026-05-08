@@ -2,9 +2,9 @@ package com.vecoo.movelearner.ui.pages;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.elements.GuiElementBuilder;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
@@ -19,7 +19,7 @@ public class SelectPokemonPage extends SimpleGui {
     public SelectPokemonPage(@NotNull ServerPlayer player) {
         super(MenuType.GENERIC_9x3, player, false);
 
-        setTitle(UtilChat.formatMessage(MoveLearner.getInstance().getGuiConfig().getSelectPokemonTitle()));
+        setTitle(TextUtil.formatMessage(MoveLearner.getInstance().getGuiConfig().getSelectPokemonTitle()));
         setLockPlayerInventory(true);
 
         fillAllSlotsWithFiller();

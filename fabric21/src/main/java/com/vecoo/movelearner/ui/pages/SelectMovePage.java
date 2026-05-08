@@ -3,10 +3,10 @@ package com.vecoo.movelearner.ui.pages;
 import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.api.pokemon.moves.Learnset;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.ui.api.gui.SimpleGui;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
-import com.vecoo.movelearner.api.service.MoveLearnerServiceUI;
+import com.vecoo.movelearner.manager.MoveLearnerManagerUI;
 import com.vecoo.movelearner.ui.Buttons;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
 import com.vecoo.movelearner.util.Utils;
@@ -45,7 +45,7 @@ public class SelectMovePage extends SimpleGui {
         this.moves = getFilteredAndSearchMoves();
         this.totalPages = Math.max(1, (this.moves.size() + 44) / 45);
 
-        setTitle(UtilChat.formatMessage(MoveLearner.getInstance().getGuiConfig().getSelectMoveTitle()));
+        setTitle(TextUtil.formatMessage(MoveLearner.getInstance().getGuiConfig().getSelectMoveTitle()));
         setLockPlayerInventory(true);
 
         int start = (page - 1) * 45;
@@ -66,7 +66,7 @@ public class SelectMovePage extends SimpleGui {
 
     @Override
     public void openForce() {
-        if (MoveLearnerServiceUI.validatePokemon(this.pokemon, player)) {
+        if (MoveLearnerManagerUI.validatePokemon(this.pokemon, player)) {
             super.openForce();
         }
     }

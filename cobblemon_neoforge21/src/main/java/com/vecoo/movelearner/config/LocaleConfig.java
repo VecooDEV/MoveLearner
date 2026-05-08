@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 @ConfigSerializable
+@SuppressWarnings("FieldMayBeFinal")
 public class LocaleConfig {
     private String reload = "&e(!) Configs reloaded.";
     private String openLearn = "&e(!) Learn menu opened %player%.";

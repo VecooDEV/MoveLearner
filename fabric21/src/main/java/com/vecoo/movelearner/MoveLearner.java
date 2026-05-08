@@ -1,7 +1,7 @@
 package com.vecoo.movelearner;
 
 import com.mojang.logging.LogUtils;
-import com.vecoo.extralib.config.YamlConfigFactory;
+import com.vecoo.extralib.loader.YamlLoader;
 import com.vecoo.movelearner.api.currency.CurrencyProviderRegistry;
 import com.vecoo.movelearner.command.LearnCommand;
 import com.vecoo.movelearner.config.GuiConfig;
@@ -17,6 +17,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
+
+import java.io.IOException;
 
 public class MoveLearner implements ModInitializer {
     public static final String MOD_ID = "movelearner";
@@ -43,9 +45,13 @@ public class MoveLearner implements ModInitializer {
     }
 
     public void loadConfig() {
-        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, "config/MoveLearner/config.yml");
-        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, "config/MoveLearner/locale.yml");
-        this.guiConfig = YamlConfigFactory.load(GuiConfig.class, "config/MoveLearner/gui.yml");
+        try {
+            this.serverConfig = YamlLoader.load(ServerConfig.class, "config/movelearner/config.yml", false);
+            this.localeConfig = YamlLoader.load(LocaleConfig.class, "config/movelearner/locale.yml", false);
+            this.guiConfig = YamlLoader.load(GuiConfig.class, "config/movelearner/gui.yml", false);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     private void loadCurrencies() {

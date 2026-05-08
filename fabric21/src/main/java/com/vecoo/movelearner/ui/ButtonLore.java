@@ -3,7 +3,7 @@ package com.vecoo.movelearner.ui;
 import com.cobblemon.mod.common.api.moves.Move;
 import com.cobblemon.mod.common.api.moves.MoveTemplate;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.vecoo.extralib.chat.UtilChat;
+import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProviderRegistry;
 import com.vecoo.movelearner.ui.settings.MoveFilter;
@@ -22,15 +22,15 @@ public class ButtonLore {
         val guiConfig = MoveLearner.getInstance().getGuiConfig();
         List<Component> lore = new ArrayList<>();
 
-        lore.add(UtilChat.formatMessage(guiConfig.getMovesLore()));
+        lore.add(TextUtil.formatMessage(guiConfig.getMovesLore()));
 
         for (Move move : pokemon.getMoveSet().getMoves()) {
-            val moveLore = UtilChat.formatMessage(guiConfig.getMoveSymbol())
+            val moveLore = TextUtil.formatMessage(guiConfig.getMoveSymbol())
                     .copy()
                     .append(move.getDisplayName());
 
             if (guiConfig.isLocalizedNameMoves() && !player.clientInformation().language().equals("en_us")) {
-                moveLore.append(UtilChat.formatMessage(guiConfig.getLocalizedMoveLore()
+                moveLore.append(TextUtil.formatMessage(guiConfig.getLocalizedMoveLore()
                         .replace("%move%", move.getName())));
             }
 
@@ -48,17 +48,17 @@ public class ButtonLore {
         val type = move.getElementalType().getDisplayName().copy()
                 .withColor(move.getElementalType().getHue());
 
-        val typeLine = UtilChat.formatMessage(guiConfig.getTypeLore())
+        val typeLine = TextUtil.formatMessage(guiConfig.getTypeLore())
                 .copy()
                 .append(type)
                 .append(getCategoryIcon(move));
 
         lore.add(typeLine);
-        lore.add(UtilChat.formatMessage(guiConfig.getPowerLore()
+        lore.add(TextUtil.formatMessage(guiConfig.getPowerLore()
                 .replace("%amount%", Utils.formatStatMove(move.getPower()))));
-        lore.add(UtilChat.formatMessage(guiConfig.getAccuracyLore()
+        lore.add(TextUtil.formatMessage(guiConfig.getAccuracyLore()
                 .replace("%amount%", Utils.formatStatMove(move.getAccuracy()))));
-        lore.add(UtilChat.formatMessage(guiConfig.getPpLore()
+        lore.add(TextUtil.formatMessage(guiConfig.getPpLore()
                 .replace("%amount%", String.valueOf(move.getPp()))
                 .replace("%maxAmount%", String.valueOf(move.getMaxPp()))));
 
@@ -69,13 +69,13 @@ public class ButtonLore {
             val currencyProvider = CurrencyProviderRegistry.get(serverConfig.getCurrencyType());
 
             if (currencyProvider == null) {
-                lore.add(UtilChat.formatMessage(guiConfig.getNotValidCurrency()
+                lore.add(TextUtil.formatMessage(guiConfig.getNotValidCurrency()
                         .replace("%currency%", serverConfig.getCurrencyType())));
             } else {
                 lore.add(currencyProvider.lore(price));
             }
         } else {
-            lore.add(UtilChat.formatMessage(guiConfig.getPriceFreeLore()));
+            lore.add(TextUtil.formatMessage(guiConfig.getPriceFreeLore()));
         }
 
         return lore;
@@ -119,6 +119,6 @@ public class ButtonLore {
 
     @NotNull
     private static Component createFilterLine(@NotNull String text, boolean isActive) {
-        return UtilChat.formatMessage(MoveLearner.getInstance().getGuiConfig().getFilterSymbol() + (isActive ? "&f" : "&7") + text);
+        return TextUtil.formatMessage(MoveLearner.getInstance().getGuiConfig().getFilterSymbol() + (isActive ? "&f" : "&7") + text);
     }
 }
