@@ -7,13 +7,14 @@ import com.cobblemon.mod.common.api.pokemon.moves.Learnset;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.vecoo.movelearner.MoveLearner;
 import lombok.val;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Utils {
     @NotNull
@@ -103,4 +104,47 @@ public class Utils {
 
         return String.valueOf(stat);
     }
+
+    public static void removeItemStackTag(@Nullable Player player, @NotNull ItemStack removeItemStack, @NotNull DataComponentType<?> dataComponent, int amount) {
+        if (player == null) {
+            MoveLearner.getLogger().error("Item {} was not claimed because the player is null, this is an error.", removeItemStack.getDisplayName());
+            return;
+        }
+
+        int totalRemoved = 0;
+
+        InventoryMenu inventoryMenu = player.inventoryMenu;
+
+        for (ItemStack itemStack : inventoryMenu.getItems()) {
+            if (totalRemoved >= amount) {
+                break;
+            }
+
+            if (itemStack.isEmpty() || itemStack.getItem() != removeItemStack.getItem()) {
+                continue;
+            }
+
+            int toRemove = Math.min(itemStack.getCount(), amount - totalRemoved);
+
+            if (itemStack.getComponents().isEmpty() && removeItemStack.getComponents().isEmpty()) {
+                itemStack.shrink(toRemove);
+                totalRemoved += toRemove;
+                continue;
+            }
+
+            if (itemStack.getComponents().isEmpty() || removeItemStack.getComponents().isEmpty()) {
+                continue;
+            }
+
+            if (!Objects.equals(itemStack.getComponents().get(dataComponent), removeItemStack.getComponents().get(dataComponent))) {
+                continue;
+            }
+
+            itemStack.shrink(toRemove);
+            totalRemoved += toRemove;
+        }
+
+        inventoryMenu.broadcastChanges();
+    }
+
 }

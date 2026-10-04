@@ -8,6 +8,7 @@ import com.vecoo.extralib.util.PlayerUtil;
 import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.movelearner.MoveLearner;
 import com.vecoo.movelearner.api.currency.CurrencyProvider;
+import com.vecoo.movelearner.util.Utils;
 import lombok.val;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -54,7 +55,7 @@ public class ItemCurrencyProvider implements CurrencyProvider {
                 return false;
             }
 
-            PlayerUtil.removeItemStackTag(player, itemStack, DataComponents.CUSTOM_MODEL_DATA, price);
+            Utils.removeItemStackTag(player, itemStack, DataComponents.CUSTOM_MODEL_DATA, price);
         }
 
         return true;
