@@ -11,6 +11,7 @@ subprojects {
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
+        options.incremental = true
     }
 
     repositories {
@@ -18,7 +19,7 @@ subprojects {
         mavenCentral()
         maven { url = "https://api.modrinth.com/maven" }
         ivy {
-            setUrl('https://download.nodecdn.net/containers/reforged/server/release')
+            setUrl('https://download.nodecdn.net/containers/reforged/universal/release')
             metadataSources {
                 artifact()
             }
